@@ -1,0 +1,53 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "db",
+  "license": "ISC",
+  "author": "zed31rus_",
+  "type": "module",
+  "main": "App.js",
+  "scripts": {
+    "dev": "node App.js",
+    "test": "node bomz.js",
+    "lobanov": "node lobanov.js"
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/nodemailer": "^7.0.9",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mjml": "^4.18.0",
+    "nodemailer": "^7.0.12",
+    "pg": "^8.17.2",
+    "zod": "^4.3.6"
+  },
+  "imports": {
+    "#config": "./config.json",
+    "#prisma/*": "./prisma/*.ts",
+    "#lib/*": "./lib/*.ts",
+    "#db/*": "./lib/db/*.ts",
+    "#verificationCode/*": "./lib/verificationCode/*.ts",
+    "#refreshToken/*": "./lib/refreshToken/*.ts",
+    "#mail/*": "./lib/mail/*.ts",
+    "#jwt/*": "./lib/jwt/*.ts",
+    "#hash/*": "./lib/hash/*.ts",
+    "#web/*": "./web/*.ts",
+    "#services/*": "./services/*.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "@types/pg": "^8.16.0",
+    "prisma": "^7.3.0"
+  }
+}
