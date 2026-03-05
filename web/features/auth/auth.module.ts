@@ -16,9 +16,9 @@ export default class AuthModules {
 
             const { login, email, password, nickname } = request.body;
 
-            const { publicUser } = await AuthServices.register(login, email, password, nickname)
+            const { user } = await AuthServices.register(login, email, password, nickname)
             reply.status(201).send({
-                publicUser
+                user
             })
         })
     
@@ -31,7 +31,7 @@ export default class AuthModules {
 
             const { login, password } = request.body;
 
-            const { publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.login(login, password)
+            const { user, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.login(login, password)
             reply.setCookie("accessToken", accessToken, {
                 sameSite: 'none',
                 secure: true,
@@ -48,7 +48,7 @@ export default class AuthModules {
                 path: '/',
                 expires: refreshTokenExpires.atTime
             })
-            reply.status(200).send({ publicUser })
+            reply.status(200).send({ user })
         })
 
 
@@ -58,7 +58,7 @@ export default class AuthModules {
             const { RefreshToken } = request.cookies;
             if (!RefreshToken) throw ApiError.Unauthorized();
 
-            const { publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.refresh(RefreshToken)
+            const { user, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.refresh(RefreshToken)
 
             reply.setCookie("accessToken", accessToken, {
                 sameSite: 'none',
@@ -76,7 +76,7 @@ export default class AuthModules {
                 path: '/',
                 expires: refreshTokenExpires.atTime
             })
-            reply.status(200).send({ publicUser })
+            reply.status(200).send({ user })
         })
 
 

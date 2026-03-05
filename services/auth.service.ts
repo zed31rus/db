@@ -23,7 +23,7 @@ export default class AuthServices {
 
     await mailer.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
-    return { publicUser: publicUser };
+    return { user: publicUser };
 }
 
     static async login(login: string, password: string) {
@@ -45,7 +45,7 @@ export default class AuthServices {
         })
         const publicUser = userSelector.toPublicJSON(rawUser)
 
-        return { publicUser: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires }
+        return { user: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires }
     }
 
     static async refresh(incomingRefreshToken: string) {
@@ -77,6 +77,6 @@ export default class AuthServices {
         });
         const publicUser = userSelector.toPublicJSON(rawUser);
 
-        return { publicUser: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires };
+        return { user: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires };
     }
 }
