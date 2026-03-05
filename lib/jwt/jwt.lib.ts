@@ -1,14 +1,14 @@
-import { User } from "#prisma/prisma";
+import { PublicUser } from "#lib/selector/user.selector";
 import jsonWebToken from "jsonwebtoken";
 import { SignOptions } from 'jsonwebtoken';
 
 class JWT {
-    static async create(payload: Object, JWT_SECRET: string, expiresIn: SignOptions['expiresIn'] = this.getExpiresTime()) {
+    static async create(payload: PublicUser, JWT_SECRET: string, expiresIn: SignOptions['expiresIn'] = this.getExpiresTime()) {
         return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn})
     }
 
     static async verify(token: string, JWT_SECRET: string) {
-        return jsonWebToken.verify(token, JWT_SECRET)
+        return jsonWebToken.verify(token, JWT_SECRET) as PublicUser
     }
 
     static getExpiresAtTime(expiresTime: number = this.getExpiresTime()) {

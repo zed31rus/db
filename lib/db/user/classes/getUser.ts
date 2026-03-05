@@ -1,6 +1,10 @@
+import { PublicUser } from "#lib/selector/user.selector";
 import { Prisma, RefreshToken, User } from "#prisma/prisma";
 
 export default class GetUser {
+    static async byPublicUser(client: Prisma.TransactionClient, publicUser: PublicUser) {
+        return await client.user.findUniqueOrThrow({ where: { uuid: publicUser.uuid } });
+    }
     static async byUuid(client: Prisma.TransactionClient, uuid: User['uuid']) {
         return await client.user.findUniqueOrThrow({ where: { uuid } });
     }

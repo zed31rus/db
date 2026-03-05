@@ -3,33 +3,32 @@ import hash from "#lib/hash/hash.lib";
 import mailer from "#lib/mail/mail.lib";
 import RefreshToken from "#lib/refreshToken/refreshToken.lib";
 import JWT from "#lib/jwt/jwt.lib"
-import { prismaClient, User } from '#prisma/prisma';
+import { prismaClient } from '#prisma/prisma';
 import db from '#db/db'
 import userSelector from "#lib/selector/user.selector";
 
 export default class AuthServices {
 
     static async register(login: string, email: string, password: string, nickname: string) {
+    const hashedPassword = await hash.bcrypt.create(password, 10);
+    const rawOtp = await VerificationCode.generateVerificationCode(6);
+    const hashedOtp = await hash.bcrypt.create(rawOtp, 10);
+    const otpExpiresAt = await VerificationCode.getExpiresAtTime();
 
-        const { hashedPassword, rawUser, rawOtp, hashedOtp, expiresAt, verificationRecord } = await prismaClient.$transaction(async (tx) => {
+    const { rawUser } = await prismaClient.$transaction(async (tx) => {
+        const rawUser = await db.users.create.createUser(tx, nickname, login, email, hashedPassword);
+        await db.verificationCode.upsert.upsert(tx, rawUser, hashedOtp, 'EMAIL_CONFIRMATION', otpExpiresAt);
+        return { rawUser: rawUser };
+    });
 
-            const hashedPassword = await hash.bcrypt.create(password, 10);
-            const rawUser = await db.users.create.createUser(tx, nickname, login, email, hashedPassword);
-            const rawOtp = await VerificationCode.generateVerificationCode(6);
-            const hashedOtp = await hash.bcrypt.create(rawOtp, 10);
-            const expiresAt = await VerificationCode.getExpiresAtTime();
-            const verificationRecord = await db.verificationCode.upsert.upsert(tx, rawUser, hashedOtp, 'EMAIL_CONFIRMATION', expiresAt);
+    await mailer.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
-            return { hashedPassword, rawUser, rawOtp, hashedOtp, expiresAt, verificationRecord }
-        });
-
-        const mail = await mailer.sendMail(email, 'Код подтверждения', `Ваш код подтверждения: ${rawOtp}`, `<p>Ваш код подтверждения: ${rawOtp}</p>`);
-        return { hashedPassword, rawUser, rawOtp, hashedOtp, expiresAt, verificationRecord, mail };
-    }
+    return { rawUser: rawUser };
+}
 
     static async login(login: string, password: string) {
 
-        const { rawUser, isPasswordCorrect, tokenRecord, userPayload, accessToken, rawRefreshToken } = await prismaClient.$transaction(async (tx) => {
+        const { rawUser, accessToken, rawRefreshToken } = await prismaClient.$transaction(async (tx) => {
 
             const rawUser = await db.users.get.byLogin(tx, login);
             const isPasswordCorrect = await hash.bcrypt.compare(password, rawUser.passwordHash!);
@@ -37,34 +36,20 @@ export default class AuthServices {
             const rawRefreshToken = RefreshToken.create();
             const hashedRefreshToken = await hash.sha256.create(rawRefreshToken)
             const expiresAt = RefreshToken.getExpiresAtTime();
-            const tokenRecord = await db.refreshToken.create.createRefreshToken(tx, hashedRefreshToken, expiresAt, rawUser)
+            const tokenRecord = await db.refreshToken.create.create(tx, hashedRefreshToken, expiresAt, rawUser)
             const userPayload = userSelector.toPublicJSON(rawUser)
-            const accessToken = await JWT.create(userPayload!, process.env.JWT_SECRET!);
+            const rawAccessToken = await JWT.create(userPayload!, process.env.JWT_SECRET!);
 
-            return { rawUser, isPasswordCorrect, tokenRecord, userPayload, accessToken, rawRefreshToken }
+            return { rawUser, accessToken: rawAccessToken, rawRefreshToken }
         })
 
-        return { rawUser, isPasswordCorrect, tokenRecord, userPayload, accessToken, rawRefreshToken }
+        return { rawUser, accessToken, rawRefreshToken }
     }
 
-    static async confirmEmail(rawUser: User, submittedCode: string) {
-        const { verificationRecord, isCodeValid } = await prismaClient.$transaction(async (tx) => {
-            const verificationRecord = await db.verificationCode.get.get(tx, rawUser!, 'EMAIL_CONFIRMATION');
-            const isCodeValid = await hash.bcrypt.compare(submittedCode, verificationRecord?.hashedCode!);
-            if (!isCodeValid) throw new Error("Login or password does not exist");
-            await db.verificationCode.delete.delete(tx, verificationRecord!)
-            await db.users.update.setEmailConfirmed(tx, rawUser, true)
-            return { rawUser, verificationRecord, isCodeValid }
-        })
+    static async refresh(incomingRefreshToken: string) {
+        const hashedIncomingToken = await hash.sha256.create(incomingRefreshToken);
 
-        const mail = await mailer.sendMail(rawUser.email, 'Ваш адрес электронной почты подтверждён', 'Ваш адрес электронной почты подтверждён', '<p>Ваш адрес электронной почты подтверждён</p>');
-        return { rawUser, verificationRecord, isCodeValid }
-    }
-
-    static async refresh(incomingToken: string) {
-        const hashedIncomingToken = await hash.sha256.create(incomingToken);
-
-        const result = await prismaClient.$transaction(async (tx) => {
+        const { accessToken, newRawRefreshToken, userPayload } = await prismaClient.$transaction(async (tx) => {
             const tokenRecord = await db.refreshToken.get.byHashedToken(tx, hashedIncomingToken);
 
             if (new Date() > new Date(tokenRecord.expiresAt)) {
@@ -80,7 +65,7 @@ export default class AuthServices {
             const newHashedRefreshToken = await hash.sha256.create(newRawRefreshToken);
             const newExpiresAt = RefreshToken.getExpiresAtTime();
 
-            await db.refreshToken.create.createRefreshToken(tx, newHashedRefreshToken, newExpiresAt, rawUser);
+            await db.refreshToken.create.create(tx, newHashedRefreshToken, newExpiresAt, rawUser);
 
             const userPayload = userSelector.toPublicJSON(rawUser);
             const accessToken = await JWT.create(userPayload!, process.env.JWT_SECRET!);
@@ -88,6 +73,6 @@ export default class AuthServices {
             return { accessToken, newRawRefreshToken, userPayload };
         });
 
-        return result;
+        return { accessToken, newRawRefreshToken, userPayload };
     }
 }

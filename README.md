@@ -1,7 +1,6 @@
 
 ```
 db
-├─ docker-compose.yml
 ├─ generated
 ├─ lib
 │  ├─ db
@@ -48,30 +47,45 @@ db
 ├─ package.json
 ├─ prisma
 │  ├─ migrations
-│  │  ├─ ...
+│  │  ├─ 20260121195853_base
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123151148_verification_codes
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123224904_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260124020639_allow_user_find
+│  │  │  └─ migration.sql
+│  │  ├─ 20260127014001_creted
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202131407_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202211948_unique_provider_user_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202212725
+│  │  │  └─ migration.sql
+│  │  └─ migration_lock.toml
 │  ├─ prisma.ts
 │  └─ schema.prisma
 ├─ prisma.config.ts
 ├─ README.md
 ├─ services
+│  ├─ account.service.ts
 │  ├─ auth.service.ts
-│  └─ get.service.ts
-├─ types
-│  └─ express.d.ts
+│  ├─ social.service.ts
+│  └─ user.service.ts
 └─ web
-   ├─ controllers
-   │  ├─ auth.controller.ts
-   │  └─ get.controller.ts
-   ├─ dto
-   │  ├─ auth.dto.ts
+   ├─ account
+   │  ├─ account.controller.ts
+   │  ├─ account.d.ts
+   │  └─ account.dto.ts
+   ├─ auth
+   │  └─ auth.dto.ts
+   ├─ get
    │  └─ get.dto.ts
-   ├─ middlewares
-   │  ├─ auth.middleware.ts
-   │  ├─ error.middleware.ts
-   │  └─ validate.middleware.ts
-   ├─ routes
-   │  ├─ auth.router.ts
-   │  └─ get.router.ts
+   ├─ social
+   │  └─ social.dto.ts
+   ├─ types
+   │  └─ user.d.ts
    └─ webServer.ts
 
 ```
