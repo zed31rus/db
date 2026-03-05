@@ -18,10 +18,10 @@ export default class UserSelector {
     }
 
     static toPublicJSON(user: User): PublicUser {
-        return this.select(user, PublicUserFields);
+        return this.select(user, PublicUserFields) as PublicUser;
     }
 
     static toPersonalJSON(user: User): PersonalUser {
-        return this.select(user, PersonalUserFields);
+        return this.select(user, PersonalUserFields) as PersonalUser;;
     }
 }

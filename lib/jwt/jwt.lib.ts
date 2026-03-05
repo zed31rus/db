@@ -3,7 +3,7 @@ import jsonWebToken from "jsonwebtoken";
 import { SignOptions } from 'jsonwebtoken';
 
 class JWT {
-    static async create(payload: PublicUser, JWT_SECRET: string, expiresIn: SignOptions['expiresIn'] = this.getExpiresTime()) {
+    static async create(payload: PublicUser, expiresIn: SignOptions['expiresIn'], JWT_SECRET: string) {
         return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn})
     }
 
@@ -11,11 +11,17 @@ class JWT {
         return jsonWebToken.verify(token, JWT_SECRET) as PublicUser
     }
 
-    static getExpiresAtTime(expiresTime: number = this.getExpiresTime()) {
+    static getExpires() {
+        const time = this.getExpiresTime();
+        const atTime = this.getExpiresAtTime(time);
+        return { time, atTime }
+    }
+
+    private static getExpiresAtTime(expiresTime: number) {
         return new Date(Date.now() + expiresTime)
     }
 
-    static getExpiresTime() {
+    private static getExpiresTime() {
         return (7 * 24 * 60 * 60 * 1000)
     }
 }

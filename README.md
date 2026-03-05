@@ -67,25 +67,30 @@ db
 │  ├─ prisma.ts
 │  └─ schema.prisma
 ├─ prisma.config.ts
-├─ README.md
 ├─ services
 │  ├─ account.service.ts
 │  ├─ auth.service.ts
-│  ├─ social.service.ts
-│  └─ user.service.ts
+│  ├─ profile.service.ts
+│  └─ social.service.ts
 └─ web
-   ├─ account
-   │  ├─ account.controller.ts
-   │  ├─ account.d.ts
-   │  └─ account.dto.ts
-   ├─ auth
-   │  └─ auth.dto.ts
-   ├─ get
-   │  └─ get.dto.ts
-   ├─ social
-   │  └─ social.dto.ts
+   ├─ features
+   │  ├─ account
+   │  │  ├─ account.dto.ts
+   │  │  └─ account.module.ts
+   │  ├─ auth
+   │  │  ├─ auth.dto.ts
+   │  │  └─ auth.module.ts
+   │  ├─ profile
+   │  │  ├─ profile.dto.ts
+   │  │  └─ profile.module.ts
+   │  └─ social
+   │     ├─ social.dto.ts
+   │     └─ social.module.ts
+   ├─ hooks
+   │  └─ preHandler
+   │     └─ auth.preHandler.ts
    ├─ types
-   │  └─ user.d.ts
+   │  └─ fastify.d.ts
    └─ webServer.ts
 
 ```

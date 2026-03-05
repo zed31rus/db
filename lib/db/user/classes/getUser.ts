@@ -1,5 +1,5 @@
 import { PublicUser } from "#lib/selector/user.selector";
-import { Prisma, RefreshToken, User } from "#prisma/prisma";
+import { Prisma, User } from "#prisma/prisma";
 
 export default class GetUser {
     static async byPublicUser(client: Prisma.TransactionClient, publicUser: PublicUser) {

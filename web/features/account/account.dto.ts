@@ -5,9 +5,8 @@ const AccountSchemas = {
     confirmEmail: {
         body: z.object({
             submitCode: z.string().length(6),
-        }),
+        })
     }
-
 }
 
 export default AccountSchemas

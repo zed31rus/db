@@ -13,66 +13,70 @@ export default class AuthServices {
     const hashedPassword = await hash.bcrypt.create(password, 10);
     const rawOtp = await VerificationCode.generateVerificationCode(6);
     const hashedOtp = await hash.bcrypt.create(rawOtp, 10);
-    const otpExpiresAt = await VerificationCode.getExpiresAtTime();
-
+    const otpExpires = VerificationCode.getExpires();
     const { rawUser } = await prismaClient.$transaction(async (tx) => {
         const rawUser = await db.users.create.createUser(tx, nickname, login, email, hashedPassword);
-        await db.verificationCode.upsert.upsert(tx, rawUser, hashedOtp, 'EMAIL_CONFIRMATION', otpExpiresAt);
+        await db.verificationCode.upsert.upsert(tx, rawUser, hashedOtp, 'EMAIL_CONFIRMATION', otpExpires.atTime);
         return { rawUser: rawUser };
     });
+    const publicUser = userSelector.toPublicJSON(rawUser)
 
     await mailer.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
-    return { rawUser: rawUser };
+    return { publicUser: publicUser };
 }
 
     static async login(login: string, password: string) {
 
-        const { rawUser, accessToken, rawRefreshToken } = await prismaClient.$transaction(async (tx) => {
+        const { rawUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await prismaClient.$transaction(async (tx) => {
 
             const rawUser = await db.users.get.byLogin(tx, login);
             const isPasswordCorrect = await hash.bcrypt.compare(password, rawUser.passwordHash!);
             if (!isPasswordCorrect) throw new Error("Invalid credentials");
-            const rawRefreshToken = RefreshToken.create();
-            const hashedRefreshToken = await hash.sha256.create(rawRefreshToken)
-            const expiresAt = RefreshToken.getExpiresAtTime();
-            const tokenRecord = await db.refreshToken.create.create(tx, hashedRefreshToken, expiresAt, rawUser)
+            const refreshTokenExpires = RefreshToken.getExpires();
+            const refreshToken = RefreshToken.create();
+            const hashedRefreshToken = await hash.sha256.create(refreshToken)
+            const tokenRecord = await db.refreshToken.create.create(tx, hashedRefreshToken, refreshTokenExpires.atTime, rawUser)
             const userPayload = userSelector.toPublicJSON(rawUser)
-            const rawAccessToken = await JWT.create(userPayload!, process.env.JWT_SECRET!);
+            const accessTokenExpires = JWT.getExpires();
+            const accessToken = await JWT.create(userPayload, accessTokenExpires.time, process.env.JWT_SECRET!);
 
-            return { rawUser, accessToken: rawAccessToken, rawRefreshToken }
+            return { rawUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires }
         })
+        const publicUser = userSelector.toPublicJSON(rawUser)
 
-        return { rawUser, accessToken, rawRefreshToken }
+        return { publicUser: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires }
     }
 
     static async refresh(incomingRefreshToken: string) {
         const hashedIncomingToken = await hash.sha256.create(incomingRefreshToken);
 
-        const { accessToken, newRawRefreshToken, userPayload } = await prismaClient.$transaction(async (tx) => {
-            const tokenRecord = await db.refreshToken.get.byHashedToken(tx, hashedIncomingToken);
+        const { rawUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await prismaClient.$transaction(async (tx) => {
+            const IncomingTokenRecord = await db.refreshToken.get.byHashedToken(tx, hashedIncomingToken);
 
-            if (new Date() > new Date(tokenRecord.expiresAt)) {
-                await db.refreshToken.delete.delete(tx, tokenRecord);
+            if (new Date() > new Date(IncomingTokenRecord.expiresAt)) {
+                await db.refreshToken.delete.delete(tx, IncomingTokenRecord);
                 throw new Error("Refresh token expired");
             }
 
-            const rawUser = tokenRecord.user;
+            const rawUser = IncomingTokenRecord.user;
 
-            await db.refreshToken.delete.delete(tx, tokenRecord);
+            await db.refreshToken.delete.delete(tx, IncomingTokenRecord);
 
-            const newRawRefreshToken = RefreshToken.create();
-            const newHashedRefreshToken = await hash.sha256.create(newRawRefreshToken);
-            const newExpiresAt = RefreshToken.getExpiresAtTime();
+            const refreshTokenExpires = RefreshToken.getExpires();
+            const refreshToken = RefreshToken.create();
+            const hashedRefreshToken = await hash.sha256.create(refreshToken);
 
-            await db.refreshToken.create.create(tx, newHashedRefreshToken, newExpiresAt, rawUser);
+            await db.refreshToken.create.create(tx, hashedRefreshToken, refreshTokenExpires.atTime, rawUser);
 
+            const accessTokenExpires = JWT.getExpires();
             const userPayload = userSelector.toPublicJSON(rawUser);
-            const accessToken = await JWT.create(userPayload!, process.env.JWT_SECRET!);
+            const accessToken = await JWT.create(userPayload, accessTokenExpires.time, process.env.JWT_SECRET!);
 
-            return { accessToken, newRawRefreshToken, userPayload };
+            return { rawUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires };
         });
+        const publicUser = userSelector.toPublicJSON(rawUser);
 
-        return { accessToken, newRawRefreshToken, userPayload };
+        return { publicUser: publicUser, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires };
     }
 }

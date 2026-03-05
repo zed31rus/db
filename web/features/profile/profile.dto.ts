@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const GetSchemas =  {
+const ProfileSchemas =  {
 
     me: {
         body: z.object({
@@ -10,4 +10,4 @@ const GetSchemas =  {
     
 }
 
-export default GetSchemas
+export default ProfileSchemas
