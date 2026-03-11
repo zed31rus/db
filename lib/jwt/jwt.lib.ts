@@ -2,7 +2,7 @@ import { PublicUser } from "#lib/selector/user.selector";
 import jsonWebToken from "jsonwebtoken";
 import { SignOptions } from 'jsonwebtoken';
 
-class JWT {
+export default class JWT {
     static async create(payload: PublicUser, expiresIn: SignOptions['expiresIn'], JWT_SECRET: string) {
         return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn})
     }
@@ -25,7 +25,3 @@ class JWT {
         return (7 * 24 * 60 * 60 * 1000)
     }
 }
-
-const jwt = JWT;
-
-export default jwt

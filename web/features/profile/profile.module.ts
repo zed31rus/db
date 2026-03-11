@@ -1,4 +1,4 @@
-import ProfileServices from "#services/profile.service";
+import ProfileServices from "#services/profile";
 import authPreHandler from "#web/hooks/preHandler/auth.preHandler";
 import { FastifyInstanceType } from "#web/webServer";
 
@@ -11,8 +11,8 @@ export default class ProfileModules {
         }, async (request, reply) => {
             const { currentUser } = request;
 
-            const { publicUser } = await ProfileServices.get(currentUser)
-            reply.status(201).send({ publicUser })
+            const { user } = await ProfileServices.get(currentUser)
+            reply.status(201).send({ user })
         })
 
     }

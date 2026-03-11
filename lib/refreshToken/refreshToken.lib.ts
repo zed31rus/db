@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-class RefreshToken {
+export default class RefreshToken {
     static create() {
         return crypto.randomBytes(64).toString("hex");
     }
@@ -19,7 +19,3 @@ class RefreshToken {
         return (7 * 24 * 60 * 60 * 1000)
     }
 }
-
-const refreshToken = RefreshToken;
-
-export default refreshToken;

@@ -1,4 +1,4 @@
-import SocialService from "#services/social.service";
+import SocialService from "#services/social";
 import authPreHandler from "#web/hooks/preHandler/auth.preHandler";
 import { FastifyInstanceType } from "#web/webServer";
 import SocialSchemas from "./social.dto";
@@ -16,8 +16,8 @@ export default class SocialModules {
             const { uuid } = request.body;
             const { currentUser } = request;
 
-            const { targetUser } = await SocialService.get(uuid)
-            reply.status(201).send({ targetUser })
+            const { user } = await SocialService.get(uuid)
+            reply.status(201).send({ user })
         })
 
     }

@@ -32,18 +32,13 @@
     "zod": "^4.3.6"
   },
   "imports": {
-    "#config": "./config.json",
-    "#prisma/*": "./prisma/*.ts",
+    "#generated/*": "./generated/*",
     "#lib/*": "./lib/*.ts",
-    "#db/*": "./lib/db/*.ts",
-    "#verificationCode/*": "./lib/verificationCode/*.ts",
-    "#refreshToken/*": "./lib/refreshToken/*.ts",
-    "#mail/*": "./lib/mail/*.ts",
-    "#jwt/*": "./lib/jwt/*.ts",
-    "#hash/*": "./lib/hash/*.ts",
+    "#repo/*": "./repository/*.ts",
+    "#services/*": "./services/*.service.ts",
     "#web/*": "./web/*.ts",
-    "#services/*": "./services/*.ts",
-    "#types/*": "./types/*.d.ts"
+    "#prisma/*": "./prisma/*.ts",
+    "#managers/*": "./managers/*.ts"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

@@ -1,7 +1,7 @@
-import AuthServices from "#services/auth.service";
+import AuthServices from "#services/auth";
 import AuthSchemas from "./auth.dto";
 import { FastifyInstanceType } from "#web/webServer";
-import { ApiError } from "#lib/errors/api.errors";
+import ApiError from "#lib/errors/api.errors";
 
 export default class AuthModules {
 

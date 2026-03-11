@@ -17,6 +17,4 @@ const Hash = {
     }
 }
 
-const hash = Hash;
-
-export default hash;
+export default Hash

@@ -1,4 +1,4 @@
-export class ApiError extends Error {
+export default class ApiError extends Error {
     constructor(public status: number, message: string) {
         super(message);
         Object.setPrototypeOf(this, ApiError.prototype);
