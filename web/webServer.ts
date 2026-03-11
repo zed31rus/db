@@ -2,6 +2,10 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
+import AuthModules from "./features/auth/auth.module";
+import AccountModules from "./features/account/account.module";
+import ProfileModules from "./features/profile/profile.module";
+import SocialModules from "./features/social/social.module";
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -32,6 +36,11 @@ fastifyInstance.register(cors, {
 fastifyInstance.register(cookie);
 fastifyInstance.setValidatorCompiler(validatorCompiler);
 fastifyInstance.setSerializerCompiler(serializerCompiler);
+
+AuthModules.init(fastifyInstance);
+AccountModules.init(fastifyInstance);
+ProfileModules.init(fastifyInstance);
+SocialModules.init(fastifyInstance);
 
 fastifyInstance.listen({
   port: PORT

@@ -1,4 +1,4 @@
-import { ApiError } from "#lib/errors/api.errors";
+import ApiError from "#lib/errors/api.errors";
 import jwt from "#lib/jwt/jwt.lib";
 import { FastifyReply, FastifyRequest } from "fastify";
 

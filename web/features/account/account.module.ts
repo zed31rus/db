@@ -21,6 +21,15 @@ export default class AccountModules {
             reply.status(201).send({ user })
         })
 
+        app.post('/sendEmailConfirmation', {
+            preHandler: authPreHandler.authPreHandler
+        }, async (request, reply) => {
+            const { currentUser } = request;
+
+            const { user } = await AccoutService.emailVerificationSend(currentUser)
+            reply.status(201).send({ user })
+        })
+
     }
 
 }

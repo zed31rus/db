@@ -8,8 +8,8 @@ export default class AuthServices {
 
     static async register(login: string, email: string, password: string, nickname: string) {
     const hashedPassword = await hash.bcrypt.create(password, 10);
-
     const rawUser = await db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword);
+    
     const publicUser = UserSelector.toPublicJSON(rawUser)
 
     return { user: publicUser };
