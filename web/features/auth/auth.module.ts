@@ -1,14 +1,13 @@
 import AuthServices from "#services/auth";
-import AuthSchemas from "./auth.dto";
+import AuthSchemas from "./auth.dto.ts";
 import { FastifyInstanceType } from "#web/webServer";
 import ApiError from "#lib/errors/api.errors";
 
 export default class AuthModules {
 
-    static async init(app: FastifyInstanceType) {
+    static async init(app: FastifyInstanceType, root?: string ) {
 
-
-        app.post('/register', {
+        app.post(`${root}/register`, {
             schema: {
                 body: AuthSchemas.Register.Body,
             }
@@ -17,13 +16,10 @@ export default class AuthModules {
             const { login, email, password, nickname } = request.body;
 
             const { user } = await AuthServices.register(login, email, password, nickname)
-            reply.status(201).send({
-                user
-            })
+            reply.status(201).send({ user })
         })
-    
 
-        app.post('/login', {
+        app.post(`${root}/login`, {
             schema: {
                 body: AuthSchemas.Login.Body
             }
@@ -51,8 +47,7 @@ export default class AuthModules {
             reply.status(200).send({ user })
         })
 
-
-        app.post('/refresh', 
+        app.post(`${root}/refresh`, 
             async (request, reply) => {
 
             const { RefreshToken } = request.cookies;

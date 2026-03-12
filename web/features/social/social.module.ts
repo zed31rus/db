@@ -5,9 +5,9 @@ import SocialSchemas from "./social.dto";
 
 export default class SocialModules {
 
-    static async init(app: FastifyInstanceType) {
+    static async init(app: FastifyInstanceType, root: string | null) {
 
-        app.post('/get', {
+        app.post(`${root}/get`, {
             schema: {
                 body: SocialSchemas.user.get.body
             },

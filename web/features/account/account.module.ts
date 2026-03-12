@@ -6,9 +6,9 @@ import AccountSchemas from './account.dto'
 
 export default class AccountModules {
 
-    static async init(app: FastifyInstanceType) {
+    static async init(app: FastifyInstanceType, root: string | null) {
 
-        app.post('/confirmEmail', {
+        app.post(`${root}/confirmEmail`, {
             schema: {
                 body: AccountSchemas.confirmEmail.body
             },
@@ -21,7 +21,7 @@ export default class AccountModules {
             reply.status(201).send({ user })
         })
 
-        app.post('/sendEmailConfirmation', {
+        app.post(`${root}/sendEmailConfirmation`, {
             preHandler: authPreHandler.authPreHandler
         }, async (request, reply) => {
             const { currentUser } = request;
