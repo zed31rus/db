@@ -2,7 +2,6 @@ import { prismaClient } from "#prisma/prisma";
 import db from '#repo/db/db';
 import UserSelector, { PublicUser } from "#lib/selector/user.selector";
 import AccountManager from "#managers/account/otp.manager";
-import ApiError from "#lib/errors/api.errors";
 
 export default class AccoutService {
 

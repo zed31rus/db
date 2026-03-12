@@ -4,7 +4,6 @@ import db from "#repo/db/db";
 import mailer from "#lib/mail/mail.lib";
 import VerificationCode from "#lib/verificationCode/verificationCode.lib";
 import UserSelector from "#lib/selector/user.selector";
-import { VerificationCodeModel } from "#generated/prisma/models.ts";
 
 export default class AccountManager {
     static async createOtp(user: User, type: string) {

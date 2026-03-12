@@ -1,4 +1,4 @@
-import Fastify from "fastify";
+import Fastify, { FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
@@ -41,6 +41,7 @@ AuthModules.init(fastifyInstance);
 AccountModules.init(fastifyInstance);
 ProfileModules.init(fastifyInstance);
 SocialModules.init(fastifyInstance);
+
 
 fastifyInstance.listen({
   port: PORT
