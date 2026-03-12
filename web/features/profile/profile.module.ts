@@ -4,9 +4,9 @@ import { FastifyInstanceType } from "#web/webServer";
 
 export default class ProfileModules {
 
-    static async init(app: FastifyInstanceType) {
+    static async init(app: FastifyInstanceType, root: string | null) {
 
-        app.post('/get', {
+        app.post(`${root}/get`, {
             preHandler: authPreHandler.authPreHandler
         }, async (request, reply) => {
             const { currentUser } = request;

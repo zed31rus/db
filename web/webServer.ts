@@ -2,19 +2,20 @@ import Fastify, { FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
-import AuthModules from "./features/auth/auth.module";
-import AccountModules from "./features/account/account.module";
-import ProfileModules from "./features/profile/profile.module";
-import SocialModules from "./features/social/social.module";
+import AuthModules from "#web/features/auth/auth.module";
+import AccountModules from "#web/features/account/account.module";
+import ProfileModules from "#web/features/profile/profile.module";
+import SocialModules from "#web/features/social/social.module";
+import dotenv from 'dotenv';
 
-const PORT = Number(process.env.PORT) || 3000;
+dotenv.config()
+
+export const PORT = Number(process.env.PORT) || 3000;
 
 const fastifyInstance = Fastify({
     logger: true,
     trustProxy: true
 }).withTypeProvider<ZodTypeProvider>();
-
-
 
 const allowedOrigins = [
   "https://zed31rus.ru",
@@ -37,16 +38,11 @@ fastifyInstance.register(cookie);
 fastifyInstance.setValidatorCompiler(validatorCompiler);
 fastifyInstance.setSerializerCompiler(serializerCompiler);
 
-AuthModules.init(fastifyInstance);
-AccountModules.init(fastifyInstance);
-ProfileModules.init(fastifyInstance);
-SocialModules.init(fastifyInstance);
+AuthModules.init(fastifyInstance, '/auth');
+AccountModules.init(fastifyInstance, '/account');
+ProfileModules.init(fastifyInstance, '/profile');
+SocialModules.init(fastifyInstance, '/social');
 
+export default fastifyInstance;
 
-fastifyInstance.listen({
-  port: PORT
-}, (err) => {
-  err ? console.log(err) : console.log(`Server listening port ${PORT}`)
-})
-
-export type FastifyInstanceType = typeof fastifyInstance
+export type FastifyInstanceType = typeof fastifyInstance;
