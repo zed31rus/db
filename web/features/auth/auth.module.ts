@@ -56,7 +56,7 @@ export default class AuthModules {
             const { user, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.refresh(RefreshToken)
 
             reply.setCookie("accessToken", accessToken, {
-                sameSite: 'none',
+                sameSite: 'lax',
                 secure: true,
                 httpOnly: false,
                 domain: '.zed31rus.ru',
@@ -64,7 +64,7 @@ export default class AuthModules {
                 expires: accessTokenExpires.atTime
             })
             reply.setCookie("refreshToken", refreshToken, {
-                sameSite: 'none',
+                sameSite: 'lax',
                 secure: true,
                 httpOnly: true,
                 domain: '.zed31rus.ru',
