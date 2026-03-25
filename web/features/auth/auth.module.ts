@@ -27,24 +27,10 @@ export default class AuthModules {
 
             const { login, password } = request.body;
 
-            const { user, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.login(login, password)
-            reply.setCookie("accessToken", accessToken, {
-                sameSite: 'none',
-                secure: true,
-                httpOnly: false,
-                domain: '.zed31rus.ru',
-                path: '/',
-                expires: accessTokenExpires.atTime
-            })
-            reply.setCookie("refreshToken", refreshToken, {
-                sameSite: 'none',
-                secure: true,
-                httpOnly: true,
-                domain: '.zed31rus.ru',
-                path: '/',
-                expires: refreshTokenExpires.atTime
-            })
-            reply.status(200).send({ user })
+            const { user, access, refresh } = await AuthServices.login(login, password)
+
+            reply.sendSession()
+            reply.status(200).send({ user });
         })
 
         app.post(`${root}/refresh`, 
@@ -53,24 +39,10 @@ export default class AuthModules {
             const { RefreshToken } = request.cookies;
             if (!RefreshToken) throw ApiError.Unauthorized();
 
-            const { user, accessToken, accessTokenExpires, refreshToken, refreshTokenExpires } = await AuthServices.refresh(RefreshToken)
+            const { user, access, refresh } = await AuthServices.refresh(RefreshToken)
 
-            reply.setCookie("accessToken", accessToken, {
-                sameSite: 'lax',
-                secure: true,
-                httpOnly: false,
-                domain: '.zed31rus.ru',
-                path: '/',
-                expires: accessTokenExpires.atTime
-            })
-            reply.setCookie("refreshToken", refreshToken, {
-                sameSite: 'lax',
-                secure: true,
-                httpOnly: true,
-                domain: '.zed31rus.ru',
-                path: '/',
-                expires: refreshTokenExpires.atTime
-            })
+
+
             reply.status(200).send({ user })
         })
 

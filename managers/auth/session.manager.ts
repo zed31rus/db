@@ -21,6 +21,6 @@ export default class SessionManager {
         const accessTokenExpires = JWT.getExpires();
         const accessToken = await JWT.create(publicUser, accessTokenExpires.time, process.env.JWT_SECRET!);
         
-        return { refreshTokenExpires, refreshToken, accessTokenExpires, accessToken}
+        return { refresh: { token: refreshToken, expires: refreshTokenExpires }, access: {token: accessToken, expires: accessTokenExpires}}
     }
 }

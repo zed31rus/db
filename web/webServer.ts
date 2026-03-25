@@ -1,4 +1,4 @@
-import Fastify, { FastifyError } from "fastify";
+import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
