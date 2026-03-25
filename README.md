@@ -19,6 +19,7 @@ db
 │     └─ verificationCode.lib.ts
 ├─ managers
 │  ├─ account
+│  │  ├─ oauth.manager.ts
 │  │  └─ otp.manager.ts
 │  └─ auth
 │     └─ session.manager.ts
@@ -63,6 +64,10 @@ db
 │  ├─ auth.service.ts
 │  ├─ profile.service.ts
 │  └─ social.service.ts
+├─ test
+│  └─ routes.ts
+├─ types
+│  └─ account.d.ts
 └─ web
    ├─ features
    │  ├─ account
@@ -78,10 +83,12 @@ db
    │     ├─ social.dto.ts
    │     └─ social.module.ts
    ├─ hooks
+   │  ├─ errorHandler
+   │  │  └─ error.errorHandler.ts
    │  └─ preHandler
    │     └─ auth.preHandler.ts
+   ├─ startServer.ts
    ├─ types
-   │  ├─ account.d.ts
    │  └─ fastify.d.ts
    └─ webServer.ts
 

@@ -5,7 +5,7 @@ import mailer from "#lib/mail/mail.lib";
 import VerificationCode from "#lib/verificationCode/verificationCode.lib";
 import UserSelector from "#lib/selector/user.selector";
 
-export default class AccountManager {
+export default class OtpManager {
     static async createOtp(user: User, type: string) {
         const rawUser = user;
         const rawOtp = await VerificationCode.generateVerificationCode(6);

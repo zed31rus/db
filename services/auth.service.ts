@@ -3,6 +3,7 @@ import { prismaClient } from '#prisma/prisma';
 import db from '#repo/db/db';
 import SessionManager from "#managers/auth/session.manager";
 import UserSelector from "#lib/selector/user.selector";
+import RefreshToken from "#lib/refreshToken/refreshToken.lib";
 
 export default class AuthServices {
 
@@ -29,18 +30,19 @@ export default class AuthServices {
 
     static async refresh(incomingRefreshToken: string) {
         const hashedIncomingToken = await hash.sha256.create(incomingRefreshToken);
-            const IncomingTokenRecord = await db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
+            const IncomingRefreshTokenRecord = await db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
 
-            if (new Date() > new Date(IncomingTokenRecord.expiresAt)) {
-                await db.refreshToken.delete.delete(prismaClient, IncomingTokenRecord);
+            const expired = RefreshToken.checkExpired(IncomingRefreshTokenRecord)
+            if (expired) {
+                await db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
                 throw new Error("Refresh token expired");
             }
 
-            const rawUser = IncomingTokenRecord.user;
+            const rawUser = IncomingRefreshTokenRecord.user;
             const publicUser = UserSelector.toPublicJSON(rawUser);
             
             const session = await prismaClient.$transaction(async (tx) => {
-                await db.refreshToken.delete.delete(tx, IncomingTokenRecord);
+                await db.refreshToken.delete.delete(tx, IncomingRefreshTokenRecord);
 
                 const session = await SessionManager.createSession(rawUser, tx);
                 return session;

@@ -1,3 +1,4 @@
+import { Prisma } from '#prisma/prisma';
 import crypto from 'crypto';
 
 export default class RefreshToken {
@@ -9,6 +10,13 @@ export default class RefreshToken {
         const time = this.getExpiresTime();
         const atTime = this.getExpiresAtTime(time);
         return { time, atTime }
+    }
+
+    static checkExpired(refreshToken: Prisma.RefreshTokenModel) {
+        if (new Date() > new Date(refreshToken.expiresAt)) {
+                return true
+            }
+        return false
     }
     
     private static getExpiresAtTime(expiresTime: number) {
