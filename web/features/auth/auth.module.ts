@@ -1,51 +1,45 @@
 import AuthServices from "#services/auth";
 import AuthSchemas from "./auth.dto.ts";
-import { FastifyInstanceType } from "#web/webServer";
+import fastifyInstance from "#web/webServer";
 import ApiError from "#lib/errors/api.errors";
 
-export default class AuthModules {
+async function initAuthModule(root?: string ) {
+    fastifyInstance.post(`${root}/register`, {
+        schema: {
+            body: AuthSchemas.Register.Body,
+        }
+    }, async (request, reply) => {
 
-    static async init(app: FastifyInstanceType, root?: string ) {
+        const { login, email, password, nickname } = request.body;
 
-        app.post(`${root}/register`, {
-            schema: {
-                body: AuthSchemas.Register.Body,
-            }
-        }, async (request, reply) => {
+        const { user } = await AuthServices.register(login, email, password, nickname)
+        reply.status(201).send({ user })
+    })
 
-            const { login, email, password, nickname } = request.body;
+    fastifyInstance.post(`${root}/login`, {
+        schema: {
+            body: AuthSchemas.Login.Body
+        }
+    }, async (request, reply) => {
 
-            const { user } = await AuthServices.register(login, email, password, nickname)
-            reply.status(201).send({ user })
-        })
+        const { login, password } = request.body;
 
-        app.post(`${root}/login`, {
-            schema: {
-                body: AuthSchemas.Login.Body
-            }
-        }, async (request, reply) => {
+        const { user, access, refresh } = await AuthServices.login(login, password)
 
-            const { login, password } = request.body;
+        reply.status(200).send({ user });
+    })
 
-            const { user, access, refresh } = await AuthServices.login(login, password)
+    fastifyInstance.post(`${root}/refresh`, 
+        async (request, reply) => {
 
-            reply.sendSession()
-            reply.status(200).send({ user });
-        })
+        const { RefreshToken } = request.cookies;
+        if (!RefreshToken) throw ApiError.Unauthorized();
 
-        app.post(`${root}/refresh`, 
-            async (request, reply) => {
-
-            const { RefreshToken } = request.cookies;
-            if (!RefreshToken) throw ApiError.Unauthorized();
-
-            const { user, access, refresh } = await AuthServices.refresh(RefreshToken)
+        const { user, access, refresh } = await AuthServices.refresh(RefreshToken)
 
 
 
-            reply.status(200).send({ user })
-        })
+        reply.status(200).send({ user })
+    })
 
-
-    }
 }

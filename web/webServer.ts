@@ -2,10 +2,6 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
-import AuthModules from "#web/features/auth/auth.module";
-import AccountModules from "#web/features/account/account.module";
-import ProfileModules from "#web/features/profile/profile.module";
-import SocialModules from "#web/features/social/social.module";
 import dotenv from 'dotenv';
 
 dotenv.config()
@@ -38,11 +34,4 @@ fastifyInstance.register(cookie);
 fastifyInstance.setValidatorCompiler(validatorCompiler);
 fastifyInstance.setSerializerCompiler(serializerCompiler);
 
-AuthModules.init(fastifyInstance, '/auth');
-AccountModules.init(fastifyInstance, '/account');
-ProfileModules.init(fastifyInstance, '/profile');
-SocialModules.init(fastifyInstance, '/social');
-
 export default fastifyInstance;
-
-export type FastifyInstanceType = typeof fastifyInstance;
