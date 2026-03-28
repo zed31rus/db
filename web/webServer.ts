@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import cookie from "@fastify/cookie";
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 import dotenv from 'dotenv';
+import initSessionDecorator from "./decorators/reply/session.decorator";
 
 dotenv.config()
 
@@ -33,5 +34,7 @@ fastifyInstance.register(cors, {
 fastifyInstance.register(cookie);
 fastifyInstance.setValidatorCompiler(validatorCompiler);
 fastifyInstance.setSerializerCompiler(serializerCompiler);
+
+initSessionDecorator();
 
 export default fastifyInstance;
