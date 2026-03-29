@@ -15,7 +15,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
             windowMs: 15 * 60 * 1000,
             limit: 20,
             keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
-        }))
+        }));
 
         this.router.post(
         '/register',
