@@ -19,6 +19,9 @@ const AuthSchemas = {
     },
 
     Refresh: {
+    },
+
+    LogOut: {
     }
     
 }

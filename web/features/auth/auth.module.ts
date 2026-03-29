@@ -1,45 +1,58 @@
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import AuthSchemas from "./auth.dto";
 import AuthServices from "#services/auth";
-import AuthSchemas from "./auth.dto.ts";
-import fastifyInstance from "#web/webServer";
-import ApiError from "#lib/errors/api.errors";
+import SessionManager from "#web/managers/session.manager";
+import { BaseModule } from "#web/base/module.base";
+import { BaseEnv } from "#web/middleware/auth.middleware";
+import CookieSchemas from "#web/dto/cookie.dto";
 
-async function initAuthModule(root?: string ) {
-    fastifyInstance.post(`${root}/register`, {
-        schema: {
-            body: AuthSchemas.Register.Body,
-        }
-    }, async (request, reply) => {
+type AuthEnv = BaseEnv & {}
 
-        const { login, email, password, nickname } = request.body;
+export default class AuthModule extends BaseModule<AuthEnv> {
+    init() {
 
-        const { user } = await AuthServices.register(login, email, password, nickname)
-        reply.status(201).send({ user })
-    })
-
-    fastifyInstance.post(`${root}/login`, {
-        schema: {
-            body: AuthSchemas.Login.Body
-        }
-    }, async (request, reply) => {
-
-        const { login, password } = request.body;
-
-        const { user, access, refresh } = await AuthServices.login(login, password)
-
-        reply.status(200).send({ user });
-    })
-
-    fastifyInstance.post(`${root}/refresh`, 
-        async (request, reply) => {
-
-        const { RefreshToken } = request.cookies;
-        if (!RefreshToken) throw ApiError.Unauthorized();
-
-        const { user, access, refresh } = await AuthServices.refresh(RefreshToken)
+        this.router.post(
+            '/register',
+            zValidator('json', AuthSchemas.Register.Body),
+            async (c) => {
+            
+            const { login, email, password, nickname } = c.req.valid('json');
+            const { user } = await AuthServices.register(login, email, password, nickname);
+            return c.json({ user });
+        });
 
 
+        this.router.post(
+            '/login',
+            zValidator('json', AuthSchemas.Login.Body),
+            async (c) => {
 
-        reply.status(200).send({ user })
-    })
+            const { login, password } = c.req.valid('json');
+            const { user, refresh, access } = await AuthServices.login(login, password);
+            SessionManager.sendSession(c, refresh, access);
+            return c.json({user})
+        });
 
+
+        this.router.post(
+            '/refresh',
+            zValidator('cookie', CookieSchemas.refresh),
+            async (c) => {
+            
+            const { refreshToken } = c.req.valid('cookie');
+            const { user, refresh, access } = await AuthServices.refresh(refreshToken);
+            SessionManager.sendSession(c, refresh, access);
+            return c.json({ user })
+        });
+
+
+        this.router.post(
+            '/logout',
+            (c) => {
+
+            SessionManager.deleteSession(c);
+            return c.json({}, 200);
+        });
+    }
 }

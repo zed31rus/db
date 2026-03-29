@@ -2,8 +2,9 @@ import { prismaClient } from "#prisma/prisma";
 import db from '#repo/db/db';
 import UserSelector, { PublicUser } from "#lib/selector/user.selector";
 import AccountManager from "#managers/account/otp.manager";
+import '#types/account'
 
-export default class AccoutService {
+export default class AccountService {
 
     static async emailVerificationSend(user: PublicUser) {
         const rawUser = await db.users.get.byPublicUser(prismaClient, user);
@@ -26,4 +27,5 @@ export default class AccoutService {
         
         return { user: publicUser };
     }
+
 }

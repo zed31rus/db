@@ -1,12 +1,14 @@
 import z from "zod";
 
 const AccountSchemas = {
-
-    confirmEmail: {
-        body: z.object({
-            submitCode: z.string().length(6),
+    emailVerificationConfirm: {
+        Body: z.object({
+            submitCode: z.string().length(6)
         })
+    },
+    emailVerificationSend: {
+
     }
 }
 
-export default AccountSchemas
+export default AccountSchemas;

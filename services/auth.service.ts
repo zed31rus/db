@@ -11,7 +11,7 @@ export default class AuthServices {
     const hashedPassword = await hash.bcrypt.create(password, 10);
     const rawUser = await db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword);
     
-    const publicUser = UserSelector.toPublicJSON(rawUser)
+    const publicUser = UserSelector.toPublicJSON(rawUser);
 
     return { user: publicUser };
 }
@@ -23,7 +23,7 @@ export default class AuthServices {
         const isPasswordCorrect = await hash.bcrypt.compare(password, rawUser.passwordHash!);
         if (!isPasswordCorrect) throw new Error("Invalid credentials");
 
-        const session = await SessionManager.createSession(rawUser)
+        const session = await SessionManager.createSession(rawUser);
 
         return { user: publicUser, ...session };
     }
@@ -32,7 +32,7 @@ export default class AuthServices {
         const hashedIncomingToken = await hash.sha256.create(incomingRefreshToken);
             const IncomingRefreshTokenRecord = await db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
 
-            const expired = RefreshToken.checkExpired(IncomingRefreshTokenRecord)
+            const expired = RefreshToken.checkExpired(IncomingRefreshTokenRecord);
             if (expired) {
                 await db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
                 throw new Error("Refresh token expired");

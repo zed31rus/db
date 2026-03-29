@@ -1,11 +1,22 @@
 import { PublicUser } from "#lib/selector/user.selector";
 import { prismaClient, User } from "#prisma/prisma";
-import RefreshToken from "#lib/refreshToken/refreshToken.lib";
+import RefreshToken, { RefreshExpires } from "#lib/refreshToken/refreshToken.lib";
 import Hash from "#lib/hash/hash.lib";
 import UserSelector from "#lib/selector/user.selector";
-import JWT from "#lib/jwt/jwt.lib";
+import JWT, { AccessExpires } from "#lib/jwt/jwt.lib";
 import db from "#repo/db/db";
 import { TransactionClient } from "#generated/prisma/internal/prismaNamespace.ts";
+
+export type SessionType = {
+    refresh: {
+        token: string,
+        expires: RefreshExpires
+    },
+    access: {
+        token : string,
+        expires: AccessExpires
+    }
+}
 
 export default class SessionManager {
     static async createSession(user: User, tx: TransactionClient = prismaClient) {

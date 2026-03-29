@@ -64,32 +64,25 @@ db
 │  ├─ auth.service.ts
 │  ├─ profile.service.ts
 │  └─ social.service.ts
-├─ test
-│  └─ routes.ts
 ├─ types
 │  └─ account.d.ts
 └─ web
+   ├─ base
+   │  ├─ middleware.base.ts
+   │  └─ module.base.ts
+   ├─ dto
+   │  └─ cookie.dto.ts
    ├─ features
    │  ├─ account
    │  │  ├─ account.dto.ts
    │  │  └─ account.module.ts
-   │  ├─ auth
-   │  │  ├─ auth.dto.ts
-   │  │  └─ auth.module.ts
-   │  ├─ profile
-   │  │  ├─ profile.dto.ts
-   │  │  └─ profile.module.ts
-   │  └─ social
-   │     ├─ social.dto.ts
-   │     └─ social.module.ts
-   ├─ hooks
-   │  ├─ errorHandler
-   │  │  └─ error.errorHandler.ts
-   │  └─ preHandler
-   │     └─ auth.preHandler.ts
-   ├─ startServer.ts
-   ├─ types
-   │  └─ fastify.d.ts
+   │  └─ auth
+   │     ├─ auth.dto.ts
+   │     └─ auth.module.ts
+   ├─ managers
+   │  └─ session.manager.ts
+   ├─ middleware
+   │  └─ auth.middleware.ts
    └─ webServer.ts
 
 ```

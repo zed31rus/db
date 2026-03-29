@@ -1,35 +1,39 @@
-import '#web/types/fastify.d'
-import AccoutService from "#services/account"
-import authPreHandler from "#web/hooks/preHandler/auth.preHandler";
-import { FastifyInstanceType } from "#web/webServer";
-import AccountSchemas from './account.dto'
+import AccountService from "#services/account";
+import { BaseModule } from "#web/base/module.base";
+import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
+import { zValidator } from "@hono/zod-validator";
+import AccountSchemas from "./account.dto";
+import CookieSchemas from "#web/dto/cookie.dto";
 
-export default class AccountModules {
+type AccountEnv = BaseEnv & {}
 
-    static async init(app: FastifyInstanceType, root: string | null) {
+export default class AccountModule extends BaseModule<AccountEnv> {
 
-        app.post(`${root}/confirmEmail`, {
-            schema: {
-                body: AccountSchemas.confirmEmail.body
-            },
-            preHandler: authPreHandler.authPreHandler
-        }, async (request, reply) => {
-            const { submitCode } = request.body;
-            const { currentUser } = request;
+    init() {
+        this.router.post(
+            '/emailVerificationSend',
+            zValidator('cookie', CookieSchemas.both),
+            new AuthMiddleware<AccountEnv>(this.factory).withUser,
+            async (c) => {
 
-            const { user } = await AccoutService.emailVerificationConfirm(currentUser, submitCode)
-            reply.status(201).send({ user })
+            const publicUser = c.get('user');
+            const { user } = await AccountService.emailVerificationSend(publicUser);
+            return c.json({ user })
         })
 
-        app.post(`${root}/sendEmailConfirmation`, {
-            preHandler: authPreHandler.authPreHandler
-        }, async (request, reply) => {
-            const { currentUser } = request;
+        this.router.post(
+            '/emailVerificationConfirm',
+            zValidator('json', AccountSchemas.emailVerificationConfirm.Body),
+            zValidator('cookie', CookieSchemas.both),
+            new AuthMiddleware<AccountEnv>(this.factory).withUser,
+            async (c) => {
 
-            const { user } = await AccoutService.emailVerificationSend(currentUser)
-            reply.status(201).send({ user })
+            const publicUser = c.get('user');
+            const { submitCode } = c.req.valid('json');
+            const { user } = await AccountService.emailVerificationConfirm(publicUser, submitCode);
+            return c.json({ user })
         })
-
     }
 
 }
+
