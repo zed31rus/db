@@ -1,10 +1,8 @@
-import AccountService from "#services/account";
 import { BaseModule } from "#web/base/module.base";
 import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
 import AccountSchemas from "./account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
-import LibContainer from "#containers/lib.container";
 
 type AccountEnv = BaseEnv & {}
 
@@ -15,7 +13,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         this.router.post(
         '/emailVerificationSend',
         zValidator('cookie', CookieSchemas.both),
-        new AuthMiddleware<AccountEnv>(this.factory, LibContainer).withUser,
+        new AuthMiddleware<AccountEnv>(this.factory, this.lib).withUser,
         async (c) => {
 
             const publicUser = c.get('user');
@@ -27,7 +25,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         '/emailVerificationConfirm',
         zValidator('json', AccountSchemas.emailVerificationConfirm.Body),
         zValidator('cookie', CookieSchemas.both),
-        new AuthMiddleware<AccountEnv>(this.factory, LibContainer).withUser,
+        new AuthMiddleware<AccountEnv>(this.factory, this.lib).withUser,
         async (c) => {
 
             const publicUser = c.get('user');

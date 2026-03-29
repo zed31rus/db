@@ -1,4 +1,4 @@
-import { LibContainer } from "#containers/lib.container";
+import LibContainer from "#containers/lib.container";
 import { Env } from "hono";
 import { Factory } from "hono/factory";
 

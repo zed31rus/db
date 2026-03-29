@@ -1,5 +1,5 @@
 import { prismaClient, User } from "#prisma/prisma";
-import db from '#repo/db/db';
+import DB from '#repo/db/db';
 import UserSelector, { PublicUser } from "#lib/selector/user.selector";
 import BaseService from "#base/service.base";
 

@@ -2,6 +2,13 @@ import ApiError from '../errors/api.errors';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
+import Containers from '#containers/index.container'
+import AuthModule from './features/auth/auth.module';
+import { createFactory } from 'hono/factory';
+import { BaseEnv } from './middleware/auth.middleware';
+import AccountModule from './features/account/account.module';
+import MeModule from './features/me/me.module';
+import UsersModule from './features/users/users.module';
 
 const app = new Hono()
 
@@ -28,6 +35,18 @@ app.onError((err, c) => {
     console.error(err);
     return c.json({ message: "Unexpected error"}, 500);
 })
+
+const factory = createFactory<BaseEnv>();
+
+const authModule = new AuthModule(factory, Containers.serviceContainer, Containers.libContainer);
+const accountModule = new AccountModule(factory, Containers.serviceContainer, Containers.libContainer);
+const meModule = new MeModule(factory, Containers.serviceContainer, Containers.libContainer);
+const usersModule = new UsersModule(factory, Containers.serviceContainer, Containers.libContainer);
+
+app.route('/auth', authModule.router);
+app.route('/account', accountModule.router)
+app.route('/me', meModule.router)
+app.route('/user', usersModule.router)
 
 serve({
   fetch: app.fetch,

@@ -1,8 +1,7 @@
-import db from "#repo/db/db";
+import DB from "#repo/db/db";
 
-const RepositoryContainer = {
-    db: new db()
+export default class RepositoryContainer {
+    constructor(
+        readonly db: DB
+    ){}
 }
-
-export type RepositoryContainer = typeof RepositoryContainer;
-export default RepositoryContainer;

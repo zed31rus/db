@@ -1,8 +1,5 @@
-import MeServices from "#services/me";
-import UsersService from "#services/users";
 import { BaseModule } from "#web/base/module.base";
-import CookieSchemas from "#web/dto/cookie.dto";
-import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
+import { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
 import UsersSchemas from "./users.dto";
 

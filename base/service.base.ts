@@ -1,6 +1,6 @@
-import { LibContainer }from "#containers/lib.container";
-import { ManagerContainer } from "#containers/manager.container"
-import { RepositoryContainer } from "#containers/repository.container";
+import LibContainer from "#containers/lib.container";
+import ManagerContainer from "#containers/manager.container";
+import RepositoryContainer from "#containers/repository.container";
 
 export default abstract class BaseService {
     constructor(
