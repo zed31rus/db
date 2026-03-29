@@ -2,7 +2,7 @@
   "name": "db",
   "version": "1.0.0",
   "description": "db",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "author": "zed31rus_",
   "type": "module",
   "main": "App.js",
