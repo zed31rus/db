@@ -26,24 +26,7 @@ db
 ├─ package-lock.json
 ├─ package.json
 ├─ prisma
-│  ├─ migrations
-│  │  ├─ 20260121195853_base
-│  │  │  └─ migration.sql
-│  │  ├─ 20260123151148_verification_codes
-│  │  │  └─ migration.sql
-│  │  ├─ 20260123224904_uuid
-│  │  │  └─ migration.sql
-│  │  ├─ 20260124020639_allow_user_find
-│  │  │  └─ migration.sql
-│  │  ├─ 20260127014001_creted
-│  │  │  └─ migration.sql
-│  │  ├─ 20260202131407_uuid
-│  │  │  └─ migration.sql
-│  │  ├─ 20260202211948_unique_provider_user_uuid
-│  │  │  └─ migration.sql
-│  │  ├─ 20260202212725
-│  │  │  └─ migration.sql
-│  │  └─ migration_lock.toml
+│  │  └─ ...
 │  ├─ prisma.ts
 │  └─ schema.prisma
 ├─ prisma.config.ts
