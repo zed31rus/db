@@ -1,5 +1,6 @@
 import LibContainer from "#containers/lib.container";
 import ServiceContainer from "#containers/service.container";
+import WebManagerContainer from "#web/containers/webManager.container";
 import { Env, Hono } from "hono";
 import { Factory } from "hono/factory";
 
@@ -10,8 +11,9 @@ export abstract class BaseModule<T extends Env> {
 
         protected factory: Factory<T>,
         protected readonly service: ServiceContainer,
-        protected readonly lib: LibContainer
-        
+        protected readonly lib: LibContainer,
+        protected readonly webManager: WebManagerContainer
+
     ) {
         this.init();
     }

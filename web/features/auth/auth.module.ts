@@ -1,6 +1,6 @@
 import { zValidator } from "@hono/zod-validator";
 import AuthSchemas from "./auth.dto";
-import SessionManager from "#web/managers/session.manager";
+import SessionWebManager from "#web/webManagers/session.webManager";
 import { BaseModule } from "#web/base/module.base";
 import { BaseEnv } from "#web/middleware/auth.middleware";
 import CookieSchemas from "#web/dto/cookie.dto";
@@ -35,8 +35,8 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
             const { login, password } = c.req.valid('json');
             const { user, refresh, access } = await this.service.auth.login(login, password);
-            SessionManager.sendSession(c, refresh, access);
-            return c.json({user})
+            this.webManager.session.sendSession(c, refresh, access);
+            return c.json({user});
         });
 
 
@@ -47,8 +47,8 @@ export default class AuthModule extends BaseModule<AuthEnv> {
             
             const { refreshToken } = c.req.valid('cookie');
             const { user, refresh, access } = await this.service.auth.refresh(refreshToken);
-            SessionManager.sendSession(c, refresh, access);
-            return c.json({ user })
+            this.webManager.session.sendSession(c, refresh, access);
+            return c.json({ user });
         });
 
 
@@ -57,7 +57,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
         zValidator('cookie', CookieSchemas.refresh),
         (c) => {
             
-            SessionManager.deleteSession(c);
+            this.webManager.session.deleteSession(c);
             const {refreshToken} = c.req.valid('cookie');
             this.service.auth.logOut(refreshToken);
             return c.json({}, 200);

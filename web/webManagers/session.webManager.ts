@@ -1,9 +1,10 @@
 import { SessionType } from "#managers/auth/session.manager";
+import BaseWebManager from "#web/base/manager.base";
 import { Context } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 
-export default class SessionManager {
-    static sendSession(c: Context, refresh: SessionType['refresh'], access: SessionType['access']) {
+export default class SessionWebManager extends BaseWebManager {
+    sendSession(c: Context, refresh: SessionType['refresh'], access: SessionType['access']) {
 
         setCookie(c, 'refreshToken', refresh.token, {
             domain: '.zed31rus.ru',
@@ -25,7 +26,7 @@ export default class SessionManager {
 
     }
 
-    static deleteSession(c: Context) {
+    deleteSession(c: Context) {
 
         deleteCookie(c, 'refreshToken', {
             domain: '.zed31rus.ru',

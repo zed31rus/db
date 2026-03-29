@@ -2,7 +2,8 @@ import ApiError from '../errors/api.errors';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
-import Containers from '#containers/index.container'
+import Containers from '#containers/index.container';
+import WebContainers from '#web/containers/index.web.container';
 import AuthModule from './features/auth/auth.module';
 import { createFactory } from 'hono/factory';
 import { BaseEnv } from './middleware/auth.middleware';
@@ -38,10 +39,10 @@ app.onError((err, c) => {
 
 const factory = createFactory<BaseEnv>();
 
-const authModule = new AuthModule(factory, Containers.serviceContainer, Containers.libContainer);
-const accountModule = new AccountModule(factory, Containers.serviceContainer, Containers.libContainer);
-const meModule = new MeModule(factory, Containers.serviceContainer, Containers.libContainer);
-const usersModule = new UsersModule(factory, Containers.serviceContainer, Containers.libContainer);
+const authModule = new AuthModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
+const accountModule = new AccountModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
+const meModule = new MeModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
+const usersModule = new UsersModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
 
 app.route('/auth', authModule.router);
 app.route('/account', accountModule.router)
