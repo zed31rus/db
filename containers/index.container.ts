@@ -16,7 +16,6 @@ import ManagerContainer from "./manager.container";
 import RepositoryContainer from "./repository.container";
 import ServiceContainer from "./service.container";
 
-
 const libContainer = new LibContainer(
     new Hash(),
     new JWT(),

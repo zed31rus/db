@@ -4,11 +4,18 @@ import SessionManager from "#web/managers/session.manager";
 import { BaseModule } from "#web/base/module.base";
 import { BaseEnv } from "#web/middleware/auth.middleware";
 import CookieSchemas from "#web/dto/cookie.dto";
+import { rateLimiter } from "hono-rate-limiter";
 
 type AuthEnv = BaseEnv & {}
 
 export default class AuthModule extends BaseModule<AuthEnv> {
     init() {
+
+        this.router.use(rateLimiter({
+            windowMs: 15 * 60 * 1000,
+            limit: 20,
+            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
+        }))
 
         this.router.post(
         '/register',

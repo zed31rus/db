@@ -2,12 +2,20 @@ import { BaseModule } from "#web/base/module.base";
 import CookieSchemas from "#web/dto/cookie.dto";
 import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
+import { rateLimiter } from "hono-rate-limiter";
 
 type ProfileEnv = BaseEnv & {};
 
 export default class MeModule extends BaseModule<ProfileEnv> {
 
     init() {
+
+        this.router.use(rateLimiter({
+            windowMs: 15 * 60 * 1000,
+            limit: 100,
+            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
+        }))
+
         this.router.post(
         '/get',
         zValidator('cookie', CookieSchemas.both),

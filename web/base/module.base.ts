@@ -7,9 +7,11 @@ export abstract class BaseModule<T extends Env> {
     public router = new Hono<T>();
 
     constructor(
+
         protected factory: Factory<T>,
         protected readonly service: ServiceContainer,
         protected readonly lib: LibContainer
+        
     ) {
         this.init();
     }

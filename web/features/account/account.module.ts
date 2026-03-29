@@ -3,12 +3,19 @@ import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
 import AccountSchemas from "./account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
+import { rateLimiter } from "hono-rate-limiter";
 
 type AccountEnv = BaseEnv & {}
 
 export default class AccountModule extends BaseModule<AccountEnv> {
 
     init() {
+
+        this.router.use(rateLimiter({
+            windowMs: 15 * 60 * 1000,
+            limit: 10,
+            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
+        }))
 
         this.router.post(
         '/emailVerificationSend',

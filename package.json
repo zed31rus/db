@@ -6,9 +6,7 @@
   "author": "zed31rus_",
   "type": "module",
   "main": "./web/webServer.ts",
-  "scripts": {
-
-  },
+  "scripts": {},
   "dependencies": {
     "@hono/node-server": "^1.19.11",
     "@hono/zod-validator": "^0.7.6",
@@ -23,6 +21,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^17.2.3",
     "hono": "^4.12.9",
+    "hono-rate-limiter": "^0.5.3",
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^7.0.12",
     "pg": "^8.17.2",
