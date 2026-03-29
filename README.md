@@ -27,7 +27,23 @@ db
 ├─ package.json
 ├─ prisma
 │  ├─ migrations
-│  │  └─ ...
+│  │  ├─ 20260121195853_base
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123151148_verification_codes
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123224904_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260124020639_allow_user_find
+│  │  │  └─ migration.sql
+│  │  ├─ 20260127014001_creted
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202131407_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202211948_unique_provider_user_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202212725
+│  │  │  └─ migration.sql
+│  │  └─ migration_lock.toml
 │  ├─ prisma.ts
 │  └─ schema.prisma
 ├─ prisma.config.ts
@@ -62,8 +78,8 @@ db
 ├─ services
 │  ├─ account.service.ts
 │  ├─ auth.service.ts
-│  ├─ profile.service.ts
-│  └─ social.service.ts
+│  ├─ me.service.ts
+│  └─ users.service.ts
 ├─ types
 │  └─ account.d.ts
 └─ web
@@ -76,9 +92,15 @@ db
    │  ├─ account
    │  │  ├─ account.dto.ts
    │  │  └─ account.module.ts
-   │  └─ auth
-   │     ├─ auth.dto.ts
-   │     └─ auth.module.ts
+   │  ├─ auth
+   │  │  ├─ auth.dto.ts
+   │  │  └─ auth.module.ts
+   │  ├─ me
+   │  │  ├─ me.dto.ts
+   │  │  └─ me.module.ts
+   │  └─ users
+   │     ├─ users.dto.ts
+   │     └─ users.module.ts
    ├─ managers
    │  └─ session.manager.ts
    ├─ middleware
