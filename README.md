@@ -80,8 +80,12 @@ db
 │  └─ account.d.ts
 └─ web
    ├─ base
+   │  ├─ manager.base.ts
    │  ├─ middleware.base.ts
    │  └─ module.base.ts
+   ├─ containers
+   │  ├─ index.web.container.ts
+   │  └─ webManager.container.ts
    ├─ dto
    │  └─ cookie.dto.ts
    ├─ features
@@ -97,10 +101,10 @@ db
    │  └─ users
    │     ├─ users.dto.ts
    │     └─ users.module.ts
-   ├─ managers
-   │  └─ session.manager.ts
    ├─ middleware
    │  └─ auth.middleware.ts
+   ├─ webManagers
+   │  └─ session.webManager.ts
    └─ webServer.ts
 
 ```
