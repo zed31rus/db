@@ -1,3 +1,4 @@
+import ApiError from '../errors/api.errors';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
@@ -16,6 +17,17 @@ app.use(
     credentials: true,
   })
 );
+
+app.onError((err, c) => {
+    if (err instanceof ApiError) {
+        return c.json({
+            message: err.message,
+            errors: err.errors
+        }, err.status as any);
+    }
+    console.error(err);
+    return c.json({ message: "Unexpected error"}, 500);
+})
 
 serve({
   fetch: app.fetch,

@@ -1,29 +1,28 @@
 import { prismaClient } from "#prisma/prisma";
-import db from '#repo/db/db';
-import UserSelector, { PublicUser } from "#lib/selector/user.selector";
-import AccountManager from "#managers/account/otp.manager";
+import { PublicUser } from "#lib/selector/user.selector";
 import '#types/account'
+import BaseService from "#base/service.base";
 
-export default class AccountService {
+export default class AccountService extends BaseService {
 
-    static async emailVerificationSend(user: PublicUser) {
-        const rawUser = await db.users.get.byPublicUser(prismaClient, user);
-        const publicUser = UserSelector.toPublicJSON(rawUser);
+    async emailVerificationSend(user: PublicUser) {
+        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user);
+        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         if (rawUser.emailConfirmed) return { user: publicUser };
 
-        await AccountManager.createOtp(rawUser, OtpTypes.EmailConfirm);
+        await this.manager.otp.createOtp(rawUser, OtpTypes.EmailConfirm);
 
         return { user: publicUser };
     }
 
-    static async emailVerificationConfirm(user: PublicUser, submitCode: string) {
-        const rawUser = await db.users.get.byPublicUser(prismaClient, user);
-        const publicUser = UserSelector.toPublicJSON(rawUser);
+    async emailVerificationConfirm(user: PublicUser, submitCode: string) {
+        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user);
+        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         if (rawUser.emailConfirmed) return { user: publicUser };
 
-        await AccountManager.confirmOtp(rawUser, submitCode, OtpTypes.EmailConfirm);
+        await this.manager.otp.confirmOtp(rawUser, submitCode, OtpTypes.EmailConfirm);
         
         return { user: publicUser };
     }

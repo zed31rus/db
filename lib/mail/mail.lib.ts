@@ -1,3 +1,4 @@
+import BaseLib from '#base/lib.base';
 import nodemailer from 'nodemailer';
 
 interface SmtpConfig {
@@ -9,11 +10,12 @@ interface SmtpConfig {
     port?: number;
 }
 
-class Mail {
+export default class Mail extends BaseLib {
     private transporter: nodemailer.Transporter;
     private readonly from: string;
 
     constructor(config: SmtpConfig) {
+        super();
         if (!config.user || !config.key || !config.host) {
             throw new Error('SMTP config is missing required fields');
         }
@@ -46,13 +48,3 @@ class Mail {
         }
     }
 }
-
-const mailer = new Mail({
-    user: process.env.SMTP_USER!,
-    key: process.env.SMTP_API_KEY!,
-    host: process.env.SMTP_HOST!,
-    email: process.env.SMTP_EMAIL!,
-    name: "zed31rus.ru Auth Service"
-});
-
-export default mailer;

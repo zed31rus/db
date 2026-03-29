@@ -1,53 +1,63 @@
-import hash from "#lib/hash/hash.lib";
 import { prismaClient } from '#prisma/prisma';
-import db from '#repo/db/db';
-import SessionManager from "#managers/auth/session.manager";
-import UserSelector from "#lib/selector/user.selector";
-import RefreshToken from "#lib/refreshToken/refreshToken.lib";
+import BaseService from "#base/service.base";
 
-export default class AuthServices {
+export default class AuthService extends BaseService {
 
-    static async register(login: string, email: string, password: string, nickname: string) {
-    const hashedPassword = await hash.bcrypt.create(password, 10);
-    const rawUser = await db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword);
+    async register(login: string, email: string, password: string, nickname: string) {
+
+    const hashedPassword = await this.lib.hash.bcrypt.create(password, 10);
+    const rawUser = await this.repository.db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword);
     
-    const publicUser = UserSelector.toPublicJSON(rawUser);
+    const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
     return { user: publicUser };
+
 }
 
-    static async login(login: string, password: string) {
+    async login(login: string, password: string) {
 
-        const rawUser = await db.users.get.byLogin(prismaClient, login);
-        const publicUser = UserSelector.toPublicJSON(rawUser);
-        const isPasswordCorrect = await hash.bcrypt.compare(password, rawUser.passwordHash!);
+        const rawUser = await this.repository.db.users.get.byLogin(prismaClient, login);
+        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        const isPasswordCorrect = await this.lib.hash.bcrypt.compare(password, rawUser.passwordHash!);
         if (!isPasswordCorrect) throw new Error("Invalid credentials");
 
-        const session = await SessionManager.createSession(rawUser);
+        const session = await this.manager.session.createSession(rawUser);
 
+        return { user: publicUser, ...session };
+
+    }
+
+    async refresh(incomingRefreshToken: string) {
+
+        const hashedIncomingToken = await this.lib.hash.sha256.create(incomingRefreshToken);
+        const IncomingRefreshTokenRecord = await this.repository.db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
+
+        const expired = this.lib.refreshToken.checkExpired(IncomingRefreshTokenRecord);
+        if (expired) {
+            await this.repository.db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
+            throw new Error("Refresh token expired");
+        }
+
+        const rawUser = IncomingRefreshTokenRecord.user;
+        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        
+        const session = await prismaClient.$transaction(async (tx) => {
+            await this.repository.db.refreshToken.delete.delete(tx, IncomingRefreshTokenRecord);
+
+            const session = await this.manager.session.createSession(rawUser, tx);
+            return session;
+
+        })
+        
         return { user: publicUser, ...session };
     }
 
-    static async refresh(incomingRefreshToken: string) {
-        const hashedIncomingToken = await hash.sha256.create(incomingRefreshToken);
-            const IncomingRefreshTokenRecord = await db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
+    async logOut(incomingRefreshToken: string) {
 
-            const expired = RefreshToken.checkExpired(IncomingRefreshTokenRecord);
-            if (expired) {
-                await db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
-                throw new Error("Refresh token expired");
-            }
+        const hashedIncomingToken = await this.lib.hash.sha256.create(incomingRefreshToken);
+        const IncomingRefreshTokenRecord = await this.repository.db.refreshToken.get.byHashedToken(prismaClient, hashedIncomingToken);
+        await this.repository.db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
+        return {};
 
-            const rawUser = IncomingRefreshTokenRecord.user;
-            const publicUser = UserSelector.toPublicJSON(rawUser);
-            
-            const session = await prismaClient.$transaction(async (tx) => {
-                await db.refreshToken.delete.delete(tx, IncomingRefreshTokenRecord);
-
-                const session = await SessionManager.createSession(rawUser, tx);
-                return session;
-            })
-            
-            return { user: publicUser, ...session };
     }
 }

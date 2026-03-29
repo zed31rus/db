@@ -1,3 +1,4 @@
+import BaseLib from '#base/lib.base';
 import { Prisma } from '#prisma/prisma';
 import crypto from 'crypto';
 
@@ -6,12 +7,12 @@ export type RefreshExpires = {
     atTime: Date
 }
 
-export default class RefreshToken {
-    static create() {
+export default class RefreshToken extends BaseLib {
+    create() {
         return crypto.randomBytes(64).toString("hex");
     }
 
-    static getExpires() {
+    getExpires() {
         const time = this.getExpiresTime();
         const atTime = this.getExpiresAtTime(time);
         const expires: RefreshExpires = {
@@ -21,18 +22,18 @@ export default class RefreshToken {
         return expires
     }
 
-    static checkExpired(refreshToken: Prisma.RefreshTokenModel) {
+    checkExpired(refreshToken: Prisma.RefreshTokenModel) {
         if (new Date() > new Date(refreshToken.expiresAt)) {
                 return true
             }
         return false
     }
     
-    private static getExpiresAtTime(expiresTime: number) {
+    private getExpiresAtTime(expiresTime: number) {
         return new Date(Date.now() + expiresTime)
     }
 
-    private static getExpiresTime() {
+    private getExpiresTime() {
         return (7 * 24 * 60 * 60 * 1000)
     }
 }

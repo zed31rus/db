@@ -1,7 +1,7 @@
 import { Prisma, prismaClient, User } from "#prisma/prisma";
 
 export default class UpsertVerificationCode {
-    static async upsert(client: Prisma.TransactionClient, user: User, hashedCode: string, type: string, expiresAt: Date) {
+    async upsert(client: Prisma.TransactionClient, user: User, hashedCode: string, type: string, expiresAt: Date) {
         return await prismaClient.verificationCode.upsert({
             where: { userUuid_type: { userUuid: user.uuid, type: type } },
             update: { hashedCode: hashedCode, expiresAt: expiresAt, createdAt: new Date() },

@@ -1,4 +1,3 @@
-import JWT from "#lib/jwt/jwt.lib";
 import { PublicUser } from "#lib/selector/user.selector";
 import baseMiddleware from "#web/base/middleware.base";
 import { getCookie } from "hono/cookie";
@@ -17,7 +16,7 @@ export default class AuthMiddleware<T extends BaseEnv> extends baseMiddleware<T>
             if (!refreshToken) return c.json({error: 'Unauthorized'}, 401);
             if (!accessToken) return c.json({error: 'Unauthorized'}, 401);
 
-            const publicUser = await JWT.verify(accessToken, process.env.JWT_SECRET!);
+            const publicUser = await this.lib.jwt.verify(accessToken, process.env.JWT_SECRET!);
 
             c.set('user',publicUser);
 

@@ -1,11 +1,7 @@
-import { prismaClient, User } from "#prisma/prisma";
-import Hash from "#lib/hash/hash.lib";
-import db from "#repo/db/db";
-import mailer from "#lib/mail/mail.lib";
-import VerificationCode from "#lib/verificationCode/verificationCode.lib";
-import UserSelector from "#lib/selector/user.selector";
+import BaseManager from "#base/manager.base";
+import { User } from "#prisma/prisma";
 
-export default class OauthManager {
+export default class OauthManager extends BaseManager {
     static async createOauth(user: User, rawOauthData: any) {
         const rawUser = user;
     }

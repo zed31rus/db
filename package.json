@@ -7,7 +7,7 @@
   "type": "module",
   "main": "App.js",
   "scripts": {
-    
+
   },
   "dependencies": {
     "@hono/node-server": "^1.19.11",
@@ -36,7 +36,10 @@
     "#services/*": "./services/*.service.ts",
     "#web/*": "./web/*.ts",
     "#prisma/*": "./prisma/*.ts",
-    "#managers/*": "./managers/*.ts"
+    "#managers/*": "./managers/*.ts",
+    "#base/*": "./base/*.ts",
+    "#errors/*": "./errors/*.ts",
+    "#containers/*": "./containers/*.ts"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

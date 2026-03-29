@@ -17,9 +17,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         async (c) => {
 
             const { uuid } = c.req.valid('json') 
-
-            const user = UsersService.get(uuid);
-
+            const user = this.service.users.get(uuid);
             return c.json({ user })
 
         })

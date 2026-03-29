@@ -1,7 +1,7 @@
 import {  Prisma, User, OauthAccount } from "#prisma/prisma";
 
 export default class CreateOauthAccount {
-    static async create(
+    async create(
         client: Prisma.TransactionClient, 
         user: User, 
         account: { provider: OauthAccount['provider'], providerUserId: OauthAccount['providerUserId'] }, 

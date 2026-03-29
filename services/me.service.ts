@@ -1,12 +1,13 @@
 import { prismaClient, User } from "#prisma/prisma";
 import db from '#repo/db/db';
 import UserSelector, { PublicUser } from "#lib/selector/user.selector";
+import BaseService from "#base/service.base";
 
-export default class MeServices {
+export default class MeService extends BaseService {
 
-    static async get(publicUser: PublicUser) {
-        const rawUser = await db.users.get.byPublicUser(prismaClient, publicUser);
-        const personalUser = UserSelector.toPersonalJSON(rawUser)
+    async get(publicUser: PublicUser) {
+        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, publicUser);
+        const personalUser = this.lib.userSelector.toPersonalJSON(rawUser)
         return { user: personalUser }
     }
 

@@ -1,3 +1,4 @@
+import BaseLib from "#base/lib.base";
 import { PublicUser } from "#lib/selector/user.selector";
 import jsonWebToken from "jsonwebtoken";
 import { SignOptions } from 'jsonwebtoken';
@@ -7,16 +8,16 @@ export type AccessExpires = {
     atTime: Date
 }
 
-export default class JWT {
-    static async create(payload: PublicUser, expiresIn: SignOptions['expiresIn'], JWT_SECRET: string) {
+export default class JWT extends BaseLib {
+    async create(payload: PublicUser, expiresIn: SignOptions['expiresIn'], JWT_SECRET: string) {
         return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn})
     }
 
-    static async verify(token: string, JWT_SECRET: string) {
+    async verify(token: string, JWT_SECRET: string) {
         return jsonWebToken.verify(token, JWT_SECRET) as PublicUser
     }
 
-    static getExpires() {
+    getExpires() {
         const time = this.getExpiresTime();
         const atTime = this.getExpiresAtTime(time);
         const expires: AccessExpires = {
@@ -26,11 +27,11 @@ export default class JWT {
         return expires
     }
 
-    private static getExpiresAtTime(expiresTime: number) {
+    private getExpiresAtTime(expiresTime: number) {
         return new Date(Date.now() + expiresTime)
     }
 
-    private static getExpiresTime() {
+    private getExpiresTime() {
         return (7 * 24 * 60 * 60 * 1000)
     }
 }

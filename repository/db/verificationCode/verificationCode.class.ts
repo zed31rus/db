@@ -2,10 +2,8 @@ import GetVerificationCode from "./classes/getVerificationCode";
 import DeleteVerificationCode from "./classes/deleteVerificationCode";
 import UpsertVerificationCode from "./classes/upsertVerificationCode";
 
-const verificationCode =  {
-        get:  GetVerificationCode,
-        upsert: UpsertVerificationCode,
-        delete: DeleteVerificationCode
-    }
-
-export default verificationCode
+export default class verificationCode {
+    get = new GetVerificationCode();
+    upsert = new UpsertVerificationCode();
+    delete = new DeleteVerificationCode();
+}

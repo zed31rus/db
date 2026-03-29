@@ -1,3 +1,4 @@
+import BaseLib from "#base/lib.base";
 import { User } from "#prisma/prisma";
 
 const PublicUserFields = ['uuid', 'nickname', 'avatar', 'createdAt'] as const;
@@ -6,9 +7,9 @@ const PersonalUserFields = [...PublicUserFields, 'login', 'email', 'allowLoginFi
 export type PublicUser = Pick<User, typeof PublicUserFields[number]>;
 export type PersonalUser = Pick<User, typeof PersonalUserFields[number]>;
 
-export default class UserSelector {
+export default class UserSelector extends BaseLib {
 
-    private static select<T extends keyof User>(user: User, fields: readonly T[]): Pick<User, T> {
+    private select<T extends keyof User>(user: User, fields: readonly T[]): Pick<User, T> {
         return fields.reduce((acc, field) => {
             if (field in user) {
                 acc[field] = user[field];
@@ -17,11 +18,11 @@ export default class UserSelector {
         }, {} as Pick<User, T>);
     }
 
-    static toPublicJSON(user: User): PublicUser {
+    toPublicJSON(user: User): PublicUser {
         return this.select(user, PublicUserFields) as PublicUser;
     }
 
-    static toPersonalJSON(user: User): PersonalUser {
+    toPersonalJSON(user: User): PersonalUser {
         return this.select(user, PersonalUserFields) as PersonalUser;;
     }
 }
