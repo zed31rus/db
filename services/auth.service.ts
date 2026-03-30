@@ -1,5 +1,6 @@
 import { prismaClient } from '#prisma/prisma';
 import BaseService from "#base/service.base";
+import ApiError from '#errors/api.errors';
 
 export default class AuthService extends BaseService {
 
@@ -19,7 +20,7 @@ export default class AuthService extends BaseService {
         const rawUser = await this.repository.db.users.get.byLogin(prismaClient, login);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
         const isPasswordCorrect = await this.lib.hash.bcrypt.compare(password, rawUser.passwordHash!);
-        if (!isPasswordCorrect) throw new Error("Invalid credentials");
+        if (!isPasswordCorrect) throw ApiError.Unauthorized("Invalid credentials");
 
         const session = await this.manager.session.createSession(rawUser);
 
@@ -35,7 +36,7 @@ export default class AuthService extends BaseService {
         const expired = this.lib.refreshToken.checkExpired(IncomingRefreshTokenRecord);
         if (expired) {
             await this.repository.db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
-            throw new Error("Refresh token expired");
+            throw ApiError.Unauthorized();
         }
 
         const rawUser = IncomingRefreshTokenRecord.user;

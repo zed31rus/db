@@ -8,6 +8,15 @@ const AccountSchemas = {
     },
     emailVerificationSend: {
 
+    },
+    passwordChangeRequest: {
+
+    },
+    changePasswordConfirm: {
+        Body: z.object({
+            submitCode: z.string().length(6),
+            password: z.string().min(8)
+        })
     }
 }
 

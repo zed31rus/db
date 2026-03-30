@@ -41,6 +41,38 @@ export default class AccountModule extends BaseModule<AccountEnv> {
             return c.json({ user })
         })
 
+        this.router.post(
+        '/changePassword'
+        )
+
+        this.router.post(
+        '/changePassword/request',
+        zValidator('cookie', CookieSchemas.both),
+        new AuthMiddleware<AccountEnv>(this.factory, this.lib).withUser,
+        async (c) => {
+
+            const publicUser = c.get('user');
+            const { user } = await this.service.account.changePasswordRequest(publicUser);
+            return c.json({ user });
+        }
+        )
+
+        this.router.post(
+        '/changePassword/confirm',
+        zValidator('json', AccountSchemas.changePasswordConfirm.Body),
+        zValidator('cookie', CookieSchemas.both),
+        new AuthMiddleware<AccountEnv>(this.factory, this.lib).withUser,
+        async (c) => {
+
+            const publicUser = c.get('user');
+            const { password, submitCode } = c.req.valid('json');
+            const { user } = await this.service.account.changePasswordConfirm(publicUser, password, submitCode);
+
+            return c.json({ user })
+
+        }
+        )
+
     }
 
 }

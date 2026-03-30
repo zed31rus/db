@@ -23,4 +23,8 @@ export default class ApiError extends Error {
     static Internal(message = "Internal error") {
         return new ApiError(500, message);
     }
+
+    static NotFound(message = "Not found") {
+        return new ApiError(404, message)
+    }
 }
