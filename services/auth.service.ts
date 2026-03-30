@@ -36,7 +36,7 @@ export default class AuthService extends BaseService {
         const expired = this.lib.refreshToken.checkExpired(IncomingRefreshTokenRecord);
         if (expired) {
             await this.repository.db.refreshToken.delete.delete(prismaClient, IncomingRefreshTokenRecord);
-            throw new Error("Refresh token expired");
+            throw ApiError.Unauthorized();
         }
 
         const rawUser = IncomingRefreshTokenRecord.user;

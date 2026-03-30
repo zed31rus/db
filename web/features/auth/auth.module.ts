@@ -1,6 +1,5 @@
 import { zValidator } from "@hono/zod-validator";
 import AuthSchemas from "./auth.dto";
-import SessionWebManager from "#web/webManagers/session.webManager";
 import { BaseModule } from "#web/base/module.base";
 import { BaseEnv } from "#web/middleware/auth.middleware";
 import CookieSchemas from "#web/dto/cookie.dto";
