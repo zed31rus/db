@@ -1,7 +1,7 @@
 import { BaseModule } from "#web/base/module.base";
 import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
-import UsersSchemas from "./users.dto";
+import UsersSchemas from "./users.dto.js";
 import { rateLimiter } from "hono-rate-limiter";
 
 type UsersEnv = BaseEnv & {};

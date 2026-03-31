@@ -1,7 +1,5 @@
-import AuthMiddleware from "#web/middleware/auth.middleware";
 import SessionWebManager from "#web/webManagers/session.webManager";
-import MiddlewareContainer from "./middleware.container";
-import WebManagerContainer from "./webManager.container";
+import WebManagerContainer from "./webManager.container.js";
 
 const webManagerContainer = new WebManagerContainer(
     new SessionWebManager()

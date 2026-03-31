@@ -1,7 +1,7 @@
 import { BaseModule } from "#web/base/module.base";
 import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
 import { zValidator } from "@hono/zod-validator";
-import AccountSchemas from "./account.dto";
+import AccountSchemas from "#web/features/account/account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
 

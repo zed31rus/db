@@ -6,7 +6,11 @@
   "author": "zed31rus_",
   "type": "module",
   "main": "./web/webServer.ts",
-  "scripts": {},
+  "scripts": {
+    "dev": "tsx --watch ./web/webServer.ts",
+    "build": "tsc",
+    "start": "node ./dist/web/webServer.js"
+  },
   "dependencies": {
     "@hono/node-server": "^1.19.11",
     "@hono/zod-validator": "^0.7.6",
@@ -25,6 +29,7 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^7.0.12",
     "pg": "^8.17.2",
+    "typescript": "^6.0.2",
     "zod": "^4.3.6"
   },
   "imports": {

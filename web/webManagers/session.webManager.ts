@@ -1,5 +1,5 @@
 import { SessionType } from "#managers/auth/session.manager";
-import BaseWebManager from "#web/base/webmanager.base";
+import BaseWebManager from "#web/base/webManager.base";
 import { Context } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 

@@ -1,7 +1,7 @@
 import { prismaClient, User } from "#prisma/prisma";
 import { RefreshExpires } from "#lib/refreshToken/refreshToken.lib";
 import { AccessExpires } from "#lib/jwt/jwt.lib";
-import { TransactionClient } from "#generated/prisma/internal/prismaNamespace.ts";
+import { TransactionClient } from "#generated/prisma/internal/prismaNamespace.js";
 import BaseManager from "#base/manager.base";
 
 export type SessionType = {

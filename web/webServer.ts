@@ -1,15 +1,15 @@
-import ApiError from '../errors/api.errors';
+import ApiError from '../errors/api.errors.js';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
 import Containers from '#containers/index.container';
 import WebContainers from '#web/containers/index.web.container';
-import AuthModule from './features/auth/auth.module';
+import AuthModule from './features/auth/auth.module.js';
 import { createFactory } from 'hono/factory';
-import { BaseEnv } from './middleware/auth.middleware';
-import AccountModule from './features/account/account.module';
-import MeModule from './features/me/me.module';
-import UsersModule from './features/users/users.module';
+import { BaseEnv } from './middleware/auth.middleware.js';
+import AccountModule from './features/account/account.module.js';
+import MeModule from './features/me/me.module.js';
+import UsersModule from './features/users/users.module.js';
 
 const app = new Hono()
 
