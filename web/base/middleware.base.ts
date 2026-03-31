@@ -4,5 +4,8 @@ import { Factory } from "hono/factory";
 
 export default abstract class baseMiddleware<T extends Env> {
 
-    constructor(protected factory: Factory<T>, protected readonly lib: LibContainer) {}
+    constructor(
+        protected factory: Factory<T>,
+        protected readonly lib: LibContainer
+    ) {}
 }

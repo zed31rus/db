@@ -9,7 +9,8 @@ export type BaseEnv = {
 };
 
 export default class AuthMiddleware<T extends BaseEnv> extends baseMiddleware<T> {
-    public withUser = this.factory.createMiddleware( async (c, next) => {
+    public get withUser() { 
+        return this.factory.createMiddleware( async (c, next) => {
             const refreshToken = getCookie(c, 'refreshToken');
             const accessToken = getCookie(c, 'accessToken');
 
@@ -21,5 +22,6 @@ export default class AuthMiddleware<T extends BaseEnv> extends baseMiddleware<T>
             c.set('user',publicUser);
 
             await next();
-    });
+        });
+    }
 };

@@ -10,6 +10,8 @@ export default class MeModule extends BaseModule<ProfileEnv> {
 
     init() {
 
+        const auth = new AuthMiddleware<ProfileEnv>(this.factory, this.lib)
+
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
             limit: 100,
@@ -19,7 +21,7 @@ export default class MeModule extends BaseModule<ProfileEnv> {
         this.router.post(
         '/get',
         zValidator('cookie', CookieSchemas.both),
-        new AuthMiddleware<ProfileEnv>(this.factory, this.lib).withUser,
+        auth.withUser,
         async (c) => {
 
             const publicUser = c.get('user');

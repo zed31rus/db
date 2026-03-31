@@ -8,8 +8,9 @@ import { rateLimiter } from "hono-rate-limiter";
 type AuthEnv = BaseEnv & {}
 
 export default class AuthModule extends BaseModule<AuthEnv> {
-    init() {
 
+    init() {
+        
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
             limit: 20,
@@ -62,4 +63,5 @@ export default class AuthModule extends BaseModule<AuthEnv> {
             return c.json({}, 200);
         });
     }
+
 }
