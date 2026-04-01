@@ -1,7 +1,6 @@
-import { prismaClient, User } from "#prisma/prisma";
+import { User } from "#prisma/prisma";
 import BaseManager from "#base/manager.base";
 import ApiError from "#errors/api.errors";
-import { success } from "zod";
 import { TransactionClient } from "#generated/prisma/internal/prismaNamespace.js";
 
 export default class OtpManager extends BaseManager {

@@ -11,32 +11,51 @@ import MeModule from '#web/features/me/me.module';
 import UsersModule from '#web/features/users/users.module';
 import { logger } from 'hono/logger';
 import { BaseEnv } from './types/Env.js';
+import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
+import { PRISMA_ERRORS } from '#errors/prisma.erors';
 
-const app = new Hono()
-app.use(logger())
-app.use(
-  '*',
-  cors({
-    origin: (origin) => {
-      if (!origin || origin == 'https://zed31rus.ru' || origin.endsWith(".zed31rus.ru") || origin == "http://localhost:3000") {
-        return origin; 
-      }
-      return null;
-    },
-    credentials: true,
-  })
-);
+const app = new Hono();
+
+//app.use(
+//  cors({
+//    origin: (origin) => {
+//      if (!origin || origin == 'https://zed31rus.ru' || origin.endsWith(".zed31rus.ru") || origin == "http://localhost:3000") {
+//        return origin; 
+//      }
+//      return null;
+//    },
+//    credentials: true,
+//  })
+//);
+app.use(cors({
+  origin: ['zed31rus.ru',"http://localhost:3000", "http://127.0.0.1:3000"],
+  credentials: true
+}));
+
+app.use(logger());
 
 app.onError((err, c) => {
-    if (err instanceof ApiError) {
-        return c.json({
-            message: err.message,
-            errors: err.errors
-        }, err.status as any);
-    }
-    console.error(err);
-    return c.json({ message: "Unexpected error"}, 500);
-})
+  if (err instanceof ApiError) {
+    return c.json({
+      message: err.message,
+      errors: err.errors
+    }, err.status as any);
+  }
+
+  if (err instanceof PrismaClientKnownRequestError) {
+    console.log(err.meta)
+    const code = err.code as keyof typeof PRISMA_ERRORS;
+    const target = (err.meta?.target as string[])?.join(', ');
+
+    return c.json({
+      error: PRISMA_ERRORS[code]
+    }, 400);
+  }
+  
+  return c.json({ 
+    message: "Internal Server Error",
+  }, 500);
+});
 
 const factory = createFactory<BaseEnv>();
 

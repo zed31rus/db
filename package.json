@@ -34,7 +34,7 @@
   },
   "imports": {
     "#generated/*": "./dist/generated/*",
-    "#types/*": "./dist/types/*.d.ts",
+    "#types/*": "./dist/types/*",
     "#lib/*": "./dist/lib/*.js",
     "#repo/*": "./dist/repository/*.js",
     "#services/*": "./dist/services/*.service.js",

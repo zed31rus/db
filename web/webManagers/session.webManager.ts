@@ -10,7 +10,8 @@ export default class SessionWebManager extends BaseWebManager {
             //domain: '.zed31rus.ru',
             path: '/',
             httpOnly: true,
-            sameSite: 'Lax',
+            //sameSite: 'Lax',
+            sameSite: "lax",
             //secure: true,
             secure: false,
             expires: refresh.expires.atTime
@@ -20,7 +21,8 @@ export default class SessionWebManager extends BaseWebManager {
             //domain: '.zed31rus.ru',
             path: '/',
             httpOnly: false,
-            sameSite: 'Lax',
+            //sameSite: 'Lax',
+            sameSite: "lax",
             //secure: true,
             secure: false,
             expires: access.expires.atTime
@@ -34,7 +36,8 @@ export default class SessionWebManager extends BaseWebManager {
             //domain: '.zed31rus.ru',
             path: '/',
             httpOnly: true,
-            sameSite: 'Lax',
+            //sameSite: 'Lax',
+            sameSite: "lax",
             //secure: true,
             secure: false,
         });
@@ -43,7 +46,8 @@ export default class SessionWebManager extends BaseWebManager {
             //domain: '.zed31rus.ru',
             path: '/',
             httpOnly: true,
-            sameSite: 'Lax',
+            //sameSite: 'Lax',
+            sameSite: "lax",
             //secure: true,
             secure: false,
         });
