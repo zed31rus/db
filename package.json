@@ -5,7 +5,7 @@
   "license": "GPL-3.0-or-later",
   "author": "zed31rus_",
   "type": "module",
-  "main": "./web/webServer.ts",
+  "main": "./dist/web/webServer.js",
   "scripts": {
     "dev": "tsx --watch ./web/webServer.ts",
     "build": "tsc",
@@ -33,17 +33,17 @@
     "zod": "^4.3.6"
   },
   "imports": {
-    "#generated/*": "./generated/*",
-    "#types/*": "./types/*.d.ts",
-    "#lib/*": "./lib/*.ts",
-    "#repo/*": "./repository/*.ts",
-    "#services/*": "./services/*.service.ts",
-    "#web/*": "./web/*.ts",
-    "#prisma/*": "./prisma/*.ts",
-    "#managers/*": "./managers/*.ts",
-    "#base/*": "./base/*.ts",
-    "#errors/*": "./errors/*.ts",
-    "#containers/*": "./containers/*.ts"
+    "#generated/*": "./dist/generated/*",
+    "#types/*": "./dist/types/*.d.ts",
+    "#lib/*": "./dist/lib/*.js",
+    "#repo/*": "./dist/repository/*.js",
+    "#services/*": "./dist/services/*.service.js",
+    "#web/*": "./dist/web/*.js",
+    "#prisma/*": "./dist/prisma/*.js",
+    "#managers/*": "./dist/managers/*.js",
+    "#base/*": "./dist/base/*.js",
+    "#errors/*": "./dist/errors/*.js",
+    "#containers/*": "./dist/containers/*.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

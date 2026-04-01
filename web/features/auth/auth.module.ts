@@ -1,16 +1,17 @@
 import { zValidator } from "@hono/zod-validator";
-import AuthSchemas from "./auth.dto.js";
+import AuthSchemas from "#web/features/auth/auth.dto";
 import { BaseModule } from "#web/base/module.base";
-import { BaseEnv } from "#web/middleware/auth.middleware";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
+import { BaseEnv } from "#web/types/Env.d";
+import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 
 type AuthEnv = BaseEnv & {}
 
 export default class AuthModule extends BaseModule<AuthEnv> {
 
     init() {
-        
+
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
             limit: 20,
@@ -19,7 +20,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/register',
-        zValidator('json', AuthSchemas.Register.Body),
+        zValidatorWrapper('json', AuthSchemas.Register.Body),
         async (c) => {
             
             const { login, email, password, nickname } = c.req.valid('json');
@@ -30,7 +31,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/login',
-        zValidator('json', AuthSchemas.Login.Body),
+        zValidatorWrapper('json', AuthSchemas.Login.Body),
         async (c) => {
 
             const { login, password } = c.req.valid('json');
@@ -42,7 +43,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/refresh',
-        zValidator('cookie', CookieSchemas.refresh),
+        zValidatorWrapper('cookie', CookieSchemas.refresh),
         async (c) => {
             
             const { refreshToken } = c.req.valid('cookie');
@@ -54,7 +55,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/logout',
-        zValidator('cookie', CookieSchemas.refresh),
+        zValidatorWrapper('cookie', CookieSchemas.refresh),
         (c) => {
             
             this.webManager.session.deleteSession(c);

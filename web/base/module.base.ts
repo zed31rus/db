@@ -1,7 +1,7 @@
 import LibContainer from "#containers/lib.container";
 import ServiceContainer from "#containers/service.container";
 import WebManagerContainer from "#web/containers/webManager.container";
-import { BaseEnv } from "#web/middleware/auth.middleware";
+import { BaseEnv } from "#web/types/Env.d";
 import { Hono } from "hono";
 import { Factory } from "hono/factory";
 

@@ -1,6 +1,5 @@
 import { prismaClient } from "#prisma/prisma";
 import { PublicUser } from "#lib/selector/user.selector";
-import '#types/account'
 import BaseService from "#base/service.base";
 
 export default class AccountService extends BaseService {

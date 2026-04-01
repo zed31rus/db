@@ -1,23 +1,24 @@
-import ApiError from '../errors/api.errors.js';
+import ApiError from '#errors/api.errors';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
 import Containers from '#containers/index.container';
 import WebContainers from '#web/containers/index.web.container';
-import AuthModule from './features/auth/auth.module.js';
+import AuthModule from '#web/features/auth/auth.module';
 import { createFactory } from 'hono/factory';
-import { BaseEnv } from './middleware/auth.middleware.js';
-import AccountModule from './features/account/account.module.js';
-import MeModule from './features/me/me.module.js';
-import UsersModule from './features/users/users.module.js';
+import AccountModule from '#web/features/account/account.module';
+import MeModule from '#web/features/me/me.module';
+import UsersModule from '#web/features/users/users.module';
+import { logger } from 'hono/logger';
+import { BaseEnv } from './types/Env.js';
 
 const app = new Hono()
-
+app.use(logger())
 app.use(
   '*',
   cors({
     origin: (origin) => {
-      if (!origin || origin == 'zed31rus.ru' || origin.endsWith(".zed31rus.ru")) {
+      if (!origin || origin == 'https://zed31rus.ru' || origin.endsWith(".zed31rus.ru") || origin == "http://localhost:3000") {
         return origin; 
       }
       return null;

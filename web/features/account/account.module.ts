@@ -1,9 +1,10 @@
 import { BaseModule } from "#web/base/module.base";
-import AuthMiddleware, { BaseEnv } from "#web/middleware/auth.middleware";
-import { zValidator } from "@hono/zod-validator";
+import AuthMiddleware from "#web/middleware/auth.middleware";
 import AccountSchemas from "#web/features/account/account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
+import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
+import { BaseEnv } from "#web/types/Env.d";
 
 type AccountEnv = BaseEnv & {}
 
@@ -21,7 +22,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/emailVerificationSend',
-        zValidator('cookie', CookieSchemas.both),
+        zValidatorWrapper('cookie', CookieSchemas.both),
         auth.withUser,
         async (c) => {
 
@@ -33,8 +34,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/emailVerificationConfirm',
-        zValidator('json', AccountSchemas.emailVerificationConfirm.Body),
-        zValidator('cookie', CookieSchemas.both),
+        zValidatorWrapper('json', AccountSchemas.emailVerificationConfirm.Body),
+        zValidatorWrapper('cookie', CookieSchemas.both),
         auth.withUser,
         async (c) => {
 
@@ -51,7 +52,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/changePassword/request',
-        zValidator('cookie', CookieSchemas.both),
+        zValidatorWrapper('cookie', CookieSchemas.both),
         auth.withUser,
         async (c) => {
 
@@ -64,8 +65,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/changePassword/confirm',
-        zValidator('json', AccountSchemas.changePasswordConfirm.Body),
-        zValidator('cookie', CookieSchemas.both),
+        zValidatorWrapper('json', AccountSchemas.changePasswordConfirm.Body),
+        zValidatorWrapper('cookie', CookieSchemas.both),
         auth.withUser,
         async (c) => {
 

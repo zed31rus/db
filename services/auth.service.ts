@@ -18,13 +18,13 @@ export default class AuthService extends BaseService {
     async login(login: string, password: string) {
 
         const rawUser = await this.repository.db.users.get.byLogin(prismaClient, login);
-        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
         const isPasswordCorrect = await this.lib.hash.bcrypt.compare(password, rawUser.passwordHash!);
         if (!isPasswordCorrect) throw ApiError.Unauthorized("Invalid credentials");
 
         const session = await this.manager.session.createSession(rawUser);
 
-        return { user: publicUser, ...session };
+        return { user: personalUser, ...session };
 
     }
 

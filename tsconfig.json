@@ -7,12 +7,22 @@
     "outDir": "./dist",
     "rootDir": "./",
     "strict": true,
-    "sourceMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "paths": {
+      "#generated/*": ["./generated/*"],
+      "#types/*": ["./types/*"],
+      "#lib/*": ["./lib/*"],
+      "#repo/*": ["./repository/*"],
+      "#services/*": ["./services/*"],
+      "#web/*": ["./web/*"],
+      "#prisma/*": ["./prisma/*"],
+      "#managers/*": ["./managers/*"],
+      "#base/*": ["./base/*"],
+      "#errors/*": ["./errors/*"],
+      "#containers/*": ["./containers/*"]
+    }
   },
+  
   "include": ["**/*.ts", ".env"],
   "exclude": ["node_modules", "dist"]
 }

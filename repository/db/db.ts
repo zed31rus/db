@@ -1,7 +1,7 @@
-import verificationCode from "./verificationCode/verificationCode.class.js";
-import users from "./user/user.class.js";
-import refreshToken from "./refreshToken/refreshToken.class.js";
-import oauthAccount from "./oauth/oauth.class.js";
+import verificationCode from "#repo/db/verificationCode/verificationCode.class";
+import users from "#repo/db/user/user.class";
+import refreshToken from "#repo/db/refreshToken/refreshToken.class";
+import oauthAccount from "#repo/db/oauth/oauth.class";
 import BaseRepository from "#base/repository.base";
 
 export default class DB extends BaseRepository {

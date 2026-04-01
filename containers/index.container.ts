@@ -11,10 +11,10 @@ import AccountService from "#services/account";
 import AuthService from "#services/auth";
 import MeService from "#services/me";
 import UsersService from "#services/users";
-import LibContainer from "./lib.container.js";
-import ManagerContainer from "./manager.container.js";
-import RepositoryContainer from "./repository.container.js";
-import ServiceContainer from "./service.container.js";
+import LibContainer from "#containers/lib.container";
+import ManagerContainer from "#containers/manager.container";
+import RepositoryContainer from "#containers/repository.container";
+import ServiceContainer from "#containers/service.container";
 
 const libContainer = new LibContainer(
     new Hash(),

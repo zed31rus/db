@@ -1,6 +1,5 @@
-import { prismaClient, User } from "#prisma/prisma";
-import DB from '#repo/db/db';
-import UserSelector, { PublicUser } from "#lib/selector/user.selector";
+import { prismaClient } from "#prisma/prisma";
+import { PublicUser } from "#lib/selector/user.selector";
 import BaseService from "#base/service.base";
 
 export default class MeService extends BaseService {

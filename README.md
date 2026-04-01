@@ -6,6 +6,8 @@ db
 │  ├─ manager.base.ts
 │  ├─ repository.base.ts
 │  └─ service.base.ts
+├─ config
+│  └─ env.config.ts
 ├─ containers
 │  ├─ index.container.ts
 │  ├─ lib.container.ts
@@ -39,7 +41,23 @@ db
 ├─ package.json
 ├─ prisma
 │  ├─ migrations
-│  │  └─ ...
+│  │  ├─ 20260121195853_base
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123151148_verification_codes
+│  │  │  └─ migration.sql
+│  │  ├─ 20260123224904_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260124020639_allow_user_find
+│  │  │  └─ migration.sql
+│  │  ├─ 20260127014001_creted
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202131407_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202211948_unique_provider_user_uuid
+│  │  │  └─ migration.sql
+│  │  ├─ 20260202212725
+│  │  │  └─ migration.sql
+│  │  └─ migration_lock.toml
 │  ├─ prisma.ts
 │  └─ schema.prisma
 ├─ prisma.config.ts
@@ -80,11 +98,12 @@ db
 │  └─ account.d.ts
 └─ web
    ├─ base
-   │  ├─ manager.base.ts
    │  ├─ middleware.base.ts
-   │  └─ module.base.ts
+   │  ├─ module.base.ts
+   │  └─ webManager.base.ts
    ├─ containers
    │  ├─ index.web.container.ts
+   │  ├─ middleware.container.ts
    │  └─ webManager.container.ts
    ├─ dto
    │  └─ cookie.dto.ts
@@ -103,8 +122,12 @@ db
    │     └─ users.module.ts
    ├─ middleware
    │  └─ auth.middleware.ts
+   ├─ types
+   │  └─ Env.d.ts
    ├─ webManagers
    │  └─ session.webManager.ts
-   └─ webServer.ts
+   ├─ webServer.ts
+   └─ wrappers
+      └─ zValidator.wrapper.ts
 
 ```

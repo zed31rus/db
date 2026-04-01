@@ -1,12 +1,6 @@
-import { PublicUser } from "#lib/selector/user.selector";
 import baseMiddleware from "#web/base/middleware.base";
+import { BaseEnv } from "#web/types/Env.d";
 import { getCookie } from "hono/cookie";
-
-export type BaseEnv = {
-    Variables: {
-        user: PublicUser;
-    }
-};
 
 export default class AuthMiddleware<T extends BaseEnv> extends baseMiddleware<T> {
     public get withUser() { 
