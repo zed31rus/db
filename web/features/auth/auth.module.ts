@@ -3,10 +3,10 @@ import AuthSchemas from "#web/features/auth/auth.dto";
 import { BaseModule } from "#web/base/module.base";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
-import { BaseEnv } from "#web/types/Env.d";
+import { AuthEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 
-type AuthEnv = BaseEnv & {}
+type AuthEnv = AuthEnv & {}
 
 export default class AuthModule extends BaseModule<AuthEnv> {
 

@@ -4,9 +4,9 @@ import AccountSchemas from "#web/features/account/account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
-import { BaseEnv } from "#web/types/Env.d";
+import { AuthEnv } from "#web/types/Env.d";
 
-type AccountEnv = BaseEnv & {}
+type AccountEnv = AuthEnv & {}
 
 export default class AccountModule extends BaseModule<AccountEnv> {
 
@@ -76,6 +76,10 @@ export default class AccountModule extends BaseModule<AccountEnv> {
             return c.json({ user });
 
         }
+        )
+
+        this.router.post(
+            '/changeAvatar',
         )
 
     }

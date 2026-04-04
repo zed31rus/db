@@ -2,10 +2,10 @@ import { BaseModule } from "#web/base/module.base";
 import UsersSchemas from "#web/features/users/users.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import AuthMiddleware from "#web/middleware/auth.middleware";
-import { BaseEnv } from "#web/types/Env.d";
+import { AuthEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 
-type UsersEnv = BaseEnv & {};
+type UsersEnv = AuthEnv & {};
 
 export default class UsersModule extends BaseModule<UsersEnv> {
 

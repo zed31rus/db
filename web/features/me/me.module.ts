@@ -1,11 +1,11 @@
 import { BaseModule } from "#web/base/module.base";
 import CookieSchemas from "#web/dto/cookie.dto";
 import AuthMiddleware from "#web/middleware/auth.middleware";
-import { BaseEnv } from "#web/types/Env.d";
+import { AuthEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 import { rateLimiter } from "hono-rate-limiter";
 
-type ProfileEnv = BaseEnv & {};
+type ProfileEnv = AuthEnv & {};
 
 export default class MeModule extends BaseModule<ProfileEnv> {
 

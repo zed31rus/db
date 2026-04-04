@@ -1,7 +1,7 @@
 import AuthMiddleware from "#web/middleware/auth.middleware";
-import { BaseEnv } from "#web/types/Env.d";
+import { AuthEnv } from "#web/types/Env.d";
 
-export default class middlewareContainer<T extends BaseEnv> {
+export default class middlewareContainer<T extends AuthEnv> {
     constructor(
         readonly auth: AuthMiddleware<T>
     ) {}
