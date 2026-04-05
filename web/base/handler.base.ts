@@ -10,7 +10,7 @@ export default abstract class baseHandler {
         protected readonly middleware: MiddlewareContainer
     ) {}
 
-    protected factory<T extends Env>() {
+    protected createFactory<T extends Env>() {
         return createFactory<T>();
     }
 }

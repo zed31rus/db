@@ -8,7 +8,7 @@ export default abstract class baseMiddleware {
         protected readonly lib: LibContainer
     ) {}
 
-    protected factory<T extends Env>() {
+    protected createFactory<T extends Env>() {
         return createFactory<T>();
     }
 }

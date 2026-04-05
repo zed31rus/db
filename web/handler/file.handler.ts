@@ -5,6 +5,6 @@ import { ZodObject } from "zod";
 export default class FileHandler extends baseHandler {
 
     public AvatarWithValidForm(schema : ZodObject) { 
-        return this.factory().createHandlers( zValidatorWrapper('form', schema));
+        return this.createFactory().createHandlers( zValidatorWrapper('form', schema));
     }
 };

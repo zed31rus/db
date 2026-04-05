@@ -4,14 +4,13 @@ import { rateLimiter } from "hono-rate-limiter";
 import AuthMiddleware from "#web/middleware/auth.middleware";
 import { UserEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
+import CookieSchemas from "#web/dto/cookie.dto";
 
 type UsersEnv = UserEnv & {};
 
 export default class UsersModule extends BaseModule<UsersEnv> {
 
     init() {
-
-        const auth = new AuthMiddleware(this.lib);
 
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
@@ -33,7 +32,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.router.post(
         '/get/email',
         zValidatorWrapper('json', UsersSchemas.GetByEmail.Body),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<UsersEnv>(CookieSchemas.both),
         async (c) => {
 
             const { email } = c.req.valid('json');
@@ -45,7 +44,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.router.post(
         '/get/login',
         zValidatorWrapper('json', UsersSchemas.GetByLogin.Body),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<UsersEnv>(CookieSchemas.both),
         async (c) => {
 
             const { login } = c.req.valid('json');

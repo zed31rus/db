@@ -5,7 +5,7 @@ import { getCookie } from "hono/cookie";
 export default class AuthMiddleware extends baseMiddleware {
 
     public withUser<T extends UserEnv>() { 
-        return this.factory<T>().createMiddleware( async (c, next) => {
+        return this.createFactory<T>().createMiddleware( async (c, next) => {
             const refreshToken = getCookie(c, 'refreshToken');
             const accessToken = getCookie(c, 'accessToken');
 

@@ -12,8 +12,6 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
     init() {
 
-        const auth = new AuthMiddleware(this.lib);
-
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
             limit: 10,
@@ -22,8 +20,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/emailVerificationSend',
-        zValidatorWrapper('cookie', CookieSchemas.both),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -35,8 +32,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         this.router.post(
         '/emailVerificationConfirm',
         zValidatorWrapper('json', AccountSchemas.emailVerificationConfirm.Body),
-        zValidatorWrapper('cookie', CookieSchemas.both),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -47,13 +43,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         })
 
         this.router.post(
-        '/changePassword'
-        )
-
-        this.router.post(
         '/changePassword/request',
-        zValidatorWrapper('cookie', CookieSchemas.both),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -66,8 +57,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         this.router.post(
         '/changePassword/confirm',
         zValidatorWrapper('json', AccountSchemas.changePasswordConfirm.Body),
-        zValidatorWrapper('cookie', CookieSchemas.both),
-        auth.withUser,
+        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -76,10 +66,6 @@ export default class AccountModule extends BaseModule<AccountEnv> {
             return c.json({ user });
 
         }
-        )
-
-        this.router.post(
-            '/changeAvatar',
         )
 
     }

@@ -59,10 +59,10 @@ app.onError((err, c) => {
 
 const factory = createFactory<UserEnv>();
 
-const authModule = new AuthModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
-const accountModule = new AccountModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
-const meModule = new MeModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
-const usersModule = new UsersModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
+const authModule = new AuthModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
+const accountModule = new AccountModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
+const meModule = new MeModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
+const usersModule = new UsersModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
 
 app.route('/auth', authModule.router);
 app.route('/account', accountModule.router)
