@@ -1,10 +1,12 @@
 import baseMiddleware from "#web/base/middleware.base";
-import { AvatarEnv } from "#web/types/Env.d";
+import { UserEnv } from "#web/types/Env.d";
+import { getCookie } from "hono/cookie";
 
-export default class fileMiddleware<T extends AvatarEnv> extends baseMiddleware {
-    public get withAvatar() {
-        return this.factory.createMiddleware<{ In: AvatarEnv['In'] }>( async (c, next) => {
-            c.req.valid('')
+export default class FileMiddleware extends baseMiddleware {
+
+    public withAvatar() { 
+        return this.factory().createMiddleware( async (c, next) => {
+
         });
     }
-}
+};

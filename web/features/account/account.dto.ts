@@ -1,3 +1,4 @@
+import FileSchemas from "#web/dto/file.dto";
 import z from "zod";
 
 const AccountSchemas = {
@@ -20,10 +21,9 @@ const AccountSchemas = {
     },
     changeAvatar: {
         Form: z.object({
-            avatar: z.instanceof(File)
-                .refine((file) => file.size <= 20 * 1024 * 1024, 'Max size is 20MB')
-                .refine((file) => file.type.startsWith('image/'), 'Only images are allowed')
+            avatar: FileSchemas.avatar
         })
+
     }
 }
 

@@ -10,7 +10,7 @@ import AccountModule from '#web/features/account/account.module';
 import MeModule from '#web/features/me/me.module';
 import UsersModule from '#web/features/users/users.module';
 import { logger } from 'hono/logger';
-import { AuthEnv } from './types/Env.js';
+import { UserEnv } from './types/Env.js';
 import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
 import { PRISMA_ERRORS } from '#errors/prisma.erors';
 
@@ -57,7 +57,7 @@ app.onError((err, c) => {
   }, 500);
 });
 
-const factory = createFactory<AuthEnv>();
+const factory = createFactory<UserEnv>();
 
 const authModule = new AuthModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);
 const accountModule = new AccountModule(factory, Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer);

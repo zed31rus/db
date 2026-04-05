@@ -15,7 +15,8 @@ db
 │  ├─ repository.container.ts
 │  └─ service.container.ts
 ├─ errors
-│  └─ api.errors.ts
+│  ├─ api.errors.ts
+│  └─ prisma.erors.ts
 ├─ generated
 ├─ lib
 │  ├─ hash
@@ -95,9 +96,10 @@ db
 │  ├─ me.service.ts
 │  └─ users.service.ts
 ├─ types
-│  └─ account.d.ts
+│  └─ account.ts
 └─ web
    ├─ base
+   │  ├─ handler.base.ts
    │  ├─ middleware.base.ts
    │  ├─ module.base.ts
    │  └─ webManager.base.ts
@@ -106,7 +108,8 @@ db
    │  ├─ middleware.container.ts
    │  └─ webManager.container.ts
    ├─ dto
-   │  └─ cookie.dto.ts
+   │  ├─ cookie.dto.ts
+   │  └─ file.dto.ts
    ├─ features
    │  ├─ account
    │  │  ├─ account.dto.ts
@@ -120,6 +123,9 @@ db
    │  └─ users
    │     ├─ users.dto.ts
    │     └─ users.module.ts
+   ├─ handler
+   │  ├─ auth.handler.ts
+   │  └─ file.handler.ts
    ├─ middleware
    │  └─ auth.middleware.ts
    ├─ types

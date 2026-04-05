@@ -1,16 +1,7 @@
 import { PublicUser } from "#lib/selector/user.selector";
 
-export type AuthEnv = {
+export type UserEnv = {
     Variables: {
         user: PublicUser;
     }
 };
-
-export type AvatarEnv = {
-    In: {
-        form: {
-            image: File | Blob;
-        }
-
-    }
-}

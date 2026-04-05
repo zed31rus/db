@@ -1,11 +1,11 @@
 import baseMiddleware from "#web/base/middleware.base";
-import { AuthEnv } from "#web/types/Env.d";
+import { UserEnv } from "#web/types/Env.d";
 import { getCookie } from "hono/cookie";
 
-export default class AuthMiddleware<T extends AuthEnv> extends baseMiddleware<T> {
+export default class AuthMiddleware extends baseMiddleware {
 
-    public get withUser() { 
-        return this.factory.createMiddleware( async (c, next) => {
+    public withUser<T extends UserEnv>() { 
+        return this.factory<T>().createMiddleware( async (c, next) => {
             const refreshToken = getCookie(c, 'refreshToken');
             const accessToken = getCookie(c, 'accessToken');
 

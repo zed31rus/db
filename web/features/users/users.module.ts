@@ -2,16 +2,16 @@ import { BaseModule } from "#web/base/module.base";
 import UsersSchemas from "#web/features/users/users.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import AuthMiddleware from "#web/middleware/auth.middleware";
-import { AuthEnv } from "#web/types/Env.d";
+import { UserEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 
-type UsersEnv = AuthEnv & {};
+type UsersEnv = UserEnv & {};
 
 export default class UsersModule extends BaseModule<UsersEnv> {
 
     init() {
 
-        const auth = new AuthMiddleware<UsersEnv>(this.factory, this.lib);
+        const auth = new AuthMiddleware(this.lib);
 
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,

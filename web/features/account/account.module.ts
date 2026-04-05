@@ -4,15 +4,15 @@ import AccountSchemas from "#web/features/account/account.dto";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
-import { AuthEnv } from "#web/types/Env.d";
+import { UserEnv } from "#web/types/Env.d";
 
-type AccountEnv = AuthEnv & {}
+type AccountEnv = UserEnv & {}
 
 export default class AccountModule extends BaseModule<AccountEnv> {
 
     init() {
 
-        const auth = new AuthMiddleware<AccountEnv>(this.factory, this.lib);
+        const auth = new AuthMiddleware(this.lib);
 
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,

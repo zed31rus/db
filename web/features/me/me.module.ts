@@ -1,17 +1,17 @@
 import { BaseModule } from "#web/base/module.base";
 import CookieSchemas from "#web/dto/cookie.dto";
 import AuthMiddleware from "#web/middleware/auth.middleware";
-import { AuthEnv } from "#web/types/Env.d";
+import { UserEnv } from "#web/types/Env.d";
 import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 import { rateLimiter } from "hono-rate-limiter";
 
-type ProfileEnv = AuthEnv & {};
+type ProfileEnv = UserEnv & {};
 
 export default class MeModule extends BaseModule<ProfileEnv> {
 
     init() {
 
-        const auth = new AuthMiddleware<ProfileEnv>(this.factory, this.lib)
+        const auth = new AuthMiddleware(this.lib)
 
         this.router.use(rateLimiter({
             windowMs: 15 * 60 * 1000,
