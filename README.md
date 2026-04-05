@@ -104,6 +104,7 @@ db
    │  ├─ module.base.ts
    │  └─ webManager.base.ts
    ├─ containers
+   │  ├─ handler.container.ts
    │  ├─ index.web.container.ts
    │  ├─ middleware.container.ts
    │  └─ webManager.container.ts
@@ -127,7 +128,8 @@ db
    │  ├─ auth.handler.ts
    │  └─ file.handler.ts
    ├─ middleware
-   │  └─ auth.middleware.ts
+   │  ├─ auth.middleware.ts
+   │  └─ file.middleware.ts
    ├─ types
    │  └─ Env.d.ts
    ├─ webManagers
