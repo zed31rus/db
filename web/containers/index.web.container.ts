@@ -31,29 +31,29 @@ const dtoContainer = new DtoContainer(
     new UsersDto()
 )
 
+const wrapperContainer = new WrapperContainer(
+    new ValidatorWrapper()
+)
+
 const webManagerContainer = new WebManagerContainer(
     new SessionWebManager()
 )
 
 const middlewareContainer = new MiddlewareContainer(
-    new AuthMiddleware(coreContainers.libContainer),
-    new FileMiddleware(coreContainers.libContainer)
+    new AuthMiddleware(),
+    new FileMiddleware()
 )
 
 const handlerContainer = new HandlerContainer(
-    new AuthHandler(coreContainers.libContainer, middlewareContainer),
-    new FileHandler(coreContainers.libContainer, middlewareContainer)
-)
-
-const wrapperContainer = new WrapperContainer(
-    new ValidatorWrapper()
+    new AuthHandler(middlewareContainer),
+    new FileHandler(middlewareContainer)
 )
 
 const moduleContainer = new ModuleContainer(
-    new AccountModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new AuthModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new MeModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new UsersModule(dtoContainer, wrapperContainer,coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer)
+    new AccountModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new AuthModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new MeModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new UsersModule(dtoContainer, wrapperContainer,coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer)
 )
 
-export default { webManagerContainer, middlewareContainer, handlerContainer, moduleContainer }
+export default { moduleContainer }

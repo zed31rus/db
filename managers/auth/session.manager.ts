@@ -3,6 +3,7 @@ import { RefreshExpires } from "#lib/refreshToken/refreshToken.lib";
 import { AccessExpires } from "#lib/jwt/jwt.lib";
 import { TransactionClient } from "#generated/prisma/internal/prismaNamespace.js";
 import BaseManager from "#base/manager.base";
+import configEnv from "#config/env.config"
 
 export type SessionType = {
     refresh: {
@@ -27,7 +28,7 @@ export default class SessionManager extends BaseManager {
         const refreshTokenHashedRecord = await this.repository.db.refreshToken.create.create(tx, refreshTokenHashed, refreshTokenExpires.atTime, rawUser)
 
         const accessTokenExpires = this.lib.jwt.getExpires();
-        const accessToken = await this.lib.jwt.create(publicUser, accessTokenExpires.time, process.env.JWT_SECRET!);
+        const accessToken = await this.lib.jwt.create(publicUser, accessTokenExpires.time, configEnv.JWT_SECRET);
         
         return { refresh: { token: refreshToken, expires: refreshTokenExpires }, access: {token: accessToken, expires: accessTokenExpires}}
     }

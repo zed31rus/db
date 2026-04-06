@@ -1,8 +1,6 @@
 import { prismaClient } from '#prisma/prisma';
 import BaseService from "#base/service.base";
 import ApiError from '#errors/api.errors';
-import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
-
 
 export default class AuthService extends BaseService {
 

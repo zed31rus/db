@@ -43,7 +43,8 @@
     "#managers/*": "./dist/managers/*.js",
     "#base/*": "./dist/base/*.js",
     "#errors/*": "./dist/errors/*.js",
-    "#containers/*": "./dist/containers/*.js"
+    "#containers/*": "./dist/containers/*.js",
+    "#config/*": "./dist/config/*.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.10",

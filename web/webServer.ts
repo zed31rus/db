@@ -8,6 +8,10 @@ import { logger } from 'hono/logger';
 import { UserEnv } from './types/Env.js';
 import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
 import { PRISMA_ERRORS } from '#errors/prisma.erors';
+import dotenv from 'dotenv';
+import ConfigError from '#errors/config.errors';
+
+dotenv.config();
 
 const app = new Hono();
 
@@ -36,6 +40,11 @@ app.onError((err, c) => {
       message: err.message,
       errors: err.errors
     }, err.status as any);
+  }
+
+  if (err instanceof ConfigError) {
+    console.error(err)
+    process.exit()
   }
 
   if (err instanceof PrismaClientKnownRequestError) {

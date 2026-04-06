@@ -19,7 +19,8 @@
       "#managers/*": ["./managers/*"],
       "#base/*": ["./base/*"],
       "#errors/*": ["./errors/*"],
-      "#containers/*": ["./containers/*"]
+      "#containers/*": ["./containers/*"],
+      "#config/*": ["./dist/config/*"]
     }
   },
   

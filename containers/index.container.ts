@@ -15,16 +15,17 @@ import LibContainer from "#containers/lib.container";
 import ManagerContainer from "#containers/manager.container";
 import RepositoryContainer from "#containers/repository.container";
 import ServiceContainer from "#containers/service.container";
+import configEnv from "#config/env.config"
 
 const libContainer = new LibContainer(
     new Hash(),
     new JWT(),
 
     new Mail({
-        user: process.env.SMTP_USER!,
-        key: process.env.SMTP_API_KEY!,
-        host: process.env.SMTP_HOST!,
-        email: process.env.SMTP_EMAIL!,
+        user: configEnv.SMTP_USER,
+        key: configEnv.SMTP_API_KEY,
+        host: configEnv.SMTP_HOST,
+        email: configEnv.SMTP_EMAIL,
         name: "zed31rus.ru Auth Service"
     }),
 
@@ -50,4 +51,4 @@ const serviceContainer = new ServiceContainer(
     new UsersService(libContainer, managerContainer, repositoryContainer)
 );
 
-export default {libContainer, repositoryContainer, managerContainer, serviceContainer};
+export default { serviceContainer }

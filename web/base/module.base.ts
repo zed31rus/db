@@ -1,4 +1,3 @@
-import LibContainer from "#containers/lib.container";
 import ServiceContainer from "#containers/service.container";
 import DtoContainer from "#web/containers/dto.container";
 import HandlerContainer from "#web/containers/handler.container";
@@ -16,7 +15,6 @@ export abstract class BaseModule<T extends UserEnv> {
         protected readonly dto: DtoContainer,
         protected readonly wrapper: WrapperContainer,
         protected readonly service: ServiceContainer,
-        protected readonly lib: LibContainer,
         protected readonly webManager: WebManagerContainer,
         protected readonly handler: HandlerContainer,
         protected readonly middleware: MiddlewareContainer
