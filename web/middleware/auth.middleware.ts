@@ -3,6 +3,7 @@ import baseMiddleware from "#web/base/middleware.base";
 import { UserEnv } from "#web/types/Env.d";
 import { getCookie } from "hono/cookie";
 import configEnv from '#config/env.config'
+import ApiError from "#errors/api.errors";
 
 export default class AuthMiddleware extends baseMiddleware {
 
@@ -12,10 +13,10 @@ export default class AuthMiddleware extends baseMiddleware {
             const refreshToken = getCookie(c, 'refreshToken');
             const accessToken = getCookie(c, 'accessToken');
 
-            if (!refreshToken) return c.json({error: 'Unauthorized'}, 401);
-            if (!accessToken) return c.json({error: 'Unauthorized'}, 401);
+            if (!refreshToken) throw ApiError.Unauthorized();
+            if (!accessToken) throw ApiError.Unauthorized();
 
-            const publicUser = await jwt.verify(accessToken, configEnv.JWT_SECRET!);
+            const publicUser = await jwt.verify(accessToken, configEnv.JWT_SECRET);
 
             c.set('user',publicUser);
 
