@@ -4,7 +4,6 @@ import { BaseModule } from "#web/base/module.base";
 import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
-import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 
 type AuthEnv = UserEnv & {}
 
@@ -20,7 +19,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/register',
-        zValidatorWrapper('json', AuthSchemas.Register.Body),
+        this.wrapper.validator.validate('json', this.dto.auth.Register.Body),
         async (c) => {
             
             const { login, email, password, nickname } = c.req.valid('json');
@@ -31,7 +30,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/login',
-        zValidatorWrapper('json', AuthSchemas.Login.Body),
+        this.wrapper.validator.validate('json', this.dto.auth.Login.Body),
         async (c) => {
 
             const { login, password } = c.req.valid('json');
@@ -43,7 +42,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/refresh',
-        zValidatorWrapper('cookie', CookieSchemas.refresh),
+        this.wrapper.validator.validate('cookie', this.dto.cookie.refresh),
         async (c) => {
             
             const { refreshToken } = c.req.valid('cookie');
@@ -55,7 +54,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.post(
         '/logout',
-        zValidatorWrapper('cookie', CookieSchemas.refresh),
+        this.wrapper.validator.validate('cookie', this.dto.cookie.refresh),
         (c) => {
             
             this.webManager.session.deleteSession(c);

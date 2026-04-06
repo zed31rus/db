@@ -2,13 +2,8 @@ import ApiError from '#errors/api.errors';
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors';
-import Containers from '#containers/index.container';
-import WebContainers from '#web/containers/index.web.container';
-import AuthModule from '#web/features/auth/auth.module';
+import webContainers from '#web/containers/index.web.container'
 import { createFactory } from 'hono/factory';
-import AccountModule from '#web/features/account/account.module';
-import MeModule from '#web/features/me/me.module';
-import UsersModule from '#web/features/users/users.module';
 import { logger } from 'hono/logger';
 import { UserEnv } from './types/Env.js';
 import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
@@ -27,6 +22,7 @@ const app = new Hono();
 //    credentials: true,
 //  })
 //);
+
 app.use(cors({
   origin: ['zed31rus.ru',"http://localhost:3000", "http://127.0.0.1:3000"],
   credentials: true
@@ -59,15 +55,10 @@ app.onError((err, c) => {
 
 const factory = createFactory<UserEnv>();
 
-const authModule = new AuthModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
-const accountModule = new AccountModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
-const meModule = new MeModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
-const usersModule = new UsersModule(Containers.serviceContainer, Containers.libContainer, WebContainers.webManagerContainer, WebContainers.handlerContainer, WebContainers.middlewareContainer);
-
-app.route('/auth', authModule.router);
-app.route('/account', accountModule.router)
-app.route('/me', meModule.router)
-app.route('/user', usersModule.router)
+app.route('/auth', webContainers.moduleContainer.auth.router);
+app.route('/account', webContainers.moduleContainer.account.router)
+app.route('/me', webContainers.moduleContainer.me.router)
+app.route('/user', webContainers.moduleContainer.users.router)
 
 serve({
   fetch: app.fetch,

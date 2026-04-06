@@ -1,9 +1,7 @@
 import { BaseModule } from "#web/base/module.base";
 import UsersSchemas from "#web/features/users/users.dto";
 import { rateLimiter } from "hono-rate-limiter";
-import AuthMiddleware from "#web/middleware/auth.middleware";
 import { UserEnv } from "#web/types/Env.d";
-import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 import CookieSchemas from "#web/dto/cookie.dto";
 
 type UsersEnv = UserEnv & {};
@@ -20,7 +18,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         this.router.post(
         '/get/uuid',
-        zValidatorWrapper('json', UsersSchemas.GetByUuid.Body),
+        this.wrapper.validator.validate('json', this.dto.users.GetByUuid.Body),
         async (c) => {
 
             const { uuid } = c.req.valid('json') 
@@ -31,8 +29,8 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         this.router.post(
         '/get/email',
-        zValidatorWrapper('json', UsersSchemas.GetByEmail.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(CookieSchemas.both),
+        this.wrapper.validator.validate('json', this.dto.users.GetByEmail.Body),
+        ...this.handler.auth.withValidUser<UsersEnv>(this.dto.cookie.both),
         async (c) => {
 
             const { email } = c.req.valid('json');
@@ -43,8 +41,8 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         this.router.post(
         '/get/login',
-        zValidatorWrapper('json', UsersSchemas.GetByLogin.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(CookieSchemas.both),
+        this.wrapper.validator.validate('json', this.dto.users.GetByLogin.Body),
+        ...this.handler.auth.withValidUser<UsersEnv>(this.dto.cookie.both),
         async (c) => {
 
             const { login } = c.req.valid('json');

@@ -1,30 +1,16 @@
-import FileSchemas from "#web/dto/file.dto";
 import z from "zod";
 
-const AccountSchemas = {
-    emailVerificationConfirm: {
+export default class AccountDto {
+    emailVerificationConfirm = {
         Body: z.object({
             submitCode: z.string().length(6)
         })
-    },
-    emailVerificationSend: {
+    }
 
-    },
-    passwordChangeRequest: {
-
-    },
-    changePasswordConfirm: {
+    changePasswordConfirm = {
         Body: z.object({
             submitCode: z.string().length(6),
             password: z.string().min(8)
         })
-    },
-    changeAvatar: {
-        Form: z.object({
-            avatar: FileSchemas.avatar
-        })
-
     }
 }
-
-export default AccountSchemas;

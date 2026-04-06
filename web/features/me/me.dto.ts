@@ -1,8 +1,3 @@
-const MeSchemas = {
-
-    Get: {
-    },
+export default class MeDto {
     
 }
-
-export default MeSchemas

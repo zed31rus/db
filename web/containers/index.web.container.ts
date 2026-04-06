@@ -1,25 +1,59 @@
-import SessionWebManager from "#web/webManagers/session.webManager";
+import coreContainers from "#containers/index.container"
 import WebManagerContainer from "#web/containers/webManager.container";
-import MiddlewareContainer from "./middleware.container.js";
+import SessionWebManager from "#web/webManagers/session.webManager";
+import MiddlewareContainer from "#web/containers/middleware.container.js";
 import AuthMiddleware from "#web/middleware/auth.middleware";
 import FileMiddleware from "#web/middleware/file.middleware";
-import CoreContainers from "#containers/index.container";
-import HandlerContainer from "./handler.container.js";
+import HandlerContainer from "#web/containers/handler.container.js";
 import AuthHandler from "#web/handler/auth.handler";
 import FileHandler from "#web/handler/file.handler";
+import ModuleContainer from "./module.container.js";
+import AccountModule from "#web/features/account/account.module";
+import AuthModule from "#web/features/auth/auth.module";
+import MeModule from "#web/features/me/me.module";
+import UsersModule from "#web/features/users/users.module";
+import DtoContainer from "./dto.container.js";
+import CookieDto from "#web/dto/cookie.dto";
+import fileDto from "#web/dto/file.dto";
+import AccountDto from "#web/features/account/account.dto";
+import AuthDto from "#web/features/auth/auth.dto";
+import MeDto from "#web/features/me/me.dto";
+import UsersDto from "#web/features/users/users.dto";
+import ValidatorWrapper from "#web/wrappers/validator.wrapper";
+import WrapperContainer from "./wrapper.container.js";
+
+const dtoContainer = new DtoContainer(
+    new CookieDto(),
+    new fileDto(),
+    new AccountDto(),
+    new AuthDto(),
+    new MeDto(),
+    new UsersDto()
+)
 
 const webManagerContainer = new WebManagerContainer(
     new SessionWebManager()
 )
 
 const middlewareContainer = new MiddlewareContainer(
-    new AuthMiddleware(CoreContainers.libContainer),
-    new FileMiddleware(CoreContainers.libContainer)
+    new AuthMiddleware(coreContainers.libContainer),
+    new FileMiddleware(coreContainers.libContainer)
 )
 
 const handlerContainer = new HandlerContainer(
-    new AuthHandler(CoreContainers.libContainer, middlewareContainer),
-    new FileHandler(CoreContainers.libContainer, middlewareContainer)
+    new AuthHandler(coreContainers.libContainer, middlewareContainer),
+    new FileHandler(coreContainers.libContainer, middlewareContainer)
 )
 
-export default { webManagerContainer, middlewareContainer, handlerContainer }
+const wrapperContainer = new WrapperContainer(
+    new ValidatorWrapper()
+)
+
+const moduleContainer = new ModuleContainer(
+    new AccountModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new AuthModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new MeModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer),
+    new UsersModule(dtoContainer, wrapperContainer,coreContainers.serviceContainer, coreContainers.libContainer, webManagerContainer, handlerContainer, middlewareContainer)
+)
+
+export default { webManagerContainer, middlewareContainer, handlerContainer, moduleContainer }

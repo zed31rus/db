@@ -1,9 +1,5 @@
 import { BaseModule } from "#web/base/module.base";
-import AuthMiddleware from "#web/middleware/auth.middleware";
-import AccountSchemas from "#web/features/account/account.dto";
-import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
-import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 import { UserEnv } from "#web/types/Env.d";
 
 type AccountEnv = UserEnv & {}
@@ -20,7 +16,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/emailVerificationSend',
-        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -31,8 +27,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/emailVerificationConfirm',
-        zValidatorWrapper('json', AccountSchemas.emailVerificationConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
+        this.wrapper.validator.validate('json', this.dto.account.emailVerificationConfirm.Body),
+        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -44,7 +40,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/changePassword/request',
-        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -56,8 +52,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/changePassword/confirm',
-        zValidatorWrapper('json', AccountSchemas.changePasswordConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(CookieSchemas.both),
+        this.wrapper.validator.validate('json', this.dto.account.changePasswordConfirm.Body),
+        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {
 
             const publicUser = c.get('user');

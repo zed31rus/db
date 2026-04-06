@@ -1,23 +1,22 @@
 import z from "zod"
 
-const UsersSchemas = {
+export default class UsersDto {
 
-    GetByUuid: {
+    GetByUuid = {
         Body: z.object({
             uuid: z.uuid()
         })
-    },
-    GetByEmail: {
+    }
+
+    GetByEmail = {
         Body: z.object({
             email: z.email()
         })
-    },
-    GetByLogin: {
+    }
+
+    GetByLogin = {
         Body: z.object({
             login: z.string().min(3)
         })
     }
-    
 }
-
-export default UsersSchemas
