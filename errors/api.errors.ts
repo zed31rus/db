@@ -16,8 +16,8 @@ export default class ApiError extends Error {
         return new ApiError(403, message);
     }
 
-    static BadRequest(message: string, errors: any[] = []) {
-        return new ApiError(400, message, errors);
+    static BadRequest(message: string) {
+        return new ApiError(400, message);
     }
 
     static Internal(message = "Internal error") {
@@ -26,5 +26,9 @@ export default class ApiError extends Error {
 
     static NotFound(message = "Not found") {
         return new ApiError(404, message)
+    }
+
+    static Expired(message= "Expired") {
+        return new ApiError(410, message)
     }
 }

@@ -15,7 +15,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         }))
 
         this.router.post(
-        '/emailVerificationSend',
+        '/emailVerification/Send',
         ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {
 
@@ -26,7 +26,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         })
 
         this.router.post(
-        '/emailVerificationConfirm',
+        '/emailVerification/Confirm',
         this.wrapper.validator.validate('json', this.dto.account.emailVerificationConfirm.Body),
         ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
         async (c) => {

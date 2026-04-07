@@ -1,4 +1,5 @@
 import BaseLib from "#base/lib.base";
+import { Prisma } from "#prisma/prisma";
 import { randomBytes } from "node:crypto"
 
 export default class VerificationCode extends BaseLib {
@@ -10,6 +11,13 @@ export default class VerificationCode extends BaseLib {
         const time = this.getExpiresTime();
         const atTime = this.getExpiresAtTime(time);
         return { time, atTime }
+    }
+
+    checkExpired(token: Prisma.VerificationCodeModel) {
+        if (new Date() > new Date(token.expiresAt)) {
+                return true
+            }
+        return false
     }
 
     private getExpiresAtTime(expiresTime: number) {

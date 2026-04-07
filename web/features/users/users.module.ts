@@ -1,8 +1,6 @@
 import { BaseModule } from "#web/base/module.base";
-import UsersSchemas from "#web/features/users/users.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
-import CookieSchemas from "#web/dto/cookie.dto";
 
 type UsersEnv = UserEnv & {};
 

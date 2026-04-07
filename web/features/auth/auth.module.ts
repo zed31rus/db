@@ -1,7 +1,4 @@
-import { zValidator } from "@hono/zod-validator";
-import AuthSchemas from "#web/features/auth/auth.dto";
 import { BaseModule } from "#web/base/module.base";
-import CookieSchemas from "#web/dto/cookie.dto";
 import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
 

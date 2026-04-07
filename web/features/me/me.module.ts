@@ -1,8 +1,5 @@
 import { BaseModule } from "#web/base/module.base";
-import CookieSchemas from "#web/dto/cookie.dto";
-import AuthMiddleware from "#web/middleware/auth.middleware";
 import { UserEnv } from "#web/types/Env.d";
-import zValidatorWrapper from "#web/wrappers/zValidator.wrapper";
 import { rateLimiter } from "hono-rate-limiter";
 
 type ProfileEnv = UserEnv & {};
@@ -19,7 +16,7 @@ export default class MeModule extends BaseModule<ProfileEnv> {
 
         this.router.post(
         '/get',
-        ...this.handler.auth.withValidUser<ProfileEnv>(CookieSchemas.both),
+        ...this.handler.auth.withValidUser<ProfileEnv>(this.dto.cookie.both),
         async (c) => {
 
             const publicUser = c.get('user');

@@ -1,5 +1,6 @@
 import BaseLib from "#base/lib.base";
 import { PublicUser } from "#lib/selector/user.selector";
+import { Prisma } from "#prisma/prisma";
 import jsonWebToken from "jsonwebtoken";
 import { SignOptions } from 'jsonwebtoken';
 

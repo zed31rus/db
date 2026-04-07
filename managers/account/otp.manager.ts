@@ -20,6 +20,8 @@ export default class OtpManager extends BaseManager {
     async confirmOtp(tx: TransactionClient, user: User, submitCode: string, type: string) {
         const rawUser = user;
         const verificationRecord = await this.repository.db.verificationCode.get.get(tx, rawUser, type);
+        const expired = this.lib.verificationCode.checkExpired(verificationRecord);
+        if (expired) throw ApiError.Expired();
         const isCodeValid = await this.lib.hash.bcrypt.compare(submitCode, verificationRecord.hashedCode);
         if (!isCodeValid) throw ApiError.BadRequest("Invalid or expired verification code");
 
