@@ -45,8 +45,8 @@ const middlewareContainer = new MiddlewareContainer(
 )
 
 const handlerContainer = new HandlerContainer(
-    new AuthHandler(middlewareContainer),
-    new FileHandler(middlewareContainer)
+    new AuthHandler(middlewareContainer, wrapperContainer),
+    new FileHandler(middlewareContainer, wrapperContainer)
 )
 
 const moduleContainer = new ModuleContainer(
