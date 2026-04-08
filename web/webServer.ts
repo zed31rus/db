@@ -44,7 +44,7 @@ app.onError((err, c) => {
 
   if (err instanceof ConfigError) {
     console.error(err)
-    process.exit()
+    process.exit(1)
   }
 
   if (err instanceof PrismaClientKnownRequestError) {
@@ -62,12 +62,10 @@ app.onError((err, c) => {
   }, 500);
 });
 
-const factory = createFactory<UserEnv>();
-
-app.route('/auth', webContainers.moduleContainer.auth.router);
-app.route('/account', webContainers.moduleContainer.account.router)
-app.route('/me', webContainers.moduleContainer.me.router)
-app.route('/user', webContainers.moduleContainer.users.router)
+app.route('/auth', webContainers.modules.auth.router);
+app.route('/account', webContainers.modules.account.router)
+app.route('/me', webContainers.modules.me.router)
+app.route('/user', webContainers.modules.users.router)
 
 serve({
   fetch: app.fetch,

@@ -52,11 +52,11 @@ export default class AuthModule extends BaseModule<AuthEnv> {
         this.router.post(
         '/logout',
         this.wrapper.validator.validate('cookie', this.dto.cookie.refresh),
-        (c) => {
+        async (c) => {
             
             this.webManager.session.deleteSession(c);
             const {refreshToken} = c.req.valid('cookie');
-            this.service.auth.logOut(refreshToken);
+            await this.service.auth.logOut(refreshToken);
             return c.json({}, 200);
         });
     }

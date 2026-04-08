@@ -22,7 +22,7 @@ import UsersDto from "#web/features/users/users.dto";
 import ValidatorWrapper from "#web/wrappers/validator.wrapper";
 import WrapperContainer from "#web/containers/wrapper.container";
 
-const dtoContainer = new DtoContainer(
+const dto = new DtoContainer(
     new CookieDto(),
     new fileDto(),
     new AccountDto(),
@@ -31,29 +31,29 @@ const dtoContainer = new DtoContainer(
     new UsersDto()
 )
 
-const wrapperContainer = new WrapperContainer(
+const wrappers = new WrapperContainer(
     new ValidatorWrapper()
 )
 
-const webManagerContainer = new WebManagerContainer(
+const webManagers = new WebManagerContainer(
     new SessionWebManager()
 )
 
-const middlewareContainer = new MiddlewareContainer(
+const middlewares = new MiddlewareContainer(
     new AuthMiddleware(),
     new FileMiddleware()
 )
 
-const handlerContainer = new HandlerContainer(
-    new AuthHandler(middlewareContainer, wrapperContainer),
-    new FileHandler(middlewareContainer, wrapperContainer)
+const handlers = new HandlerContainer(
+    new AuthHandler(middlewares, wrappers),
+    new FileHandler(middlewares, wrappers)
 )
 
-const moduleContainer = new ModuleContainer(
-    new AccountModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new AuthModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new MeModule(dtoContainer, wrapperContainer, coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer),
-    new UsersModule(dtoContainer, wrapperContainer,coreContainers.serviceContainer, webManagerContainer, handlerContainer, middlewareContainer)
+const modules = new ModuleContainer(
+    new AccountModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
+    new AuthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
+    new MeModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
+    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares)
 )
 
-export default { moduleContainer }
+export default { modules }

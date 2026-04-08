@@ -17,7 +17,7 @@ import RepositoryContainer from "#containers/repository.container";
 import ServiceContainer from "#containers/service.container";
 import configEnv from "#config/env.config"
 
-const libContainer = new LibContainer(
+const libs = new LibContainer(
     new Hash(),
     new JWT(),
 
@@ -35,20 +35,20 @@ const libContainer = new LibContainer(
 
 );
 
-const repositoryContainer = new RepositoryContainer(
+const repositorys = new RepositoryContainer(
     new DB()
 );
 
-const managerContainer = new ManagerContainer(
-    new OtpManager(libContainer, repositoryContainer),
-    new SessionManager(libContainer, repositoryContainer)
+const managers = new ManagerContainer(
+    new OtpManager(libs, repositorys),
+    new SessionManager(libs, repositorys)
 );
 
-const serviceContainer = new ServiceContainer(
-    new AccountService(libContainer, managerContainer, repositoryContainer),
-    new AuthService(libContainer, managerContainer, repositoryContainer),
-    new MeService(libContainer, managerContainer, repositoryContainer),
-    new UsersService(libContainer, managerContainer, repositoryContainer)
+const services = new ServiceContainer(
+    new AccountService(libs, managers, repositorys),
+    new AuthService(libs, managers, repositorys),
+    new MeService(libs, managers, repositorys),
+    new UsersService(libs, managers, repositorys)
 );
 
-export default { serviceContainer }
+export default { services }
