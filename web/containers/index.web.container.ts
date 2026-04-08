@@ -8,19 +8,20 @@ import HandlerContainer from "#web/containers/handler.container";
 import AuthHandler from "#web/handler/auth.handler";
 import FileHandler from "#web/handler/file.handler";
 import ModuleContainer from "#web/containers/module.container";
-import AccountModule from "#web/features/account/account.module";
-import AuthModule from "#web/features/auth/auth.module";
-import MeModule from "#web/features/me/me.module";
-import UsersModule from "#web/features/users/users.module";
+import AccountModule from "#web/module/account.module";
+import AuthModule from "#web/module/auth.module";
+import MeModule from "#web/module/me.module";
+import UsersModule from "#web/module/users.module";
 import DtoContainer from "#web/containers/dto.container";
 import CookieDto from "#web/dto/cookie.dto";
 import fileDto from "#web/dto/file.dto";
-import AccountDto from "#web/features/account/account.dto";
-import AuthDto from "#web/features/auth/auth.dto";
-import MeDto from "#web/features/me/me.dto";
-import UsersDto from "#web/features/users/users.dto";
+import AccountDto from "#web/dto/account.dto";
+import AuthDto from "#web/dto/auth.dto";
+import MeDto from "#web/dto/me.dto";
+import UsersDto from "#web/dto/users.dto";
 import ValidatorWrapper from "#web/wrappers/validator.wrapper";
 import WrapperContainer from "#web/containers/wrapper.container";
+import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper";
 
 const dto = new DtoContainer(
     new CookieDto(),
@@ -32,7 +33,8 @@ const dto = new DtoContainer(
 )
 
 const wrappers = new WrapperContainer(
-    new ValidatorWrapper()
+    new ValidatorWrapper(),
+    new RateLimiterWrapper()
 )
 
 const webManagers = new WebManagerContainer(
@@ -40,13 +42,13 @@ const webManagers = new WebManagerContainer(
 )
 
 const middlewares = new MiddlewareContainer(
-    new AuthMiddleware(),
-    new FileMiddleware()
+    new AuthMiddleware(dto),
+    new FileMiddleware(dto)
 )
 
 const handlers = new HandlerContainer(
-    new AuthHandler(middlewares, wrappers),
-    new FileHandler(middlewares, wrappers)
+    new AuthHandler(middlewares, wrappers, dto),
+    new FileHandler(middlewares, wrappers, dto)
 )
 
 const modules = new ModuleContainer(

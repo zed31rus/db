@@ -1,7 +1,7 @@
-import AccountModule from "#web/features/account/account.module";
-import AuthModule from "#web/features/auth/auth.module";
-import MeModule from "#web/features/me/me.module";
-import UsersModule from "#web/features/users/users.module";
+import AccountModule from "#web/module/account.module";
+import AuthModule from "#web/module/auth.module";
+import MeModule from "#web/module/me.module";
+import UsersModule from "#web/module/users.module";
 
 export default class ModuleContainer {
     constructor(

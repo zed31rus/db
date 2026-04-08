@@ -12,8 +12,10 @@ export default class FileMiddleware extends baseMiddleware {
 
     public withAvatar<T extends AvatarEnv>(user: PublicUser) { 
 
+        const dto = this.dto
+
         type J = T & {
-          out: { form: z.infer<typeof fileDto.avatarSchema> }
+          out: { form: z.infer<typeof dto.file.avatarSchema> }
         };
 
         return this.createFactory<J>().createMiddleware<J>( async (c, next) => {

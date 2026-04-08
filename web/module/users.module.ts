@@ -8,11 +8,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
     init() {
 
-        this.router.use(rateLimiter({
-            windowMs: 15 * 60 * 1000,
-            limit: 100,
-            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
-        }))
+        this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
         this.router.post(
         '/get/uuid',
@@ -28,7 +24,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.router.post(
         '/get/email',
         this.wrapper.validator.validate('json', this.dto.users.GetByEmail.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<UsersEnv>(),
         async (c) => {
 
             const { email } = c.req.valid('json');
@@ -40,7 +36,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.router.post(
         '/get/login',
         this.wrapper.validator.validate('json', this.dto.users.GetByLogin.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<UsersEnv>(),
         async (c) => {
 
             const { login } = c.req.valid('json');

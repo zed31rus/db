@@ -1,5 +1,4 @@
 import { BaseModule } from "#web/base/module.base";
-import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
 
 type AccountEnv = UserEnv & {}
@@ -8,15 +7,11 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
     init() {
 
-        this.router.use(rateLimiter({
-            windowMs: 15 * 60 * 1000,
-            limit: 10,
-            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
-        }))
+        this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 10))
 
         this.router.post(
         '/emailVerification/Send',
-        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -29,7 +24,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         this.router.post(
         '/emailVerification/Confirm',
         this.wrapper.validator.validate('json', this.dto.account.emailVerificationConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -42,7 +37,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.post(
         '/changePassword/request',
-        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(),
         async (c) => {
 
             const publicUser = c.get('user');
@@ -55,7 +50,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         this.router.post(
         '/changePassword/confirm',
         this.wrapper.validator.validate('json', this.dto.account.changePasswordConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<AccountEnv>(),
         async (c) => {
 
             const publicUser = c.get('user');
