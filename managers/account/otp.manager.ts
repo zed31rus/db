@@ -27,7 +27,6 @@ export default class OtpManager extends BaseManager {
 
         await this.repository.db.verificationCode.delete.delete(tx, verificationRecord)
 
-        this.lib.mail.sendMail(rawUser.email, 'Ваш адрес электронной почты подтверждён', 'Ваш адрес электронной почты подтверждён', '<p>Ваш адрес электронной почты подтверждён</p>');
         return { success: true };
     }
 }

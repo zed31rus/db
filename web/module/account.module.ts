@@ -47,7 +47,7 @@ export default class AccountModule extends BaseModule<AccountEnv> {
         }
         )
 
-        this.router.post(
+        this.router.patch(
         '/changePassword/confirm',
         this.wrapper.validator.validate('json', this.dto.account.changePasswordConfirm.Body),
         ...this.handler.auth.withValidUser<AccountEnv>(),
