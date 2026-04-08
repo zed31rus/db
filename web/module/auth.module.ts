@@ -1,5 +1,4 @@
 import { BaseModule } from "#web/base/module.base";
-import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
 
 type AuthEnv = UserEnv & {}

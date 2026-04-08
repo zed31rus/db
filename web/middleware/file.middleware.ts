@@ -1,5 +1,4 @@
 import baseMiddleware from "#web/base/middleware.base";
-import fileDto from "#web/dto/file.dto";
 import z from "zod";
 import { AvatarEnv } from "#web/types/Env.d";
 import path from "path";

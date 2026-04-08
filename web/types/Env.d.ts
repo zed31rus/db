@@ -5,11 +5,10 @@ export type UserEnv = {
         user: PublicUser;
     }
 };
+
 export type AvatarEnv = {
     Variables: {
         avatarPath: string
     }
 }
-
-export type AvatarUserEnv = UserEnv & AvatarEnv
 
