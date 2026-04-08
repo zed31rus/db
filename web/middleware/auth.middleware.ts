@@ -16,7 +16,7 @@ export default class AuthMiddleware extends baseMiddleware {
             if (!refreshToken) throw ApiError.Unauthorized();
             if (!accessToken) throw ApiError.Unauthorized();
 
-            const publicUser = await jwt.verify(accessToken, configEnv.JWT_SECRET);
+            const publicUser = await jwt.verify(accessToken, configEnv.JWT_SECRET!);
 
             c.set('user',publicUser);
 

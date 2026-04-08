@@ -7,7 +7,8 @@ const SMTP_HOST = process.env.SMTP_HOST;
 const SMTP_USER = process.env.SMTP_USER;
 const JWT_SECRET = process.env.JWT_SECRET;
 const SMTP_EMAIL = process.env.SMTP_EMAIL;
-const AVATAR_PATH = process.env.AVATAR_PATH;
+const AVATARS_PUBLIC_DIR_PATH = process.env.AVATARS_DIR_PATH;
+const PUBLIC_DIR_PATH = process.env.PUBLIC_DIR_PATH;
 
 if (!DATABASE_URL) throw ConfigError.env('error while loading env variables');
 if (!SMTP_API_KEY) throw ConfigError.env('error while loading env variables');
@@ -16,6 +17,7 @@ if (!SMTP_HOST) throw ConfigError.env('error while loading env variables');
 if (!SMTP_USER) throw ConfigError.env('error while loading env variables');
 if (!JWT_SECRET) throw ConfigError.env('error while loading env variables');
 if (!SMTP_EMAIL) throw ConfigError.env('error while loading env variables');
-if (!AVATAR_PATH) throw ConfigError.env('error while loading env variables');
+if (!AVATARS_PUBLIC_DIR_PATH) throw ConfigError.env('error while loading env variables');
+if (!PUBLIC_DIR_PATH) throw ConfigError.env('error while loading env variables');
 
-export default {DATABASE_URL, SMTP_API_KEY, PORT, SMTP_HOST, SMTP_USER, SMTP_EMAIL, JWT_SECRET, AVATAR_PATH}
+export default {DATABASE_URL, SMTP_API_KEY, PORT, SMTP_HOST, SMTP_USER, SMTP_EMAIL, JWT_SECRET, AVATARS_PUBLIC_DIR_PATH, PUBLIC_DIR_PATH};

@@ -1,5 +1,5 @@
 import baseHandler from "#web/base/handler.base";
-import { UserEnv } from "#web/types/Env.d";
+import { AvatarUserEnv, UserEnv } from "#web/types/Env.d";
 import { zValidator } from "@hono/zod-validator";
 import { ZodObject } from "zod";
 

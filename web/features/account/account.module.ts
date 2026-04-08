@@ -23,7 +23,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
             const { user } = await this.service.account.emailVerificationSend(publicUser);
             return c.json({ user });
 
-        })
+        }
+        )
 
         this.router.post(
         '/emailVerification/Confirm',
@@ -36,7 +37,8 @@ export default class AccountModule extends BaseModule<AccountEnv> {
             const { user } = await this.service.account.emailVerificationConfirm(publicUser, submitCode);
             return c.json({ user });
 
-        })
+        }
+        )
 
         this.router.post(
         '/changePassword/request',
