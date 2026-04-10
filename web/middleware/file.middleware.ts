@@ -1,24 +1,37 @@
 import baseMiddleware from "#web/base/middleware.base";
-import fileDto from "#web/dto/file.dto";
 import z from "zod";
-import fs from 'fs';
-import { UserEnv } from "#web/types/Env.d";
+import { AvatarEnv } from "#web/types/Env.d";
 import path from "path";
+import configEnv from '#config/env.config';
+import fs from 'fs';
+import { workDir } from "../../start.js";
+import { PublicUser } from "#lib/selector/user.selector";
 
-type AvatarInput = UserEnv & {
-  out: { form: z.infer<typeof fileDto.avatarSchema> }
-};
 export default class FileMiddleware extends baseMiddleware {
 
-    public withAvatar() { 
-        return this.createFactory<AvatarInput>().createMiddleware<AvatarInput>( async (c, next) => {
+    public withAvatar<T extends AvatarEnv>(user: PublicUser) { 
+
+        const dto = this.dto
+
+        type J = T & {
+          out: { form: z.infer<typeof dto.file.avatarSchema> }
+        };
+
+        return this.createFactory<J>().createMiddleware<J>( async (c, next) => {
             const { avatar } = c.req.valid('form');
-            const user = c.get('user');
+            const { uuid } = user;
 
-            const avatarArrayBuffer = await avatar.arrayBuffer()
+            const avatarArrayBuffer = await avatar.arrayBuffer();
 
-            const fileName = `${user.uuid}${path.extname(avatar.name)}`;
+            const fileName = `${uuid}${path.extname(avatar.name)}`;
+            const publicDirPath = configEnv.PUBLIC_DIR_PATH;
+            const avatarsPublicPathDir = configEnv.AVATARS_PUBLIC_DIR_PATH;
+            const avatarAbsolutePath = path.join(workDir, publicDirPath, avatarsPublicPathDir, fileName);
 
+            await fs.promises.writeFile(avatarAbsolutePath, Buffer.from(avatarArrayBuffer));
+
+            c.set('avatarPath', fileName);
+            await next();
         });
     }
 };

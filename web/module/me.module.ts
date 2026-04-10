@@ -1,6 +1,5 @@
 import { BaseModule } from "#web/base/module.base";
 import { UserEnv } from "#web/types/Env.d";
-import { rateLimiter } from "hono-rate-limiter";
 
 type ProfileEnv = UserEnv & {};
 
@@ -8,15 +7,11 @@ export default class MeModule extends BaseModule<ProfileEnv> {
 
     init() {
 
-        this.router.use(rateLimiter({
-            windowMs: 15 * 60 * 1000,
-            limit: 100,
-            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
-        }))
+        this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
         this.router.post(
         '/get',
-        ...this.handler.auth.withValidUser<ProfileEnv>(this.dto.cookie.both),
+        ...this.handler.auth.withValidUser<ProfileEnv>(),
         async (c) => {
 
             const publicUser = c.get('user');

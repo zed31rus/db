@@ -1,5 +1,4 @@
 import { BaseModule } from "#web/base/module.base";
-import { rateLimiter } from "hono-rate-limiter";
 import { UserEnv } from "#web/types/Env.d";
 
 type AuthEnv = UserEnv & {}
@@ -8,11 +7,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
     init() {
 
-        this.router.use(rateLimiter({
-            windowMs: 15 * 60 * 1000,
-            limit: 20,
-            keyGenerator: (c) => c.req.header("x-forwarded-for") ?? ""
-        }));
+        this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 20));
 
         this.router.post(
         '/register',

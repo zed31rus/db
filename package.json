@@ -5,11 +5,11 @@
   "license": "GPL-3.0-or-later",
   "author": "zed31rus_",
   "type": "module",
-  "main": "./dist/web/webServer.js",
+  "main": "./dist/start.js",
   "scripts": {
-    "dev": "tsx --watch ./web/webServer.ts",
+    "dev": "tsx --watch ./start.ts",
     "build": "tsc",
-    "start": "node ./dist/web/webServer.js"
+    "start": "node ./dist/start.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.19.11",

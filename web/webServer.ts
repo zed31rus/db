@@ -6,10 +6,7 @@ import webContainers from '#web/containers/index.web.container'
 import { logger } from 'hono/logger';
 import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
 import { PRISMA_ERRORS } from '#errors/prisma.errors';
-import dotenv from 'dotenv';
 import ConfigError from '#errors/config.errors';
-
-dotenv.config();
 
 const app = new Hono();
 
@@ -65,12 +62,14 @@ app.route('/account', webContainers.modules.account.router)
 app.route('/me', webContainers.modules.me.router)
 app.route('/user', webContainers.modules.users.router)
 
-serve({
-  fetch: app.fetch,
-  port: 3100
-}, (info) => {
-  console.log(`http://localhost:${info.port}`)
-})
+export function serveWebServer(instance: Hono, port: number) {
+  serve({
+    fetch: instance.fetch,
+    port: port
+  }, (info) => {
+    console.log(`http://localhost:${info.port}`)
+  })
+}
 
 export default app;
 export type AppType = typeof app;
