@@ -22,8 +22,8 @@ export default class RefreshToken extends BaseLib {
         return expires
     }
 
-    checkExpired(refreshToken: Prisma.RefreshTokenModel) {
-        if (new Date() > new Date(refreshToken.expiresAt)) {
+    checkExpired(token: Prisma.RefreshTokenModel) {
+        if (new Date() > new Date(token.expiresAt)) {
                 return true
             }
         return false
