@@ -6,10 +6,7 @@ import webContainers from '#web/containers/index.web.container'
 import { logger } from 'hono/logger';
 import { PrismaClientKnownRequestError } from '#generated/prisma/internal/prismaNamespace.js';
 import { PRISMA_ERRORS } from '#errors/prisma.errors';
-import dotenv from 'dotenv';
 import ConfigError from '#errors/config.errors';
-
-dotenv.config();
 
 const app = new Hono();
 

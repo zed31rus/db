@@ -13,7 +13,6 @@ export default class OtpManager extends BaseManager {
 
         await this.repository.db.verificationCode.upsert.upsert(tx, rawUser, hashedOtp, type, otpExpires.atTime);
 
-        this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
         return { rawOtp }
     }
 
