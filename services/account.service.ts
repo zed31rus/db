@@ -6,7 +6,7 @@ import { OtpTypes } from "#types/account.js";
 export default class AccountService extends BaseService {
 
     async emailVerificationSend(user: PublicUser) {
-        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user);
+        const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         if (rawUser.emailConfirmed) return { user: publicUser };
@@ -19,7 +19,7 @@ export default class AccountService extends BaseService {
     }
 
     async emailVerificationConfirm(user: PublicUser, submitCode: string) {
-        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user);
+        const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         if (rawUser.emailConfirmed) return { user: publicUser };
@@ -37,7 +37,7 @@ export default class AccountService extends BaseService {
     }
 
     async changePasswordRequest(user: PublicUser) {
-        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user)
+        const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user)
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.passwordChange);
@@ -48,7 +48,7 @@ export default class AccountService extends BaseService {
     }
 
     async changePasswordConfirm(user: PublicUser, password: string, submitCode: string) {
-        const rawUser = await this.repository.db.users.get.byPublicUser(prismaClient, user);
+        const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user);
         const hashedPassword = await this.lib.hash.bcrypt.create(password, 10);
 
         const { newRawUser, success } = await prismaClient.$transaction(async (tx) => {

@@ -12,9 +12,9 @@ export default class OauthModule extends BaseModule<OauthEnv> {
 
         this.router.post(
         'discord/callback',
-        this.wrapper.validator.validate('json', this.dto.),
+        this.wrapper.validator.validate('json', this.dto.oauth.discord.callback),
         async (c) => {
-            const { code, provider } = c.req.valid('json');
+            const { code } = c.req.valid('json');
 
             const API_ENDPOINT = 'https://discord.com/api/v10';
             const CLIENT_ID = envConfig.DISCORD_OAUTH_CLIENT_ID;
@@ -31,26 +31,21 @@ export default class OauthModule extends BaseModule<OauthEnv> {
 
             const authHeader = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
 
-            try {
-                const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Authorization': `Basic ${authHeader}`,
-                },
-                body: body,
-                });
+            const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Basic ${authHeader}`,
+            },
+            body: body,
+            });
 
-                if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Discord API Error: ${response.status} - ${errorText}`);
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error('Ошибка при обмене кода:', error.message);
-                throw error;
+            if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Discord API Error: ${response.status} - ${errorText}`);
             }
+
+            return await response.json();
         }
         )
     }

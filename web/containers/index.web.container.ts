@@ -22,6 +22,7 @@ import UsersDto from "#web/dto/users.dto";
 import ValidatorWrapper from "#web/wrappers/validator.wrapper";
 import WrapperContainer from "#web/containers/wrapper.container";
 import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper";
+import OauthDto from "#web/dto/oauth.dto";
 
 const dto = new DtoContainer(
     new CookieDto(),
@@ -29,7 +30,8 @@ const dto = new DtoContainer(
     new AccountDto(),
     new AuthDto(),
     new MeDto(),
-    new UsersDto()
+    new UsersDto(),
+    new OauthDto()
 )
 
 const wrappers = new WrapperContainer(
