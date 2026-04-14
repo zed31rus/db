@@ -17,7 +17,7 @@ db
 ├─ errors
 │  ├─ api.errors.ts
 │  ├─ config.errors.ts
-│  └─ prisma.erors.ts
+│  └─ prisma.errors.ts
 ├─ generated
 ├─ lib
 │  ├─ hash
@@ -35,10 +35,11 @@ db
 ├─ LICENSE
 ├─ managers
 │  ├─ account
-│  │  ├─ oauth.manager.ts
 │  │  └─ otp.manager.ts
-│  └─ auth
-│     └─ session.manager.ts
+│  ├─ auth
+│  │  └─ session.manager.ts
+│  └─ oauth
+│     └─ discord.oauth.manager.ts
 ├─ package-lock.json
 ├─ package.json
 ├─ prisma
@@ -95,7 +96,10 @@ db
 │  ├─ account.service.ts
 │  ├─ auth.service.ts
 │  ├─ me.service.ts
+│  ├─ oauth
+│  │  └─ discord.oauth.service.ts
 │  └─ users.service.ts
+├─ start.ts
 ├─ types
 │  └─ account.ts
 └─ web
@@ -114,33 +118,33 @@ db
    │  ├─ webManager.container.ts
    │  └─ wrapper.container.ts
    ├─ dto
+   │  ├─ account.dto.ts
+   │  ├─ auth.dto.ts
    │  ├─ cookie.dto.ts
-   │  └─ file.dto.ts
-   ├─ features
-   │  ├─ account
-   │  │  ├─ account.dto.ts
-   │  │  └─ account.module.ts
-   │  ├─ auth
-   │  │  ├─ auth.dto.ts
-   │  │  └─ auth.module.ts
-   │  ├─ me
-   │  │  ├─ me.dto.ts
-   │  │  └─ me.module.ts
-   │  └─ users
-   │     ├─ users.dto.ts
-   │     └─ users.module.ts
+   │  ├─ file.dto.ts
+   │  ├─ me.dto.ts
+   │  ├─ oauth.dto.ts
+   │  └─ users.dto.ts
    ├─ handler
    │  ├─ auth.handler.ts
    │  └─ file.handler.ts
    ├─ middleware
    │  ├─ auth.middleware.ts
    │  └─ file.middleware.ts
+   ├─ module
+   │  ├─ account.module.ts
+   │  ├─ auth.module.ts
+   │  ├─ me.module.ts
+   │  ├─ oauth
+   │  │  └─ discord.oauth.module.ts
+   │  └─ users.module.ts
    ├─ types
    │  └─ Env.d.ts
    ├─ webManagers
    │  └─ session.webManager.ts
    ├─ webServer.ts
    └─ wrappers
+      ├─ rateLimiter.wrapper.ts
       └─ validator.wrapper.ts
 
 ```

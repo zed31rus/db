@@ -20,7 +20,8 @@
       "#base/*": ["./base/*"],
       "#errors/*": ["./errors/*"],
       "#containers/*": ["./containers/*"],
-      "#config/*": ["./dist/config/*"]
+      "#config/*": ["./dist/config/*"],
+      "#root/*": ["./*"]
     }
   },
   

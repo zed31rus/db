@@ -23,6 +23,7 @@ import ValidatorWrapper from "#web/wrappers/validator.wrapper";
 import WrapperContainer from "#web/containers/wrapper.container";
 import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper";
 import OauthDto from "#web/dto/oauth.dto";
+import DiscordOauthModule from "#web/module/oauth/discord.oauth.module";
 
 const dto = new DtoContainer(
     new CookieDto(),
@@ -57,7 +58,8 @@ const modules = new ModuleContainer(
     new AccountModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
     new AuthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
     new MeModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
-    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares)
+    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares),
+    { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares)}
 )
 
 export default { modules }

@@ -1,7 +1,9 @@
 import BaseService from "#base/service.base";
 
-export default class AccountService extends BaseService {
-    async callback() {
-        
+export default class DiscordOauthService extends BaseService {
+
+    async callback(code: string) {
+        return this.manager.oauth.discord.exchangeCode(code);
     }
+
 }

@@ -52,6 +52,7 @@ app.onError((err, c) => {
     }, 400);
   }
   
+  console.log(err)
   return c.json({ 
     message: "Internal Server Error",
   }, 500);
@@ -61,6 +62,7 @@ app.route('/auth', webContainers.modules.auth.router);
 app.route('/account', webContainers.modules.account.router)
 app.route('/me', webContainers.modules.me.router)
 app.route('/user', webContainers.modules.users.router)
+app.route('/oauth2/discord', webContainers.modules.oauth.discord.router)
 
 export function serveWebServer(instance: Hono, port: number) {
   serve({

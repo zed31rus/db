@@ -6,13 +6,13 @@ import ApiError from "#errors/api.errors";
 export default class UsersService extends BaseService {
     
     async getByUuid(uuid: PublicUser['uuid']) {
-        const rawUser = await this.repository.db.users.get.byUuid(prismaClient, uuid);
+        const rawUser = await this.repository.db.users.get.orThrow.byUuid(prismaClient, uuid);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser)
         return { user: publicUser }
     }
 
     async getByEmail(email: PersonalUser['email']) {
-        const rawUser = await this.repository.db.users.get.byEmail(prismaClient, email);
+        const rawUser = await this.repository.db.users.get.orThrow.byEmail(prismaClient, email);
         if (!rawUser.allowEmailFind ) {
             throw ApiError.NotFound();
         }
@@ -21,7 +21,7 @@ export default class UsersService extends BaseService {
     }
 
     async getByLogin(login: PersonalUser['login']) {
-        const rawUser = await this.repository.db.users.get.byLogin(prismaClient, login);
+        const rawUser = await this.repository.db.users.get.orThrow.byLogin(prismaClient, login);
         if (!rawUser.allowLoginFind ) {
             throw ApiError.NotFound();
         }
@@ -31,7 +31,7 @@ export default class UsersService extends BaseService {
     }
 
     async getByNickname(nickname: PublicUser['nickname'] ) {
-        const rawUser = await this.repository.db.users.get.byNick(prismaClient, nickname);
+        const rawUser = await this.repository.db.users.get.orThrow.byNick(prismaClient, nickname);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
         return { user: publicUser }
     }
