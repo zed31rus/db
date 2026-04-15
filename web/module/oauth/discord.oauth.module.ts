@@ -1,23 +1,27 @@
 import { BaseModule } from "#web/base/module.base";
-import { UserEnv } from "#web/types/Env.d";
+import { OptionalUserEnv } from "#web/types/Env.d";
 
-type OauthEnv = UserEnv & {};
+type DiscordOauthEnv = OptionalUserEnv & {};
 
-export default class DiscordOauthModule extends BaseModule<OauthEnv> {
+export default class DiscordOauthModule extends BaseModule<DiscordOauthEnv> {
 
     init() {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
         this.router.get(
-        '/callback',
-        this.wrapper.validator.validate('query', this.dto.oauth.discord.callback),
-        async (c) => {
-            const { code } = c.req.valid('query');
-            console.log(await this.service.oauth.discord.callback(code));
+            '/callback',
+            this.wrapper.validator.validate('query', this.dto.oauth.discord.callback),
+            this.middleware.auth.withOptionalUser<DiscordOauthEnv>(),
+            async (c) => {
+                const { code } = c.req.valid('query');
+                const user = c.get('user');
+                const callbackRes = await this.service.oauth.discord.callback(code, user);
 
-            return c.json({ success: true })
-        }
+                console.log(callbackRes.meRes);
+
+                return c.json({ success: true })
+            }
         )
     }
 }

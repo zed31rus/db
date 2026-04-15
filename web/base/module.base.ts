@@ -4,11 +4,11 @@ import HandlerContainer from "#web/containers/handler.container";
 import MiddlewareContainer from "#web/containers/middleware.container";
 import WebManagerContainer from "#web/containers/webManager.container";
 import WrapperContainer from "#web/containers/wrapper.container";
-import { UserEnv } from "#web/types/Env.d";
+import { OptionalUserEnv } from "#web/types/Env.d";
 import { Env, Hono } from "hono";
 import { createFactory } from "hono/factory";
 
-export abstract class BaseModule<T extends UserEnv> {
+export abstract class BaseModule<T extends OptionalUserEnv> {
     public router = new Hono<T>();
 
     constructor(

@@ -4,7 +4,7 @@ import { AvatarEnv } from "#web/types/Env.d";
 import path from "path";
 import configEnv from '#config/env.config';
 import fs from 'fs';
-import { workDir } from "#root/start.js";
+import { workDir } from "#root/start";
 import { PublicUser } from "#lib/selector/user.selector";
 
 export default class FileMiddleware extends baseMiddleware {

@@ -1,6 +1,12 @@
 import { PublicUser } from "#lib/selector/user.selector";
 
-export type UserEnv = {
+export type OptionalUserEnv = {
+    Variables: {
+        user: PublicUser | null;
+    }
+};
+
+export type UserEnv = OptionalUserEnv & {
     Variables: {
         user: PublicUser;
     }

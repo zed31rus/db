@@ -13,6 +13,7 @@
       "#types/*": ["./types/*"],
       "#lib/*": ["./lib/*"],
       "#repo/*": ["./repository/*"],
+      "#infra/*": ["./infra/*"],
       "#services/*": ["./services/*"],
       "#web/*": ["./web/*"],
       "#prisma/*": ["./prisma/*"],
@@ -20,7 +21,7 @@
       "#base/*": ["./base/*"],
       "#errors/*": ["./errors/*"],
       "#containers/*": ["./containers/*"],
-      "#config/*": ["./dist/config/*"],
+      "#config/*": ["./config/*"],
       "#root/*": ["./*"]
     }
   },

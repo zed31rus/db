@@ -16,8 +16,9 @@ import ManagerContainer from "#containers/manager.container";
 import RepositoryContainer from "#containers/repository.container";
 import ServiceContainer from "#containers/service.container";
 import configEnv from "#config/env.config"
-import DiscordOauthManager from "#managers/oauth/discord.oauth.manager";
 import DiscordOauthService from "#services/oauth/discord.oauth";
+import InfraContainer from "#containers/infra.container";
+import DiscordOauthInfra from "#infra/discord/oauth.discord.infra";
 
 const libs = new LibContainer(
     new Hash(),
@@ -37,22 +38,25 @@ const libs = new LibContainer(
 
 );
 
+const infra = new InfraContainer(
+    { discord: new DiscordOauthInfra }
+)
+
 const repositories = new RepositoryContainer(
     new DB()
 );
 
 const managers = new ManagerContainer(
-    new OtpManager(libs, repositories),
-    new SessionManager(libs, repositories),
-    { discord: new DiscordOauthManager(libs, repositories)}
+    new OtpManager(libs, repositories, infra),
+    new SessionManager(libs, repositories, infra)
 );
 
 const services = new ServiceContainer(
-    new AccountService(libs, managers, repositories),
-    new AuthService(libs, managers, repositories),
-    new MeService(libs, managers, repositories),
-    new UsersService(libs, managers, repositories),
-    { discord: new DiscordOauthService(libs, managers, repositories)}
+    new AccountService(libs, managers, repositories, infra),
+    new AuthService(libs, managers, repositories, infra),
+    new MeService(libs, managers, repositories, infra),
+    new UsersService(libs, managers, repositories, infra),
+    { discord: new DiscordOauthService(libs, managers, repositories, infra)}
 );
 
 export default { services }
