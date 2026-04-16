@@ -1,5 +1,6 @@
 import envConfig from "#config/env.config";
 import ApiError from "#errors/api.errors";
+import { Prisma } from "#prisma/prisma";
 
 interface ExchangeReply {
   "access_token": string,
@@ -17,7 +18,7 @@ interface TokenReply {
   "scope": string
 }
 
-interface meReply {
+interface meReply extends Prisma.JsonObject {
     
   id: string,
   username: string,
@@ -44,7 +45,7 @@ interface meReply {
 
 export default class DiscordOauthInfra {
 
-    
+
     API_ENDPOINT = 'https://discord.com/api/v10';
     CLIENT_ID = envConfig.DISCORD_OAUTH_CLIENT_ID;
     CLIENT_SECRET = envConfig.DISCORD_OAUTH_CLIENT_SECRET;

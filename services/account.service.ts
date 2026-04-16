@@ -13,7 +13,7 @@ export default class AccountService extends BaseService {
 
         const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.EmailConfirm);
 
-        rawOtp ?? this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
+        if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
         return { user: publicUser };
     }
@@ -29,7 +29,8 @@ export default class AccountService extends BaseService {
             const newRawUser = await this.repository.db.users.update.setEmailConfirmed(tx, rawUser, true)
             return { newRawUser, success };
         });
-        success ?? this.lib.mail.sendMail(rawUser.email, 'Ваш адрес электронной почты подтверждён', 'Ваш адрес электронной почты подтверждён', '<p>Ваш адрес электронной почты подтверждён</p>');
+
+        if (success) this.lib.mail.sendMail(rawUser.email, 'Ваш адрес электронной почты подтверждён', 'Ваш адрес электронной почты подтверждён', '<p>Ваш адрес электронной почты подтверждён</p>');
 
         const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser);
 
@@ -42,7 +43,7 @@ export default class AccountService extends BaseService {
 
         const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.passwordChange);
 
-        rawOtp ?? this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
+        if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
         return { user: publicUser };
     }
@@ -56,7 +57,7 @@ export default class AccountService extends BaseService {
             const newRawUser = await this.repository.db.users.update.setPasswordHash(tx, rawUser, hashedPassword);
             return { newRawUser, success };
         })
-        success ?? this.lib.mail.sendMail(rawUser.email, 'Ваш пароль успешно изменён', 'Ваш пароль успешно изменён', '<p>Ваш пароль успешно изменён</p>');
+        if (success) this.lib.mail.sendMail(rawUser.email, 'Ваш пароль успешно изменён', 'Ваш пароль успешно изменён', '<p>Ваш пароль успешно изменён</p>');
 
         const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser);
 

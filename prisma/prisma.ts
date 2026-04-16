@@ -4,7 +4,7 @@ import * as prisma from '#generated/prisma/client.js'
 import configEnv from '#config/env.config'
 
 const pool = new pg.Pool({connectionString: configEnv.DATABASE_URL})
-const adapter = new PrismaPg(pool)
+const adapter = new PrismaPg(pool, {schema: "auth"})
 
 export const prismaClient = new prisma.PrismaClient({ adapter });
 export * from '#generated/prisma/client.js'

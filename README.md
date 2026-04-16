@@ -10,6 +10,7 @@ db
 │  └─ env.config.ts
 ├─ containers
 │  ├─ index.container.ts
+│  ├─ infra.container.ts
 │  ├─ lib.container.ts
 │  ├─ manager.container.ts
 │  ├─ repository.container.ts
@@ -19,6 +20,9 @@ db
 │  ├─ config.errors.ts
 │  └─ prisma.errors.ts
 ├─ generated
+├─ infra
+│  └─ discord
+│     └─ oauth.discord.infra.ts
 ├─ lib
 │  ├─ hash
 │  │  └─ hash.lib.ts
@@ -36,10 +40,8 @@ db
 ├─ managers
 │  ├─ account
 │  │  └─ otp.manager.ts
-│  ├─ auth
-│  │  └─ session.manager.ts
-│  └─ oauth
-│     └─ discord.oauth.manager.ts
+│  └─ auth
+│     └─ session.manager.ts
 ├─ package-lock.json
 ├─ package.json
 ├─ prisma

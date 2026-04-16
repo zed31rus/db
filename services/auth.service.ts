@@ -8,7 +8,7 @@ export default class AuthService extends BaseService {
 
         const hashedPassword = await this.lib.hash.bcrypt.create(password, 10);
         
-        const rawUser = await this.repository.db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword);
+        const rawUser = await this.repository.db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword, false);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         return { user: publicUser };
