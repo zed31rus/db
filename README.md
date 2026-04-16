@@ -74,7 +74,8 @@ db
 │     │  ├─ classes
 │     │  │  ├─ createOauthAccount.ts
 │     │  │  ├─ getOauthAccount.ts
-│     │  │  └─ updateOauthAccount.ts
+│     │  │  ├─ updateOauthAccount.ts
+│     │  │  └─ upsertOauthAccount.ts
 │     │  └─ oauth.class.ts
 │     ├─ refreshToken
 │     │  ├─ classes
@@ -103,7 +104,8 @@ db
 │  └─ users.service.ts
 ├─ start.ts
 ├─ types
-│  └─ account.ts
+│  ├─ account.ts
+│  └─ oauth.ts
 └─ web
    ├─ base
    │  ├─ handler.base.ts
