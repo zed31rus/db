@@ -1,4 +1,4 @@
-import MainServer from "#web/webServer";
+import MainServer from "#web/servers/mainServer";
 
 export default class ServerContainer {
     constructor(

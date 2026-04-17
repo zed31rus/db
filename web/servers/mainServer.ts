@@ -1,6 +1,6 @@
 import { serve } from '@hono/node-server'
 import { logger } from 'hono/logger';
-import BaseServer from './base/server.base.js';
+import BaseServer from '../base/server.base.js';
 
 export default class MainServer extends BaseServer {
   configureWebServer() {
