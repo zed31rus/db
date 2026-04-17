@@ -1,2 +1,2 @@
-export default abstract class BaseWrappers {
+export default abstract class BaseWrapper {
 }

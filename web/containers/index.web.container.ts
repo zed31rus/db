@@ -24,6 +24,13 @@ import WrapperContainer from "#web/containers/wrapper.container";
 import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper";
 import OauthDto from "#web/dto/oauth.dto";
 import DiscordOauthModule from "#web/module/oauth/discord.oauth.module";
+import ErrorHandler from "#web/handler/error.handler";
+import CorsWrapper from "#web/wrappers/cors.wrapper";
+import MainServer from "#web/webServer";
+import { Hono } from "hono";
+import ServerContainer from "./server.container.js";
+
+const hono = new Hono();
 
 const dto = new DtoContainer(
     new CookieDto(),
@@ -37,7 +44,8 @@ const dto = new DtoContainer(
 
 const wrappers = new WrapperContainer(
     new ValidatorWrapper(),
-    new RateLimiterWrapper()
+    new RateLimiterWrapper(),
+    new CorsWrapper()
 )
 
 const webManagers = new WebManagerContainer(
@@ -50,8 +58,9 @@ const middlewares = new MiddlewareContainer(
 )
 
 const handlers = new HandlerContainer(
-    new AuthHandler(middlewares, wrappers, dto),
-    new FileHandler(middlewares, wrappers, dto)
+    new AuthHandler(middlewares, wrappers, dto, webManagers),
+    new FileHandler(middlewares, wrappers, dto, webManagers),
+    new ErrorHandler(middlewares, wrappers, dto, webManagers)
 )
 
 const modules = new ModuleContainer(
@@ -62,4 +71,8 @@ const modules = new ModuleContainer(
     { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares)}
 )
 
-export default { modules }
+const serverContainer = new ServerContainer(
+    new MainServer(hono, webManagers, modules, handlers, wrappers)
+)
+
+export default { serverContainer }

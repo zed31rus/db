@@ -1,8 +1,8 @@
-import app, { serveWebServer } from "#web/webServer";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
-import envConfig from "#config/env.config";
+import Servers from "#web/containers/index.web.container"
 
 export const workDir = path.dirname(fileURLToPath(import.meta.url));
 
-serveWebServer(app, +envConfig.PORT);
+Servers.serverContainer.mainServer.configureWebServer();
+Servers.serverContainer.mainServer.startWebServer(3100);
