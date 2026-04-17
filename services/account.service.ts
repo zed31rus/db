@@ -7,22 +7,22 @@ export default class AccountService extends BaseService {
 
     async emailVerificationSend(user: PublicUser) {
         const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user);
-        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
 
-        if (rawUser.emailConfirmed) return { user: publicUser };
+        if (rawUser.emailConfirmed) return { user: personalUser };
 
         const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.EmailConfirm);
 
         if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
-        return { user: publicUser };
+        return { user: personalUser };
     }
 
     async emailVerificationConfirm(user: PublicUser, submitCode: string) {
         const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user);
-        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
 
-        if (rawUser.emailConfirmed) return { user: publicUser };
+        if (rawUser.emailConfirmed) return { user: personalUser };
 
         const { newRawUser, success } = await prismaClient.$transaction(async (tx) => {
             const { success } = await this.manager.otp.confirmOtp(tx, rawUser, submitCode, OtpTypes.EmailConfirm);
@@ -32,20 +32,20 @@ export default class AccountService extends BaseService {
 
         if (success) this.lib.mail.sendMail(rawUser.email, 'Ваш адрес электронной почты подтверждён', 'Ваш адрес электронной почты подтверждён', '<p>Ваш адрес электронной почты подтверждён</p>');
 
-        const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser);
+        const newPersonalUser = this.lib.userSelector.toPersonalJSON(newRawUser);
 
-        return { user: newPublicUser };
+        return { user: newPersonalUser };
     }
 
     async changePasswordRequest(user: PublicUser) {
         const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user)
-        const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
+        const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
 
         const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.passwordChange);
 
         if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
-        return { user: publicUser };
+        return { user: personalUser };
     }
 
     async changePasswordConfirm(user: PublicUser, password: string, submitCode: string) {
@@ -59,9 +59,9 @@ export default class AccountService extends BaseService {
         })
         if (success) this.lib.mail.sendMail(rawUser.email, 'Ваш пароль успешно изменён', 'Ваш пароль успешно изменён', '<p>Ваш пароль успешно изменён</p>');
 
-        const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser);
+        const newPersonalUser = this.lib.userSelector.toPersonalJSON(newRawUser);
 
-        return { user: newPublicUser };
+        return { user: newPersonalUser };
     }
 
 }

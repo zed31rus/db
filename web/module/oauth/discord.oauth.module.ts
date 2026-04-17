@@ -15,12 +15,13 @@ export default class DiscordOauthModule extends BaseModule<DiscordOauthEnv> {
             this.middleware.auth.withOptionalUser<DiscordOauthEnv>(),
             async (c) => {
                 const { code } = c.req.valid('query');
-                const user = c.get('user');
-                const callbackRes = await this.service.oauth.discord.callback(code, user);
+                const publicUser = c.get('user');
+                
+                const { user, refresh, access } = await this.service.oauth.discord.callback(code, publicUser);
 
-                console.log(callbackRes.meRes);
+                this.webManager.session.sendSession(c, refresh, access)
 
-                return c.json({ success: true })
+                return c.json({ user })
             }
         )
     }

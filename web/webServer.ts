@@ -30,6 +30,7 @@ app.use(cors({
 app.use(logger());
 
 app.onError((err, c) => {
+  console.log(err)
   if (err instanceof ApiError) {
     return c.json({
       message: err.message,
@@ -52,7 +53,6 @@ app.onError((err, c) => {
     }, 400);
   }
   
-  console.log(err)
   return c.json({ 
     message: "Internal Server Error",
   }, 500);

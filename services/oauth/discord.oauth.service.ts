@@ -1,4 +1,5 @@
 import BaseService from "#base/service.base";
+import { DiscordOauthApiMeReply } from "#infra/discord/oauth.discord.infra";
 import { PublicUser } from "#lib/selector/user.selector";
 import { prismaClient } from "#prisma/prisma";
 import { OauthProviders } from "#types/oauth.js";
@@ -23,10 +24,14 @@ export default class DiscordOauthService extends BaseService {
             }
         );
 
-        return { meRes };
+        const personalUser = await this.lib.userSelector.toPersonalJSON(rawUser);
+
+        const sesssion = await this.manager.session.createSession(rawUser);
+
+        return { user: personalUser, ...sesssion }
     }
 
-    private async resolveUser(publicUser: PublicUser | null, meRes: any) {
+    private async resolveUser(publicUser: PublicUser | null, meRes: DiscordOauthApiMeReply) {
         if (publicUser) {
             return await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, publicUser);
         }
@@ -40,7 +45,7 @@ export default class DiscordOauthService extends BaseService {
         if (userByEmail) return userByEmail;
 
         return await this.repository.db.users.create.createUser(
-            prismaClient, meRes.username, meRes.global_name, meRes.email, null, true
+            prismaClient, meRes.global_name, meRes.username, meRes.email, null, true
         );
     }
 }

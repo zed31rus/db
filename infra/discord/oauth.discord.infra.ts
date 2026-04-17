@@ -2,7 +2,7 @@ import envConfig from "#config/env.config";
 import ApiError from "#errors/api.errors";
 import { Prisma } from "#prisma/prisma";
 
-interface ExchangeReply {
+export interface DiscordOauthApiExchangeReply {
   "access_token": string,
   "token_type": string,
   "expires_in": number,
@@ -10,7 +10,7 @@ interface ExchangeReply {
   "scope": string
 }
 
-interface TokenReply {
+export interface DiscordOauthApiTokenReply {
   "access_token": string,
   "token_type": string,
   "expires_in": number,
@@ -18,7 +18,7 @@ interface TokenReply {
   "scope": string
 }
 
-interface meReply extends Prisma.JsonObject {
+export interface DiscordOauthApiMeReply extends Prisma.JsonObject {
     
   id: string,
   username: string,
@@ -75,7 +75,7 @@ export default class DiscordOauthInfra {
         throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
-        return await response.json() as ExchangeReply;
+        return await response.json() as DiscordOauthApiExchangeReply;
     }
 
     async token(refreshToken: string) {
@@ -100,7 +100,7 @@ export default class DiscordOauthInfra {
             throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
-        return await response.json() as TokenReply;
+        return await response.json() as DiscordOauthApiTokenReply;
     }
 
     async me(accessToken: string) {
@@ -119,7 +119,7 @@ export default class DiscordOauthInfra {
         throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
-        return await response.json() as meReply;
+        return await response.json() as DiscordOauthApiMeReply;
     }
 
 }
