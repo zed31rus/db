@@ -3,12 +3,12 @@ import ModuleContainer from "#web/containers/module.container";
 import WebManagerContainer from "#web/containers/webManager.container";
 import WrapperContainer from "#web/containers/wrapper.container";
 import { ServerType } from "@hono/node-server";
-import { Hono } from "hono";
+import { OpenAPIHono } from "@hono/zod-openapi";
 
 export default abstract class BaseServer {
 
     constructor(
-        protected readonly server: Hono,
+        protected readonly server: OpenAPIHono,
         protected readonly webManager: WebManagerContainer,
         protected readonly module: ModuleContainer,
         protected readonly handler: HandlerContainer,

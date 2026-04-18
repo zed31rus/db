@@ -9,9 +9,8 @@ export default class MeModule extends BaseModule<ProfileEnv> {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
-        this.router.post(
-        '/get',
-        ...this.handler.auth.withValidUser<ProfileEnv>(),
+        this.router.openapi(
+        this.openapi.me.get,
         async (c) => {
 
             const publicUser = c.get('user');

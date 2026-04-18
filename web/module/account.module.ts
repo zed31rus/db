@@ -1,7 +1,7 @@
 import { BaseModule } from "#web/base/module.base";
 import { UserEnv } from "#web/types/Env.d";
 
-type AccountEnv = UserEnv & {}
+export type AccountEnv = UserEnv & {}
 
 export default class AccountModule extends BaseModule<AccountEnv> {
 
@@ -9,56 +9,50 @@ export default class AccountModule extends BaseModule<AccountEnv> {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 10))
 
-        this.router.post(
-        '/emailVerification/Send',
-        ...this.handler.auth.withValidUser<AccountEnv>(),
-        async (c) => {
+        this.router.openapi(
+            this.openapi.account.emailVerificationSend,
+            async (c) => {
 
-            const publicUser = c.get('user');
-            const { user } = await this.service.account.emailVerificationSend(publicUser);
-            return c.json({ user });
+                const publicUser = c.get('user');
+                const { user } = await this.service.account.emailVerificationSend(publicUser);
+                return c.json({ user });
 
-        }
+            }
         )
 
-        this.router.post(
-        '/emailVerification/Confirm',
-        this.wrapper.validator.validate('json', this.dto.account.emailVerificationConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(),
-        async (c) => {
+        this.router.openapi(
+            this.openapi.account.emailVerificationConfirm,
+            async (c) => {
 
-            const publicUser = c.get('user');
-            const { submitCode } = c.req.valid('json');
-            const { user } = await this.service.account.emailVerificationConfirm(publicUser, submitCode);
-            return c.json({ user });
+                const publicUser = c.get('user');
+                const { submitCode } = c.req.valid('json');
+                const { user } = await this.service.account.emailVerificationConfirm(publicUser, submitCode);
+                return c.json({ user });
 
-        }
+            }
         )
 
-        this.router.post(
-        '/changePassword/request',
-        ...this.handler.auth.withValidUser<AccountEnv>(),
-        async (c) => {
+        this.router.openapi(
+            this.openapi.account.changePasswordRequest,
+            async (c) => {
 
-            const publicUser = c.get('user');
-            const { user } = await this.service.account.changePasswordRequest(publicUser);
-            return c.json({ user });
+                const publicUser = c.get('user');
+                const { user } = await this.service.account.changePasswordRequest(publicUser);
+                return c.json({ user });
 
-        }
+            }
         )
 
-        this.router.patch(
-        '/changePassword/confirm',
-        this.wrapper.validator.validate('json', this.dto.account.changePasswordConfirm.Body),
-        ...this.handler.auth.withValidUser<AccountEnv>(),
-        async (c) => {
+        this.router.openapi(
+            this.openapi.account.changePasswordConfirm,
+            async (c) => {
 
-            const publicUser = c.get('user');
-            const { password, submitCode } = c.req.valid('json');
-            const { user } = await this.service.account.changePasswordConfirm(publicUser, password, submitCode);
-            return c.json({ user });
+                const publicUser = c.get('user');
+                const { password, submitCode } = c.req.valid('json');
+                const { user } = await this.service.account.changePasswordConfirm(publicUser, password, submitCode);
+                return c.json({ user });
 
-        }
+            }
         )
 
     }

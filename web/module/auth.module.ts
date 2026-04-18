@@ -9,9 +9,8 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 20));
 
-        this.router.post(
-        '/register',
-        this.wrapper.validator.validate('json', this.dto.auth.Register.Body),
+        this.router.openapi(
+        this.openapi.auth.register,
         async (c) => {
             
             const { login, email, password, nickname } = c.req.valid('json');
@@ -20,21 +19,19 @@ export default class AuthModule extends BaseModule<AuthEnv> {
         });
 
 
-        this.router.post(
-        '/login',
-        this.wrapper.validator.validate('json', this.dto.auth.Login.Body),
+        this.router.openapi(
+        this.openapi.auth.login,
         async (c) => {
 
-            const { login, password } = c.req.valid('json');
-            const { user, refresh, access } = await this.service.auth.login(login, password);
+            const { email, password } = c.req.valid('json');
+            const { user, refresh, access } = await this.service.auth.login(email, password);
             this.webManager.session.sendSession(c, refresh, access);
             return c.json({user});
         });
 
 
-        this.router.post(
-        '/refresh',
-        this.wrapper.validator.validate('cookie', this.dto.cookie.refresh),
+        this.router.openapi(
+        this.openapi.auth.refresh,
         async (c) => {
             
             const { refreshToken } = c.req.valid('cookie');
@@ -44,9 +41,8 @@ export default class AuthModule extends BaseModule<AuthEnv> {
         });
 
 
-        this.router.post(
-        '/logout',
-        this.wrapper.validator.validate('cookie', this.dto.cookie.refresh),
+        this.router.openapi(
+        this.openapi.auth.logout,
         async (c) => {
             
             this.webManager.session.deleteSession(c);

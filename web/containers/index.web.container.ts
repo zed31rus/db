@@ -26,11 +26,17 @@ import OauthDto from "#web/dto/oauth.dto";
 import DiscordOauthModule from "#web/module/oauth/discord.oauth.module";
 import ErrorHandler from "#web/handler/error.handler";
 import CorsWrapper from "#web/wrappers/cors.wrapper";
-import MainServer from "#web/webServer";
-import { Hono } from "hono";
+import MainServer from "#web/servers/main.server";
 import ServerContainer from "./server.container.js";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import OpenAPIContainer from "./openapi.container.js";
+import AccountOpenAPI from "#web/openapi/account.openapi";
+import AuthOpenAPI from "#web/openapi/auth.openapi";
+import MeOpenAPI from "#web/openapi/me.openapi";
+import UsersOpenAPI from "#web/openapi/users.openapi";
+import DiscordOauthOpenAPI from "#web/openapi/oauth/discord.oauth.openapi";
 
-const hono = new Hono();
+const hono = new OpenAPIHono();
 
 const dto = new DtoContainer(
     new CookieDto(),
@@ -53,8 +59,8 @@ const webManagers = new WebManagerContainer(
 )
 
 const middlewares = new MiddlewareContainer(
-    new AuthMiddleware(dto),
-    new FileMiddleware(dto)
+    new AuthMiddleware(dto, wrappers, webManagers),
+    new FileMiddleware(dto, wrappers, webManagers)
 )
 
 const handlers = new HandlerContainer(
@@ -63,12 +69,20 @@ const handlers = new HandlerContainer(
     new ErrorHandler(middlewares, wrappers, dto, webManagers)
 )
 
+const openapi = new OpenAPIContainer(
+    new AccountOpenAPI(dto, middlewares, handlers),
+    new AuthOpenAPI(dto, middlewares, handlers),
+    new MeOpenAPI(dto, middlewares, handlers),
+    new UsersOpenAPI(dto, middlewares, handlers),
+    { discord: new DiscordOauthOpenAPI(dto, middlewares, handlers) }
+)
+
 const modules = new ModuleContainer(
-    new AccountModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
-    new AuthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
-    new MeModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares),
-    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares),
-    { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares)}
+    new AccountModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
+    new AuthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
+    new MeModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
+    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares, openapi),
+    { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi)}
 )
 
 const serverContainer = new ServerContainer(

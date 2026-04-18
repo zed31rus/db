@@ -111,6 +111,8 @@ db
    │  ├─ handler.base.ts
    │  ├─ middleware.base.ts
    │  ├─ module.base.ts
+   │  ├─ openapi.base.ts
+   │  ├─ server.base.ts
    │  ├─ webManager.base.ts
    │  └─ wrapper.base.ts
    ├─ containers
@@ -119,6 +121,8 @@ db
    │  ├─ index.web.container.ts
    │  ├─ middleware.container.ts
    │  ├─ module.container.ts
+   │  ├─ openapi.container.ts
+   │  ├─ server.container.ts
    │  ├─ webManager.container.ts
    │  └─ wrapper.container.ts
    ├─ dto
@@ -131,6 +135,7 @@ db
    │  └─ users.dto.ts
    ├─ handler
    │  ├─ auth.handler.ts
+   │  ├─ error.handler.ts
    │  └─ file.handler.ts
    ├─ middleware
    │  ├─ auth.middleware.ts
@@ -142,12 +147,19 @@ db
    │  ├─ oauth
    │  │  └─ discord.oauth.module.ts
    │  └─ users.module.ts
+   ├─ openapi
+   │  ├─ account.openapi.ts
+   │  ├─ auth.openapi.ts
+   │  ├─ me.openapi.ts
+   │  └─ users.openapi.ts
+   ├─ servers
+   │  └─ main.server.ts
    ├─ types
    │  └─ Env.d.ts
    ├─ webManagers
    │  └─ session.webManager.ts
-   ├─ webServer.ts
    └─ wrappers
+      ├─ cors.wrapper.ts
       ├─ rateLimiter.wrapper.ts
       └─ validator.wrapper.ts
 

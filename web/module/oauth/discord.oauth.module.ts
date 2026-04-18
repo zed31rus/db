@@ -9,10 +9,8 @@ export default class DiscordOauthModule extends BaseModule<DiscordOauthEnv> {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
-        this.router.get(
-            '/callback',
-            this.wrapper.validator.validate('query', this.dto.oauth.discord.callback),
-            this.middleware.auth.withOptionalUser<DiscordOauthEnv>(),
+        this.router.openapi(
+            this.openapi.oauth.discord.callback,
             async (c) => {
                 const { code } = c.req.valid('query');
                 const publicUser = c.get('user');

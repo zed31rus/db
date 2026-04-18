@@ -13,7 +13,7 @@ export default class AuthDto {
 
     Login = {
         Body: z.object({
-            login: z.string().min(3),
+            email: z.email(),
             password: z.string().min(8),
         }),
     }

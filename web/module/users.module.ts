@@ -9,9 +9,8 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         this.router.use(this.wrapper.rateLimiter.limit(15 * 60 * 1000, 100))
 
-        this.router.post(
-        '/get/uuid',
-        this.wrapper.validator.validate('json', this.dto.users.GetByUuid.Body),
+        this.router.openapi(
+        this.openapi.users.getByUuid,
         async (c) => {
 
             const { uuid } = c.req.valid('json') 
@@ -20,10 +19,8 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         })
 
-        this.router.post(
-        '/get/email',
-        this.wrapper.validator.validate('json', this.dto.users.GetByEmail.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(),
+        this.router.openapi(
+        this.openapi.users.getByEmail,
         async (c) => {
 
             const { email } = c.req.valid('json');
@@ -32,10 +29,8 @@ export default class UsersModule extends BaseModule<UsersEnv> {
 
         })
 
-        this.router.post(
-        '/get/login',
-        this.wrapper.validator.validate('json', this.dto.users.GetByLogin.Body),
-        ...this.handler.auth.withValidUser<UsersEnv>(),
+        this.router.openapi(
+        this.openapi.users.getByLogin,
         async (c) => {
 
             const { login } = c.req.valid('json');
