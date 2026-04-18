@@ -151,6 +151,8 @@ db
    │  ├─ account.openapi.ts
    │  ├─ auth.openapi.ts
    │  ├─ me.openapi.ts
+   │  ├─ oauth
+   │  │  └─ discord.oauth.openapi.ts
    │  └─ users.openapi.ts
    ├─ servers
    │  └─ main.server.ts
