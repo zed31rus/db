@@ -47,7 +47,7 @@ export default class AuthModule extends BaseModule<AuthEnv> {
             
             this.webManager.session.deleteSession(c);
             const {refreshToken} = c.req.valid('cookie');
-            await this.service.auth.logOut(refreshToken);
+            if (refreshToken) await this.service.auth.logOut(refreshToken);
             return c.json({}, 200);
         });
     }

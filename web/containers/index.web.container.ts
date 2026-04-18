@@ -15,14 +15,9 @@ import UsersModule from "#web/module/users.module";
 import DtoContainer from "#web/containers/dto.container";
 import CookieDto from "#web/dto/cookie.dto";
 import fileDto from "#web/dto/file.dto";
-import AccountDto from "#web/dto/account.dto";
-import AuthDto from "#web/dto/auth.dto";
-import MeDto from "#web/dto/me.dto";
-import UsersDto from "#web/dto/users.dto";
 import ValidatorWrapper from "#web/wrappers/validator.wrapper";
 import WrapperContainer from "#web/containers/wrapper.container";
 import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper";
-import OauthDto from "#web/dto/oauth.dto";
 import DiscordOauthModule from "#web/module/oauth/discord.oauth.module";
 import ErrorHandler from "#web/handler/error.handler";
 import CorsWrapper from "#web/wrappers/cors.wrapper";
@@ -40,12 +35,7 @@ const hono = new OpenAPIHono();
 
 const dto = new DtoContainer(
     new CookieDto(),
-    new fileDto(),
-    new AccountDto(),
-    new AuthDto(),
-    new MeDto(),
-    new UsersDto(),
-    new OauthDto()
+    new fileDto()
 )
 
 const wrappers = new WrapperContainer(

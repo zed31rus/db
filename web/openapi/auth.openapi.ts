@@ -1,6 +1,8 @@
 import BaseOpenAPI from "#web/base/openapi.base";
 import { createRoute } from '@hono/zod-openapi'
 import { UserEnv } from "#web/types/Env.d";
+import { PersonalUserSchema, PublicUserSchema } from "#lib/selector/user.selector";
+import { z } from '@hono/zod-openapi';
 
 type AuthEnv = UserEnv & {}
 
@@ -17,14 +19,28 @@ export default class AuthOpenAPI extends BaseOpenAPI {
             body: {
                 content: {
                     'application/json': {
-                        schema: this.dto.auth.Register.Body,
-                    },
-                },
-            },
+                        schema: z.object({
+                            login: z.string().min(3).max(20),
+                            email: z.email(),
+                            password: z.string().min(8),
+                            nickname: z.string().min(2).max(30)
+                        }),
+                    }
+                }
+            }
         },
-
+        
         responses: {
-            200: { description: 'User successfully registered' },
+            200: {
+                description: 'User successfully registered',
+                content: {
+                    'application/json': { 
+                        schema: z.object({
+                            user: PublicUserSchema
+                        })
+                    }
+                }
+            },
             400: { description: 'Invalid input data' },
             409: { description: 'User already exists' },
         },
@@ -37,19 +53,30 @@ export default class AuthOpenAPI extends BaseOpenAPI {
         path: '/login',
         summary: 'Login',
         description: 'Authenticates the user and sets session cookies.',
-
         request: {
             body: {
                 content: {
                     'application/json': {
-                        schema: this.dto.auth.Login.Body,
-                    },
-                },
-            },
+                        schema: z.object({
+                            email: z.email(),
+                            password: z.string().min(8),
+                        }),
+                    }
+                }
+            }
         },
-
+        
         responses: {
-            200: { description: 'Successfully authenticated' },
+            200: { 
+                description: 'Successfully authenticated',
+                content: {
+                    'application/json': { 
+                        schema: z.object({
+                            user: PersonalUserSchema
+                        })
+                    }
+                }
+            },
             400: { description: 'Invalid credentials or input data' },
             401: { description: 'Wrong login or password' },
         },
@@ -64,11 +91,20 @@ export default class AuthOpenAPI extends BaseOpenAPI {
         description: 'Issues new access and refresh tokens using the existing refresh token cookie.',
 
         request: {
-            cookies: this.dto.cookie.refresh,
+            cookies: this.dto.cookie.required.refresh,
         },
 
         responses: {
-            200: { description: 'Tokens successfully refreshed' },
+            200: { 
+                description: 'Tokens successfully refreshed',
+                content: {
+                    'application/json': { 
+                        schema: z.object({
+                            user: PersonalUserSchema
+                        })
+                    }
+                }
+            },
             401: { description: 'Invalid or expired refresh token' },
         },
 
@@ -82,11 +118,20 @@ export default class AuthOpenAPI extends BaseOpenAPI {
         description: 'Invalidates the current session and clears session cookies.',
 
         request: {
-            cookies: this.dto.cookie.refresh,
+            cookies: this.dto.cookie.optional.refresh,
         },
 
         responses: {
-            200: { description: 'Successfully logged out' },
+            200: { 
+                description: 'Successfully logged out',
+                content: {
+                    'application/json': {
+                        schema: z.object({
+
+                        })
+                    }
+                }
+             },
             401: { description: 'Invalid or missing refresh token' },
         },
 

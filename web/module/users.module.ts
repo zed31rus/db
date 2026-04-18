@@ -13,7 +13,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.openapi.users.getByUuid,
         async (c) => {
 
-            const { uuid } = c.req.valid('json') 
+            const { uuid } = c.req.valid('param') 
             const user = await this.service.users.getByUuid(uuid);
             return c.json({ user })
 
@@ -23,7 +23,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.openapi.users.getByEmail,
         async (c) => {
 
-            const { email } = c.req.valid('json');
+            const { email } = c.req.valid('param');
             const user = await this.service.users.getByEmail(email);
             return c.json({ user });
 
@@ -33,7 +33,7 @@ export default class UsersModule extends BaseModule<UsersEnv> {
         this.openapi.users.getByLogin,
         async (c) => {
 
-            const { login } = c.req.valid('json');
+            const { login } = c.req.valid('param');
             const user = await this.service.users.getByLogin(login);
             return c.json({ user });
 

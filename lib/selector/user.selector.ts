@@ -1,11 +1,28 @@
 import BaseLib from "#base/lib.base";
 import { User } from "#prisma/prisma";
+import { z } from "@hono/zod-openapi";
 
 const PublicUserFields = ['uuid', 'nickname', 'avatar', 'createdAt'] as const;
 const PersonalUserFields = [...PublicUserFields, 'login', 'email', 'allowLoginFind', 'allowEmailFind', 'emailConfirmed', 'isAdmin'] as const;
 
 export type PublicUser = Pick<User, typeof PublicUserFields[number]>;
 export type PersonalUser = Pick<User, typeof PersonalUserFields[number]>;
+
+export const PublicUserSchema = z.object({
+    uuid: z.string(),
+    nickname: z.string(),
+    avatar: z.string().nullable(),
+    createdAt: z.date(),
+});
+
+export const PersonalUserSchema = PublicUserSchema.extend({
+    login: z.string(),
+    email: z.email(),
+    allowLoginFind: z.boolean(),
+    allowEmailFind: z.boolean(),
+    emailConfirmed: z.boolean(),
+    isAdmin: z.boolean(),
+});
 
 export default class UserSelector extends BaseLib {
 

@@ -1,6 +1,8 @@
 import BaseOpenAPI from "#web/base/openapi.base";
 import { createRoute } from '@hono/zod-openapi'
 import { AccountEnv } from "#web/module/account.module";
+import { z } from '@hono/zod-openapi';
+import { PersonalUserSchema } from "#lib/selector/user.selector";
 
 export default class AccountOpenAPI extends BaseOpenAPI {
 
@@ -13,19 +15,23 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         summary: 'Send verification email',
         description: 'Sends a verification code to the authenticated user\'s email address.',
 
-        request: {
-            cookies: this.dto.cookie.access,
-        },
-
         responses: {
             200: {
                 description: 'Verification code sent',
+                    content: {
+                        'application/json': { 
+                            schema: z.object({
+                                user: PersonalUserSchema,
+                            })
+                        }
+                    }
             },
             401: { description: 'User Unauthorized' },
         },
 
     });
 
+//-----------------------------------------------------
 
     emailVerificationConfirm = createRoute({
         method: 'patch',
@@ -36,24 +42,34 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         description: 'Verifies the user account using the code received via email.',
 
         request: {
-            cookies: this.dto.cookie.access,
-            body: {
-                content: {
-                    'application/json': {
-                        schema: this.dto.account.emailVerificationConfirm.Body,
-                    },
-                },
+            body: { 
+                content: { 
+                    'application/json': { 
+                        schema: z.object({
+                            submitCode: z.string().length(6),
+                        })
+                    }
+                }
             },
         },
-
         responses: {
-            200: { description: 'Email successfully verified' },
+            200: {
+                description: 'Email successfully verified',
+                content: {
+                    'application/json': {
+                        schema: z.object({
+                            user: PersonalUserSchema,
+                        })
+                    }
+                },
+            },
             400: { description: 'Invalid code or data' },
             401: { description: 'User Unauthorized' },
         },
 
     });
 
+//-----------------------------------------------------
 
     changePasswordRequest = createRoute({
         method: 'post',
@@ -63,17 +79,22 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         summary: 'Request password change',
         description: 'Sends a password reset/change code to the user\'s email.',
 
-        request: {
-            cookies: this.dto.cookie.access,
-        },
-
         responses: {
-            200: { description: 'Change code sent' },
+            200: {
+                description: 'Change code sent',
+                content: {
+                    'application/json': { 
+                        schema: z.object({
+                            user: PersonalUserSchema,
+                        })
+                    }
+                },
+            },
             401: { description: 'User Unauthorized' },
         },
-
     });
 
+//-----------------------------------------------------
 
     changePasswordConfirm = createRoute({
         method: 'patch',
@@ -84,18 +105,29 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         description: 'Updates the user password using the verification code.',
 
         request: {
-            cookies: this.dto.cookie.access,
             body: {
                 content: {
                     'application/json': {
-                        schema: this.dto.account.changePasswordConfirm.Body,
-                    },
-                },
+                        schema: z.object({
+                            submitCode: z.string().length(6),
+                            password: z.string().min(8),
+                        })
+                    }
+                }
             },
         },
 
         responses: {
-            200: { description: 'Password successfully changed' },
+            200: {
+                description: 'Password successfully changed',
+                content: {
+                    'application/json': {
+                        schema: z.object({
+                            user: PersonalUserSchema,
+                        })
+                    }
+                },
+            },
             400: { description: 'Invalid code or weak password' },
             401: { description: 'User Unauthorized' },
         },
