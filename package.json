@@ -40,7 +40,7 @@
     "#errors/*": "./dist/errors/*",
     "#config/*": "./dist/config/*",
 
-    "#core/*": ".dist/core/*",
+    "#core/*": "./dist/core/*",
 
     "#web/*": "./dist/web/*"
 
