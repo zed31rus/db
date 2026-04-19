@@ -9,20 +9,14 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "#generated/*": ["./generated/*"],
-      "#types/*": ["./types/*"],
-      "#lib/*": ["./lib/*"],
-      "#repo/*": ["./repository/*"],
-      "#infra/*": ["./infra/*"],
-      "#services/*": ["./services/*"],
-      "#web/*": ["./web/*"],
-      "#prisma/*": ["./prisma/*"],
-      "#managers/*": ["./managers/*"],
-      "#base/*": ["./base/*"],
-      "#errors/*": ["./errors/*"],
-      "#containers/*": ["./containers/*"],
-      "#config/*": ["./config/*"],
-      "#root/*": ["./*"]
+
+    
+    "#errors/*": ["./errors/*"],
+    "#config/*": ["./config/*"],
+    "#core/*": ["./core/*"],
+    "#web/*": ["./web/*"],
+
+    "#root/*": ["./*"],
     }
   },
   

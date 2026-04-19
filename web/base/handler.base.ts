@@ -1,7 +1,7 @@
-import DtoContainer from "#web/containers/dto.container";
-import MiddlewareContainer from "#web/containers/middleware.container";
-import WebManagerContainer from "#web/containers/webManager.container";
-import WrapperContainer from "#web/containers/wrapper.container";
+import MiddlewareContainer from "#web/containers/middleware.container.js";
+import DtoContainer from "#web/containers/dto.container.js";
+import WebManagerContainer from "#web/containers/managers.container.js";
+import WrapperContainer from "#web/containers/wrapper.container.js";
 import { Env } from "hono";
 import { createFactory } from "hono/factory";
 

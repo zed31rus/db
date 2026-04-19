@@ -1,8 +1,8 @@
-import AccountModule from "#web/module/account.module";
-import AuthModule from "#web/module/auth.module";
-import MeModule from "#web/module/me.module";
-import DiscordOauthModule from "#web/module/oauth/discord.oauth.module";
-import UsersModule from "#web/module/users.module";
+import AccountModule from "#web/modules/account.module.js";
+import AuthModule from "#web/modules/auth.module.js";
+import MeModule from "#web/modules/me.module.js";
+import DiscordOauthModule from "#web/modules/oauth/discord.oauth.module.js";
+import UsersModule from "#web/modules/users.module.js";
 
 export default class ModuleContainer {
     constructor(

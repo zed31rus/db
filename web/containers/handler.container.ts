@@ -1,6 +1,6 @@
-import AuthHandler from "#web/handler/auth.handler";
-import ErrorHandler from "#web/handler/error.handler";
-import FileHandler from "#web/handler/file.handler";
+import AuthHandler from "#web/handlers/auth.handler.js";
+import ErrorHandler from "#web/handlers/error.handler.js";
+import FileHandler from "#web/handlers/file.handler.js";
 
 export default class HandlerContainer {
     constructor(

@@ -1,11 +1,11 @@
-import baseMiddleware from "#web/base/middleware.base";
-import z from "zod";
-import { AvatarEnv } from "#web/types/Env.d";
-import path from "path";
-import configEnv from '#config/env.config';
+import { PublicUser } from "#core/lib/selector/user.selector.js";
+import baseMiddleware from "#web/base/middleware.base.js";
+import { AvatarEnv } from "#web/types/Env.js";
+import { z } from "@hono/zod-openapi";
+import path from "node:path";
+import configEnv from "#config/env.config.js"
+import { workDir } from "#root/start.js";
 import fs from 'fs';
-import { workDir } from "#root/start";
-import { PublicUser } from "#lib/selector/user.selector";
 
 export default class FileMiddleware extends baseMiddleware {
 

@@ -1,5 +1,5 @@
-import CookieDto from "#web/dto/cookie.dto";
-import fileDto from "#web/dto/file.dto";
+import CookieDto from "#web/dto/cookie.dto.js";
+import fileDto from "#web/dto/file.dto.js";
 
 export default class DtoContainer {
     constructor(

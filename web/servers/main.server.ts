@@ -1,7 +1,7 @@
-import { serve } from '@hono/node-server'
-import { logger } from 'hono/logger';
-import BaseServer from '../base/server.base.js';
-import { swaggerUI } from '@hono/swagger-ui';
+import BaseServer from "#web/base/server.base.js";
+import { logger } from 'hono/logger'
+import { swaggerUI } from '@hono/swagger-ui'
+import { serve } from "@hono/node-server";
 
 export default class MainServer extends BaseServer {
   configureWebServer() {

@@ -1,14 +1,14 @@
-import ServiceContainer from "#containers/service.container";
-import DtoContainer from "#web/containers/dto.container";
-import HandlerContainer from "#web/containers/handler.container";
-import MiddlewareContainer from "#web/containers/middleware.container";
-import OpenAPIContainer from "#web/containers/openapi.container";
-import WebManagerContainer from "#web/containers/webManager.container";
-import WrapperContainer from "#web/containers/wrapper.container";
-import { OptionalUserEnv } from "#web/types/Env.d";
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { Env } from "hono";
 import { createFactory } from "hono/factory";
+import { OptionalUserEnv } from "#web/types/Env.js";
+import DtoContainer from "#web/containers/dto.container.js";
+import WrapperContainer from "#web/containers/wrapper.container.js";
+import ServiceContainer from "#root/core/containers/services.container.js";
+import WebManagerContainer from "#web/containers/managers.container.js";
+import HandlerContainer from "#web/containers/handler.container.js";
+import MiddlewareContainer from "#web/containers/middleware.container.js";
+import OpenAPIContainer from "#web/containers/openapi.container.js";
 
 export abstract class BaseModule<T extends OptionalUserEnv> {
     public router = new OpenAPIHono<T>();

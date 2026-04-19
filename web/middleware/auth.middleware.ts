@@ -1,9 +1,9 @@
-import JWT from "#lib/jwt/jwt.lib";
-import baseMiddleware from "#web/base/middleware.base";
-import { OptionalUserEnv, UserEnv } from "#web/types/Env.d";
+import JWT from "#core/lib/jwt/jwt.lib.js";
+import baseMiddleware from "#web/base/middleware.base.js";
 import { getCookie } from "hono/cookie";
-import configEnv from '#config/env.config'
-import ApiError from "#errors/api.errors";
+import { OptionalUserEnv, UserEnv } from "#web/types/Env.js";
+import ApiError from "#errors/api.errors.js";
+import configEnv from "#config/env.config.js"
 
 export default class AuthMiddleware extends baseMiddleware {
 

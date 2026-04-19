@@ -1,4 +1,4 @@
-import ConfigError from "#errors/config.errors";
+import ConfigError from "#errors/config.errors.js";
 import dotenv from 'dotenv';
 
 dotenv.config();

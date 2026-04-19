@@ -1,7 +1,7 @@
-import BaseOpenAPI from "#web/base/openapi.base";
-import { createRoute, z } from '@hono/zod-openapi'
-import { UserEnv } from "#web/types/Env.d";
-import { PersonalUserSchema } from "#lib/selector/user.selector";
+import { UserEnv } from "#web/types/Env.js";
+import BaseOpenAPI from "#web/base/openapi.base.js";
+import { createRoute, z } from "@hono/zod-openapi";
+import { PersonalUserSchema } from "#root/core/lib/selector/user.selector.js";
 
 type ProfileEnv = UserEnv & {}
 

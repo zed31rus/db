@@ -1,5 +1,5 @@
-import BaseWrapper from "#web/base/wrapper.base";
-import { cors } from "hono/cors";
+import BaseWrapper from "#web/base/wrapper.base.js";
+import { cors } from 'hono/cors'
 
 export default class CorsWrapper extends BaseWrapper {
     cors() {

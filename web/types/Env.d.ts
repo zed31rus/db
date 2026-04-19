@@ -1,4 +1,4 @@
-import { PublicUser } from "#lib/selector/user.selector";
+import { PublicUser } from "#coreLib/selector/user.selector";
 
 export type OptionalUserEnv = {
     Variables: {
