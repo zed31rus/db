@@ -25,7 +25,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
                         }
                     }
             },
-            401: { description: 'User Unauthorized' },
+            ...this.commonResponses
         },
 
     });
@@ -62,8 +62,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
                     }
                 },
             },
-            400: { description: 'Invalid code or data' },
-            401: { description: 'User Unauthorized' },
+            ...this.commonResponses
         },
 
     });
@@ -89,7 +88,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
                     }
                 },
             },
-            401: { description: 'User Unauthorized' },
+            ...this.commonResponses
         },
     });
 
@@ -127,8 +126,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
                     }
                 },
             },
-            400: { description: 'Invalid code or weak password' },
-            401: { description: 'User Unauthorized' },
+            ...this.commonResponses
         },
 
     });

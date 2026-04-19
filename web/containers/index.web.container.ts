@@ -7,7 +7,7 @@ import ValidatorWrapper from "#web/wrappers/validator.wrapper.js";
 import RateLimiterWrapper from "#web/wrappers/rateLimiter.wrapper.js";
 import CorsWrapper from "#web/wrappers/cors.wrapper.js";
 import WebManagerContainer from "#web/containers/managers.container.js";
-import SessionWebManager from "#web/managers/session.webManager.js";
+import SessionWebManager from "#root/web/managers/session.manager.js";
 import MiddlewareContainer from "#web/containers/middleware.container.js";
 import FileMiddleware from "#web/middleware/file.middleware.js";
 import AuthMiddleware from "#web/middleware/auth.middleware.js";
@@ -44,19 +44,19 @@ const wrappers = new WrapperContainer(
     new CorsWrapper()
 )
 
-const webManagers = new WebManagerContainer(
+const managers = new WebManagerContainer(
     new SessionWebManager()
 )
 
 const middlewares = new MiddlewareContainer(
-    new AuthMiddleware(dto, wrappers, webManagers),
-    new FileMiddleware(dto, wrappers, webManagers)
+    new AuthMiddleware(dto, wrappers, managers),
+    new FileMiddleware(dto, wrappers, managers)
 )
 
 const handlers = new HandlerContainer(
-    new AuthHandler(middlewares, wrappers, dto, webManagers),
-    new FileHandler(middlewares, wrappers, dto, webManagers),
-    new ErrorHandler(middlewares, wrappers, dto, webManagers)
+    new AuthHandler(middlewares, wrappers, dto, managers),
+    new FileHandler(middlewares, wrappers, dto, managers),
+    new ErrorHandler(middlewares, wrappers, dto, managers)
 )
 
 const openapi = new OpenAPIContainer(
@@ -68,15 +68,15 @@ const openapi = new OpenAPIContainer(
 )
 
 const modules = new ModuleContainer(
-    new AccountModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
-    new AuthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
-    new MeModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi),
-    new UsersModule(dto, wrappers,coreContainers.services, webManagers, handlers, middlewares, openapi),
-    { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, webManagers, handlers, middlewares, openapi)}
+    new AccountModule(dto, wrappers, coreContainers.services, managers, handlers, middlewares, openapi),
+    new AuthModule(dto, wrappers, coreContainers.services, managers, handlers, middlewares, openapi),
+    new MeModule(dto, wrappers, coreContainers.services, managers, handlers, middlewares, openapi),
+    new UsersModule(dto, wrappers,coreContainers.services, managers, handlers, middlewares, openapi),
+    { discord: new DiscordOauthModule(dto, wrappers, coreContainers.services, managers, handlers, middlewares, openapi)}
 )
 
 const serverContainer = new ServerContainer(
-    new MainServer(hono, webManagers, modules, handlers, wrappers)
+    new MainServer(hono, managers, modules, handlers, wrappers)
 )
 
 export default { serverContainer }

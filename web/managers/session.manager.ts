@@ -1,4 +1,4 @@
-import { SessionType } from "#core/managers/auth/session.manager.js";
+import { SessionType } from "#root/core/managers/session.manager.js";
 import BaseWebManager from "#web/base/manager.base.js";
 import { Context } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";

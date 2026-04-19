@@ -1,4 +1,4 @@
-import SessionWebManager from "#web/managers/session.webManager.js";
+import SessionWebManager from "#root/web/managers/session.manager.js";
 
 export default class WebManagerContainer {
     constructor(

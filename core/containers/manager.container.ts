@@ -1,5 +1,5 @@
-import OtpManager from "#core/managers/account/otp.manager.js";
-import SessionManager from "#core/managers/auth/session.manager.js";
+import OtpManager from "#root/core/managers/otp.manager.js";
+import SessionManager from "#root/core/managers/session.manager.js";
 
 export default class ManagerContainer {
     constructor(

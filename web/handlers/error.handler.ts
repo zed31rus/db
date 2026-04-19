@@ -5,12 +5,14 @@ import { PRISMA_ERRORS } from "#root/errors/prisma.errors.js";
 import baseHandler from "#web/base/handler.base.js";
 import { Context } from "hono";
 import { HTTPResponseError } from "hono/types";
+import jsonwebtoken from 'jsonwebtoken';
+const { JsonWebTokenError, TokenExpiredError } = jsonwebtoken;
 
 export default class ErrorHandler extends baseHandler {
-    errorHander(err: Error | HTTPResponseError, c: Context) {
-      console.log(err)
-      if (err instanceof ApiError) {
 
+    errorHander(err: Error | HTTPResponseError, c: Context) {
+
+      if (err instanceof ApiError) {
         if (err.status == 401) this.manager.session.deleteSession(c)
 
         return c.json({
@@ -19,15 +21,22 @@ export default class ErrorHandler extends baseHandler {
         }, err.status as any);
       }
 
+      if (err instanceof TokenExpiredError) {
+        this.manager.session.deleteSession(c)
+        return c.json({ message: "Token expired" }, 401);
+      }
+
+      if (err instanceof JsonWebTokenError) {
+        return c.json({ message: "Invalid token" }, 401);
+      }
+
       if (err instanceof ConfigError) {
         console.error(err)
         process.exit(1)
       }
 
       if (err instanceof PrismaClientKnownRequestError) {
-        console.log(err.meta)
         const code = err.code as keyof typeof PRISMA_ERRORS;
-        const target = (err.meta?.target as string[])?.join(', ');
 
         return c.json({
           error: PRISMA_ERRORS[code]

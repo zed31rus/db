@@ -8,4 +8,16 @@ export default abstract class BaseOpenAPI {
         protected readonly middleware: MiddlewareContainer,
         protected readonly handler: HandlerContainer,
     ) {}
+
+    protected commonResponses = {
+    400: { description: 'Bad request' },
+    401: { description: 'Unauthorized' },
+    403: { description: 'Forbidden' },
+    404: { description: 'Not found' },
+    409: { description: 'Conflict' },
+    422: { description: 'Validation error' },
+    429: { description: 'Too many requests' },
+    500: { description: 'Internal server error' },
+}
+
 }

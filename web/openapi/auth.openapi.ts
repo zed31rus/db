@@ -40,8 +40,7 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            400: { description: 'Invalid input data' },
-            409: { description: 'User already exists' },
+            ...this.commonResponses
         },
 
     });
@@ -76,8 +75,7 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            400: { description: 'Invalid credentials or input data' },
-            401: { description: 'Wrong login or password' },
+            ...this.commonResponses
         },
 
     });
@@ -104,7 +102,7 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            401: { description: 'Invalid or expired refresh token' },
+            ...this.commonResponses
         },
 
     });
@@ -131,7 +129,7 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                     }
                 }
              },
-            401: { description: 'Invalid or missing refresh token' },
+            ...this.commonResponses
         },
 
     });

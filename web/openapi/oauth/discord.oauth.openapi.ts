@@ -32,7 +32,7 @@ export default class DiscordOauthOpenAPI extends BaseOpenAPI {
                     }
                 }
              },
-            400: { description: 'Invalid or missing OAuth code' },
+            ...this.commonResponses
         },
     });
 

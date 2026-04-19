@@ -31,8 +31,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            400: { description: 'Invalid input data' },
-            404: { description: 'User not found' },
+            ...this.commonResponses
         },
 
     });
@@ -63,9 +62,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
                     }
                 }
              },
-            400: { description: 'Invalid input data' },
-            401: { description: 'User Unauthorized' },
-            404: { description: 'User not found' },
+            ...this.commonResponses
         },
 
     });
@@ -96,9 +93,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            400: { description: 'Invalid input data' },
-            401: { description: 'User Unauthorized' },
-            404: { description: 'User not found' },
+            ...this.commonResponses
         },
 
     });

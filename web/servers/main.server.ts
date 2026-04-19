@@ -16,7 +16,7 @@ export default class MainServer extends BaseServer {
       name: 'accessToken'
     })
 
-    this.server.onError(this.handler.error.errorHander);
+    this.server.onError(this.handler.error.errorHander.bind(this.handler.error));
 
     this.server.route('/auth', this.module.auth.router);
     this.server.route('/account', this.module.account.router);

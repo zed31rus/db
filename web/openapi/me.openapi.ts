@@ -26,7 +26,7 @@ export default class MeOpenAPI extends BaseOpenAPI {
                     }
                 }
             },
-            401: { description: 'User Unauthorized' },
+            ...this.commonResponses
         },
 
     });
