@@ -10,9 +10,9 @@ export default class MainServer extends BaseServer {
 
     this.server.use(logger());
 
-    this.server.openAPIRegistry.registerComponent('securitySchemes', 'cookieAuth', {
+    this.server.openAPIRegistry.registerComponent('securitySchemes', 'authBearer', {
       type: 'apiKey',
-      in: 'cookie',
+      in: 'Bearer',
       name: 'accessToken'
     })
 

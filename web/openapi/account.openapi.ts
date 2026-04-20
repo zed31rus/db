@@ -10,7 +10,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         method: 'post',
         path: '/emailVerification/Send',
         middleware: [...this.handler.auth.withValidUser<AccountEnv>(),],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Send verification email',
         description: 'Sends a verification code to the authenticated user\'s email address.',
 
@@ -36,7 +36,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         method: 'patch',
         path: '/emailVerification/Confirm',
         middleware: [...this.handler.auth.withValidUser<AccountEnv>(),],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Confirm Email',
         description: 'Verifies the user account using the code received via email.',
 
@@ -73,7 +73,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         method: 'post',
         path: '/changePassword/request',
         middleware: [...this.handler.auth.withValidUser<AccountEnv>(),],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Request password change',
         description: 'Sends a password reset/change code to the user\'s email.',
 
@@ -98,7 +98,7 @@ export default class AccountOpenAPI extends BaseOpenAPI {
         method: 'patch',
         path: '/changePassword/confirm',
         middleware: [...this.handler.auth.withValidUser<AccountEnv>(),],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Confirm password change',
         description: 'Updates the user password using the verification code.',
 

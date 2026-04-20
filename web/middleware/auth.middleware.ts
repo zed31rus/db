@@ -10,7 +10,8 @@ export default class AuthMiddleware extends baseMiddleware {
     public withUser<T extends UserEnv>() { 
         return this.createFactory<T>().createMiddleware( async (c, next) => {
             const jwt = new JWT();
-            const accessToken = getCookie(c, 'accessToken');
+            const Authorization = c.req.header('Authorization');
+            const accessToken = Authorization?.replace('Bearer', '')
 
             if (!accessToken) throw ApiError.Unauthorized();
 
@@ -25,7 +26,8 @@ export default class AuthMiddleware extends baseMiddleware {
     public withOptionalUser<T extends OptionalUserEnv>() {
         return this.createFactory<T>().createMiddleware( async (c, next) => {
             const jwt = new JWT();
-            const accessToken = getCookie(c, 'accessToken');
+            const Authorization = c.req.header('Authorization');
+            const accessToken = Authorization?.replace('Bearer', '')
 
             let publicUser = null;
             if (accessToken) {

@@ -17,32 +17,16 @@ export default class SessionWebManager extends BaseWebManager {
             expires: refresh.expires.atTime
         });
         
-        setCookie(c, 'accessToken', access.token, {
-            //domain: '.zed31rus.ru',
-            path: '/',
-            httpOnly: false,
-            //sameSite: 'Lax',
-            sameSite: "lax",
-            //secure: true,
-            secure: false,
+        c.json({
+            accessToken: access.token,
             expires: access.expires.atTime
-        });  
+        })
 
     }
 
     deleteSession(c: Context) {
 
         deleteCookie(c, 'refreshToken', {
-            //domain: '.zed31rus.ru',
-            path: '/',
-            httpOnly: true,
-            //sameSite: 'Lax',
-            sameSite: "lax",
-            //secure: true,
-            secure: false,
-        });
-
-        deleteCookie(c, 'accessToken', {
             //domain: '.zed31rus.ru',
             path: '/',
             httpOnly: true,

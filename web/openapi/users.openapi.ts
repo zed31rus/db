@@ -41,7 +41,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
         method: 'get',
         path: '/get/{email}',
         middleware: [...this.handler.auth.withValidUser<UsersEnv>()],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Get user by email',
         description: 'Returns user data by email address. Requires authentication.',
 
@@ -72,7 +72,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
         method: 'get',
         path: '/get/{login}',
         middleware: [...this.handler.auth.withValidUser<UsersEnv>()],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Get user by login',
         description: 'Returns user data by login. Requires authentication.',
 

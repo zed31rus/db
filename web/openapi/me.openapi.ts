@@ -11,7 +11,7 @@ export default class MeOpenAPI extends BaseOpenAPI {
         method: 'get',
         path: '/get',
         middleware: [...this.handler.auth.withValidUser<ProfileEnv>()],
-        security: [{ cookieAuth: [] }],
+        security: [{ authBearer: [] }],
         summary: 'Get current user',
         description: 'Returns the profile data of the currently authenticated user.',
 
