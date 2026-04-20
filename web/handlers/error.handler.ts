@@ -39,10 +39,11 @@ export default class ErrorHandler extends baseHandler {
         const code = err.code as keyof typeof PRISMA_ERRORS;
 
         return c.json({
-          error: PRISMA_ERRORS[code]
-        }, 400);
+          error: PRISMA_ERRORS[code].message
+        }, PRISMA_ERRORS[code].status);
       }
       
+      console.log(err)
       return c.json({ 
         message: "Internal Server Error",
       }, 500);

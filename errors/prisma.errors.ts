@@ -1,23 +1,24 @@
 export const PRISMA_ERRORS = {
-    
-  P2000: "Too long",
-  P2001: "Not found",
-  P2002: "Already exists",
-  P2003: "FK failed",
-  P2004: "Constraint failed",
 
-  P2005: "Invalid type",
-  P2006: "Invalid value",
-  P2007: "Validation error",
+    P2000: { message: "Too long", status: 400 },
+    P2001: { message: "Not found", status: 404 },
+    P2002: { message: "Already exists", status: 409 },
+    P2003: { message: "FK failed", status: 400 },
+    P2004: { message: "Constraint failed", status: 400 },
 
-  P2011: "Null violation",
-  P2012: "Missing value",
-  P2015: "Relation not found",
-  P2018: "Required records missing",
-  P2025: "Dependent records not found",
+    P2005: { message: "Invalid type", status: 400 },
+    P2006: { message: "Invalid value", status: 400 },
+    P2007: { message: "Validation error", status: 400 },
 
-  P1000: "Auth failed",
-  P1001: "DB unreachable",
-  P1008: "Timeout",
-  P1017: "Connection closed"
+    P2011: { message: "Null violation", status: 400 },
+    P2012: { message: "Missing value", status: 400 },
+    P2015: { message: "Relation not found", status: 404 },
+    P2018: { message: "Required records missing", status: 404 },
+    P2025: { message: "Dependent records not found",status: 404 },
+
+    P1000: { message: "Auth failed", status: 401 },
+    P1001: { message: "DB unreachable", status: 503 },
+    P1008: { message: "Timeout", status: 504 },
+    P1017: { message: "Connection closed", status: 503 },
+
 } as const;
