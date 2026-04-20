@@ -1,4 +1,4 @@
-import { PrismaClientKnownRequestError } from "#core/prisma/prisma.js";
+import { PrismaClientKnownRequestError, PrismaClientValidationError } from "#core/prisma/prisma.js";
 import ApiError from "#root/errors/api.errors.js";
 import ConfigError from "#root/errors/config.errors.js";
 import { PRISMA_ERRORS } from "#root/errors/prisma.errors.js";
@@ -41,6 +41,12 @@ export default class ErrorHandler extends baseHandler {
         return c.json({
           error: PRISMA_ERRORS[code].message
         }, PRISMA_ERRORS[code].status);
+      }
+
+      if (err instanceof PrismaClientValidationError) {
+        return c.json({
+          description: 'Bad request'
+        }, 400);
       }
       
       console.log(err)
