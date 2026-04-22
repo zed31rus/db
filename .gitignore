@@ -3,4 +3,4 @@ dist
 .env
 config.json
 docker-compose.yml
-/generated/prisma
+/core/generated/prisma
