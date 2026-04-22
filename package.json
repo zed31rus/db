@@ -22,6 +22,7 @@
     "@types/cors": "^2.8.19",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^7.0.9",
+    "amqplib": "^1.0.3",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "crypto": "^1.0.1",
@@ -35,17 +36,14 @@
     "zod": "^4.3.6"
   },
   "imports": {
-
     "#root/*": "./dist/*",
     "#errors/*": "./dist/errors/*",
     "#config/*": "./dist/config/*",
-
     "#core/*": "./dist/core/*",
-
     "#web/*": "./dist/web/*"
-
   },
   "devDependencies": {
+    "@types/amqplib": "^0.10.8",
     "@types/node": "^25.0.10",
     "@types/pg": "^8.16.0",
     "prisma": "^7.3.0"

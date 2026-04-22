@@ -10,12 +10,15 @@ export default class DiscordOauthService extends BaseService {
         const exchangeReply = await this.infra.oauth.discord.exchangeCode(code);
         const meRes = await this.infra.oauth.discord.me(exchangeReply.access_token);
 
-        const rawUser = await this.resolveUser(publicUser, meRes);
+        const newRawUser = await this.resolveUser(publicUser, meRes);
+        
+        const newPersonalUser = this.lib.userSelector.toPersonalJSON(newRawUser);
+        const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser)
 
         await this.repository.db.oauthAccount.upsert.upsert(
             prismaClient,
             { provider: OauthProviders.discord, providerUserId: meRes.id },
-            rawUser,
+            newRawUser,
             {
                 accessToken: exchangeReply.access_token,
                 refreshToken: exchangeReply.refresh_token,
@@ -25,11 +28,11 @@ export default class DiscordOauthService extends BaseService {
             }
         );
 
-        const personalUser = await this.lib.userSelector.toPersonalJSON(rawUser);
+        this.infra.rabbitmq.sendOauthRegistered(newPublicUser);
 
-        const sesssion = await this.manager.session.createSession(rawUser, prismaClient);
+        const sesssion = await this.manager.session.createSession(newRawUser, prismaClient);
 
-        return { user: personalUser, ...sesssion }
+        return { user: newPersonalUser, ...sesssion }
     }
 
     private async resolveUser(publicUser: PublicUser | null, meRes: DiscordOauthApiMeReply) {

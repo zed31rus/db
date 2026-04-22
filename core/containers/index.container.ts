@@ -19,6 +19,7 @@ import AuthService from "#core/services/auth.service.js";
 import MeService from "#core/services/me.service.js";
 import UsersService from "#core/services/users.service.js";
 import DiscordOauthService from "#core/services/oauth/discord.oauth.service.js";
+import RabbitMqInfra from "../infra/rabbitmq/rabbitmq.infra.js";
 
 
 const libs = new LibContainer(
@@ -40,6 +41,7 @@ const libs = new LibContainer(
 );
 
 const infra = new InfraContainer(
+    new RabbitMqInfra,
     { discord: new DiscordOauthInfra }
 )
 
