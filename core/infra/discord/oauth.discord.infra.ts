@@ -1,5 +1,6 @@
 import { Prisma } from "#core/prisma/prisma.js"
 import envConfig from "#root/config/env.config.js";
+import BaseInfra from "#root/core/base/infra.base.js";
 import ApiError from "#root/errors/api.errors.js";
 
 export interface DiscordOauthApiExchangeReply {
@@ -43,7 +44,7 @@ export interface DiscordOauthApiMeReply extends Prisma.JsonObject {
 
 }
 
-export default class DiscordOauthInfra {
+export default class DiscordOauthInfra extends BaseInfra {
 
 
     API_ENDPOINT = 'https://discord.com/api/v10';
