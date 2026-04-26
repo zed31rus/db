@@ -30,7 +30,7 @@ export default class MainServer extends BaseServer {
         title: 'auth.zed31rus.ru api',
       },  
     })
-    this.server.get('/doc/ui', swaggerUI({ url: '/doc' }))
+    this.server.get('/doc/ui', swaggerUI({ url: '/doc',  }))
   };
 
   startWebServer(port: number) {

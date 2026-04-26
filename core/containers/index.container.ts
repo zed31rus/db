@@ -20,46 +20,48 @@ import MeService from "#core/services/me.service.js";
 import UsersService from "#core/services/users.service.js";
 import DiscordOauthService from "#core/services/oauth/discord.oauth.service.js";
 import RabbitMqInfra from "../infra/rabbitmq/rabbitmq.infra.js";
+import BaseContainer from "#core/base/container.base.js";
 
+export default class CoreContainer extends BaseContainer {
 
-const libs = new LibContainer(
-    new Hash(),
-    new JWT(),
+    libs = new LibContainer(
+        new Hash(),
+        new JWT(),
 
-    new Mail({
-        user: configEnv.SMTP_USER,
-        key: configEnv.SMTP_API_KEY,
-        host: configEnv.SMTP_HOST,
-        email: configEnv.SMTP_EMAIL,
-        name: "zed31rus.ru Auth Service"
-    }),
+        new Mail({
+            user: configEnv.SMTP_USER,
+            key: configEnv.SMTP_API_KEY,
+            host: configEnv.SMTP_HOST,
+            email: configEnv.SMTP_EMAIL,
+            name: "zed31rus.ru Auth Service"
+        }),
 
-    new RefreshToken(),
-    new UserSelector(),
-    new VerificationCode(),
+        new RefreshToken(),
+        new UserSelector(),
+        new VerificationCode(),
 
-);
+    );
 
-const infra = new InfraContainer(
-    new RabbitMqInfra,
-    { discord: new DiscordOauthInfra }
-)
+    repositories = new RepositoryContainer(
+        new DB()
+    );
 
-const repositories = new RepositoryContainer(
-    new DB()
-);
+    infra = new InfraContainer(
+        RabbitMqInfra.getInstance(),
+        { discord: new DiscordOauthInfra }
+    )
 
-const managers = new ManagerContainer(
-    new OtpManager(libs, repositories, infra),
-    new SessionManager(libs, repositories, infra)
-);
+    managers = new ManagerContainer(
+        new OtpManager(this.libs, this.repositories, this.infra),
+        new SessionManager(this.libs, this.repositories, this.infra)
+    );
 
-const services = new ServiceContainer(
-    new AccountService(libs, managers, repositories, infra),
-    new AuthService(libs, managers, repositories, infra),
-    new MeService(libs, managers, repositories, infra),
-    new UsersService(libs, managers, repositories, infra),
-    { discord: new DiscordOauthService(libs, managers, repositories, infra)}
-);
+    services = new ServiceContainer(
+        new AccountService(this.libs, this.managers, this.repositories, this.infra),
+        new AuthService(this.libs, this.managers, this.repositories, this.infra),
+        new MeService(this.libs, this.managers, this.repositories, this.infra),
+        new UsersService(this.libs, this.managers, this.repositories, this.infra),
+        { discord: new DiscordOauthService(this.libs, this.managers, this.repositories, this.infra)}
+    );
 
-export default { services }
+}
