@@ -17,9 +17,14 @@ export default class DiscordOauthModule extends BaseModule<DiscordOauthEnv> {
                 
                 const { user, refresh, access } = await this.service.oauth.discord.callback(code, publicUser);
 
-                this.webManager.session.sendSession(c, refresh, access)
+                this.webManager.session.sendSession(c, refresh)
 
-                return c.json({ user })
+                return c.json({
+                    user: user,
+                    accessToken: access.token,
+                    expires: access.expires.atTime
+                })
+
             }
         )
     }
