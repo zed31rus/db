@@ -4,7 +4,7 @@ import { Context } from "hono";
 import { deleteCookie, setCookie } from "hono/cookie";
 
 export default class SessionWebManager extends BaseWebManager {
-    sendSession(c: Context, refresh: SessionType['refresh'], access: SessionType['access']) {
+    sendSession(c: Context, refresh: SessionType['refresh']) {
 
         setCookie(c, 'refreshToken', refresh.token, {
             //domain: '.zed31rus.ru',
@@ -16,11 +16,6 @@ export default class SessionWebManager extends BaseWebManager {
             secure: false,
             expires: refresh.expires.atTime
         });
-        
-        c.json({
-            accessToken: access.token,
-            expires: access.expires.atTime
-        })
 
     }
 

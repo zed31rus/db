@@ -1,4 +1,4 @@
-import { Prisma, prismaClient, VerificationCode } from "#core/prisma/prisma.js";
+import { Prisma, VerificationCode } from "#core/prisma/prisma.js";
 
 export default class DeleteVerificationCode {
     async delete(client: Prisma.TransactionClient, code: VerificationCode) {

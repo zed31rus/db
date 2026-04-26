@@ -6,6 +6,6 @@ export default abstract class BaseManager {
     constructor(
         protected readonly lib: LibContainer,
         protected readonly repository: RepositoryContainer,
-        protected readonly infta: InfraContainer
+        protected readonly infra: InfraContainer
     ) {}
 }

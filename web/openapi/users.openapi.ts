@@ -10,7 +10,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
 
     getByUuid = createRoute({
         method: 'get',
-        path: '/get/{uuid}',
+        path: '/get/uuid/{uuid}',
         summary: 'Get user by UUID',
         description: 'Returns public user data by UUID. Does not require authentication.',
 
@@ -39,7 +39,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
 
     getByEmail = createRoute({
         method: 'get',
-        path: '/get/{email}',
+        path: '/get/email/{email}',
         middleware: [...this.handler.auth.withValidUser<UsersEnv>()],
         security: [{ authBearer: [] }],
         summary: 'Get user by email',
@@ -70,7 +70,7 @@ export default class UsersOpenAPI extends BaseOpenAPI {
 
     getByLogin = createRoute({
         method: 'get',
-        path: '/get/{login}',
+        path: '/get/login/{login}',
         middleware: [...this.handler.auth.withValidUser<UsersEnv>()],
         security: [{ authBearer: [] }],
         summary: 'Get user by login',

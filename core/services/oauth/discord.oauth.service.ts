@@ -28,7 +28,7 @@ export default class DiscordOauthService extends BaseService {
             }
         );
 
-        this.infra.rabbitmq.sendOauthRegistered(newPublicUser);
+        await this.infra.rabbitmq.sendOauthRegistered(newPublicUser);
 
         const sesssion = await this.manager.session.createSession(newRawUser, prismaClient);
 

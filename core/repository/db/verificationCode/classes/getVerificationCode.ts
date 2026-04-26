@@ -11,7 +11,7 @@ export default class GetVerificationCode {
     }
     orNull = {
         async get(client: Prisma.TransactionClient, user: User, type: string) {
-            return await client.verificationCode.findUniqueOrThrow({
+            return await client.verificationCode.findUnique({
                 where: { userUuid_type: {userUuid: user.uuid, type: type}},
                 include: { user: true }
             });

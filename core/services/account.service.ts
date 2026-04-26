@@ -11,7 +11,7 @@ export default class AccountService extends BaseService {
 
         if (rawUser.emailConfirmed) return { user: personalUser };
 
-        const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.EmailConfirm);
+        const { rawOtp } = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.EmailConfirm);
 
         if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 
@@ -41,7 +41,7 @@ export default class AccountService extends BaseService {
         const rawUser = await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, user)
         const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
 
-        const rawOtp = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.passwordChange);
+        const { rawOtp } = await this.manager.otp.createOtp(prismaClient, rawUser, OtpTypes.passwordChange);
 
         if (rawOtp) this.lib.mail.sendMail(rawUser.email, 'Код подтверждения', `<p>Ваш код подтверждения: ${rawOtp}</p>`, `Ваш код подтверждения: ${rawOtp}`);
 

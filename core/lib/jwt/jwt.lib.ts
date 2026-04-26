@@ -9,8 +9,8 @@ export type AccessExpires = {
 }
 
 export default class JWT extends BaseLib {
-    async create(payload: PublicUser, expiresIn: SignOptions['expiresIn'], JWT_SECRET: string) {
-        return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn})
+    async create(payload: PublicUser, expiresIn: number, JWT_SECRET: string) {
+        return jsonWebToken.sign(payload, JWT_SECRET, {expiresIn: expiresIn / 1000})
     }
 
     async verify(token: string, JWT_SECRET: string) {

@@ -11,7 +11,7 @@ export default class AuthMiddleware extends baseMiddleware {
         return this.createFactory<T>().createMiddleware( async (c, next) => {
             const jwt = new JWT();
             const Authorization = c.req.header('Authorization');
-            const accessToken = Authorization?.replace('Bearer', '')
+            const accessToken = Authorization?.replace('Bearer ', '')
 
             if (!accessToken) throw ApiError.Unauthorized();
 
@@ -27,7 +27,7 @@ export default class AuthMiddleware extends baseMiddleware {
         return this.createFactory<T>().createMiddleware( async (c, next) => {
             const jwt = new JWT();
             const Authorization = c.req.header('Authorization');
-            const accessToken = Authorization?.replace('Bearer', '')
+            const accessToken = Authorization?.replace('Bearer ', '')
 
             let publicUser = null;
             if (accessToken) {
