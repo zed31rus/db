@@ -1,4 +1,4 @@
-export default class ConfigError extends Error {
+class ConfigError extends Error {
     constructor(
         public status: number,
         public message: string,
@@ -7,9 +7,10 @@ export default class ConfigError extends Error {
         super(message);
         Object.setPrototypeOf(this, ConfigError.prototype);
     }
+}
 
-    static env(message = "not Authorized") {
+export default class ConfigErrors {
+    env(message = "not Authorized") {
         return new ConfigError(1, message);
     }
-
 }

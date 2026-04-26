@@ -9,8 +9,10 @@ import WebManagerContainer from "#web/containers/managers.container.js";
 import HandlerContainer from "#web/containers/handler.container.js";
 import MiddlewareContainer from "#web/containers/middleware.container.js";
 import OpenAPIContainer from "#web/containers/openapi.container.js";
+import WebBase from "./base.js";
+import { BaseArgs } from "#root/core/base/base.js";
 
-export abstract class BaseModule<T extends OptionalUserEnv> {
+export abstract class BaseModule<T extends OptionalUserEnv> extends WebBase {
     public router = new OpenAPIHono<T>();
 
     constructor(
@@ -20,8 +22,10 @@ export abstract class BaseModule<T extends OptionalUserEnv> {
         protected readonly webManager: WebManagerContainer,
         protected readonly handler: HandlerContainer,
         protected readonly middleware: MiddlewareContainer,
-        protected readonly openapi: OpenAPIContainer
+        protected readonly openapi: OpenAPIContainer,
+        ...baseArgs: BaseArgs
     ) {
+        super(...baseArgs);
         this.init();
     }
 

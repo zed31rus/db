@@ -1,4 +1,4 @@
-export default class ApiError extends Error {
+class ApiError extends Error {
     constructor(
         public status: number,
         public message: string,
@@ -7,6 +7,10 @@ export default class ApiError extends Error {
         super(message);
         Object.setPrototypeOf(this, ApiError.prototype);
     }
+
+}
+
+export default class ApiErrors {
 
     static Unauthorized(message = "not Authorized") {
         return new ApiError(401, message);

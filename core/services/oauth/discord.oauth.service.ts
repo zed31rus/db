@@ -1,6 +1,5 @@
 import BaseService from "#core/base/service.base.js";
 import { PublicUser } from "#core/lib/selector/user.selector.js";
-import { prismaClient } from "#core/prisma/prisma.js";
 import { OauthProviders } from "#core/types/oauth.js";
 import { DiscordOauthApiMeReply } from "#core/infra/discord/oauth.discord.infra.js";
 

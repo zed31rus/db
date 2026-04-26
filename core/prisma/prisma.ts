@@ -1,11 +1,19 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 import * as prisma from '#core/generated/prisma/client.js'
-import configEnv from '#config/env.config.js'
+import Base, { BaseArgs } from "../base/base.js";
 
-const pool = new pg.Pool({connectionString: configEnv.DATABASE_URL})
-const adapter = new PrismaPg(pool, {schema: "auth"})
+export default class Prisma extends Base {
+    client: prisma.PrismaClient
+    
+    constructor(...baseArgs: BaseArgs) {
+        super(...baseArgs);
+        const pool = new pg.Pool({connectionString: this.config.env.DATABASE_URL})
+        const adapter = new PrismaPg(pool, {schema: "auth"})
 
-export const prismaClient = new prisma.PrismaClient({ adapter });
+        this.client = new prisma.PrismaClient({ adapter });
+    }
+
+}
 export * from '#core/generated/prisma/client.js';
 export * from '#core/generated/prisma/internal/prismaNamespace.js'

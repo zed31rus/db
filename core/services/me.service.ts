@@ -1,6 +1,5 @@
 import BaseService from "#core/base/service.base.js";
 import { PublicUser } from "#core/lib/selector/user.selector.js";
-import { prismaClient } from "#core/prisma/prisma.js";
 
 export default class MeService extends BaseService {
 

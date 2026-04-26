@@ -1,4 +1,5 @@
 import BaseLib from "#core/base/lib.base.js";
+import { BaseArgs } from "#root/core/base/base.js";
 import nodemailer from "nodemailer";
 
 interface SmtpConfig {
@@ -13,22 +14,29 @@ interface SmtpConfig {
 export default class Mail extends BaseLib {
     private transporter: nodemailer.Transporter;
     private readonly from: string;
+    user = this.config.env.SMTP_USER;
+    key = this.config.env.SMTP_API_KEY;
+    host = this.config.env.SMTP_HOST;
+    email = this.config.env.SMTP_EMAIL;
+    port = Number(this.config.env.SMTP_PORT);
+    name = "zed31rus.ru Auth Service";
 
-    constructor(config: SmtpConfig) {
-        super();
-        if (!config.user || !config.key || !config.host) {
+    constructor(...baseArgs: BaseArgs) {
+
+        super(...baseArgs);
+        if (!this.user || !this.key || !this.host) {
             throw new Error('SMTP config is missing required fields');
         }
 
-        this.from = `"${config.name}" <${config.email}>`;
+        this.from = `"${this.name}" <${this.email}>`;
         
         this.transporter = nodemailer.createTransport({
-            host: config.host,
-            port: config.port || 465,
-            secure: (config.port || 465) === 465,
+            host: this.host,
+            port: this.port || 465,
+            secure: (this.port || 465) === 465,
             auth: {
-                user: config.user,
-                pass: config.key
+                user: this.user,
+                pass: this.key
             }
         });
     }

@@ -1,5 +1,4 @@
 import BaseService from "#core/base/service.base.js";
-import { prismaClient } from "#core/prisma/prisma.js";
 import ApiError from "#errors/api.errors.js";
 
 export default class AuthService extends BaseService {

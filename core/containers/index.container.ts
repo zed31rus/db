@@ -20,46 +20,53 @@ import MeService from "#core/services/me.service.js";
 import UsersService from "#core/services/users.service.js";
 import DiscordOauthService from "#core/services/oauth/discord.oauth.service.js";
 import RabbitMqInfra from "../infra/rabbitmq/rabbitmq.infra.js";
+import ApiError from "#root/errors/api.errors.js";
+import ConfigError from "#root/errors/config.errors.js";
+import PrismaError from "#root/errors/prisma.errors.js";
 
+const errors = {
+    api: new ApiError(),
+    config: new ConfigError(),
+    prisma: new PrismaError()
+}
+
+const config = {
+    env: new configEnv(errors)
+}
 
 const libs = new LibContainer(
-    new Hash(),
-    new JWT(),
+    new Hash(config, errors),
+    new JWT(config, errors),
 
-    new Mail({
-        user: configEnv.SMTP_USER,
-        key: configEnv.SMTP_API_KEY,
-        host: configEnv.SMTP_HOST,
-        email: configEnv.SMTP_EMAIL,
-        name: "zed31rus.ru Auth Service"
-    }),
+    new Mail(config, errors),
 
-    new RefreshToken(),
-    new UserSelector(),
-    new VerificationCode(),
+    new RefreshToken(config, errors),
+    new UserSelector(config, errors),
+    new VerificationCode(config, errors),
+);
 
+const repositories = new RepositoryContainer(
+    new DB(config, errors)
 );
 
 const infra = new InfraContainer(
-    new RabbitMqInfra,
-    { discord: new DiscordOauthInfra }
+    RabbitMqInfra.getInstance(),
+    { discord: new DiscordOauthInfra(config, errors) }
 )
 
-const repositories = new RepositoryContainer(
-    new DB()
-);
-
 const managers = new ManagerContainer(
-    new OtpManager(libs, repositories, infra),
-    new SessionManager(libs, repositories, infra)
+    new OtpManager(libs, repositories, infra, config, errors),
+    new SessionManager(libs, repositories, infra, config, errors)
 );
 
 const services = new ServiceContainer(
-    new AccountService(libs, managers, repositories, infra),
-    new AuthService(libs, managers, repositories, infra),
-    new MeService(libs, managers, repositories, infra),
-    new UsersService(libs, managers, repositories, infra),
-    { discord: new DiscordOauthService(libs, managers, repositories, infra)}
+    new AccountService(libs, managers, repositories, infra, config, errors),
+    new AuthService(libs, managers, repositories, infra, config, errors),
+    new MeService(libs, managers, repositories, infra, config, errors),
+    new UsersService(libs, managers, repositories, infra, config, errors),
+    {
+        discord: new DiscordOauthService(libs, managers, repositories, infra, config, errors)
+    }
 );
 
 export default { services }
