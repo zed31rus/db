@@ -1,17 +1,17 @@
-import { Prisma, User } from "#core/prisma/prisma.js";
 import { OauthProviders } from "#core/types/oauth.js";
+import DB from "../../db.js";
 
 export default class UpsertOauthAccount {
     async upsert(
-        client: Prisma.TransactionClient,
+        client: DB.TransactionClient,
         where: { provider: OauthProviders, providerUserId: string },
-        user: User,
+        user: DB.User,
         oauthData: {
             accessToken?: string | null;
             refreshToken?: string | null;
             expiresAt?: Date | null;
             scope?: string | null;
-            rawProfile?: Prisma.InputJsonValue;
+            rawProfile?: DB.InputJsonValue;
         }
 
     ) {

@@ -3,7 +3,6 @@ import { PublicUser } from "#core/lib/selector/user.selector.js";
 import { OauthProviders } from "#core/types/oauth.js";
 import { DiscordOauthApiMeReply } from "#core/infra/discord/oauth.discord.infra.js";
 
-
 export default class DiscordOauthService extends BaseService {
     async callback(code: string, publicUser: PublicUser | null) {
         const exchangeReply = await this.infra.oauth.discord.exchangeCode(code);
@@ -14,8 +13,8 @@ export default class DiscordOauthService extends BaseService {
         const newPersonalUser = this.lib.userSelector.toPersonalJSON(newRawUser);
         const newPublicUser = this.lib.userSelector.toPublicJSON(newRawUser)
 
-        await this.repository.db.oauthAccount.upsert.upsert(
-            prismaClient,
+        await this.db.oauthAccount.upsert.upsert(
+            this.db.client,
             { provider: OauthProviders.discord, providerUserId: meRes.id },
             newRawUser,
             {
@@ -29,26 +28,26 @@ export default class DiscordOauthService extends BaseService {
 
         this.infra.rabbitmq.sendOauthRegistered(newPublicUser);
 
-        const sesssion = await this.manager.session.createSession(newRawUser, prismaClient);
+        const sesssion = await this.manager.session.createSession(newRawUser, this.db.client);
 
         return { user: newPersonalUser, ...sesssion }
     }
 
     private async resolveUser(publicUser: PublicUser | null, meRes: DiscordOauthApiMeReply) {
         if (publicUser) {
-            return await this.repository.db.users.get.orThrow.byPublicUser(prismaClient, publicUser);
+            return await this.db.users.get.orThrow.byPublicUser(this.db.client, publicUser);
         }
 
-        const existingOauth = await this.repository.db.oauthAccount.get.orNull.byProvider_providerUserId(
-            prismaClient, OauthProviders.discord, meRes.id
+        const existingOauth = await this.db.oauthAccount.get.orNull.byProvider_providerUserId(
+            this.db.client, OauthProviders.discord, meRes.id
         );
         if (existingOauth) return existingOauth.user;
 
-        const userByEmail = await this.repository.db.users.get.orNull.byEmail(prismaClient, meRes.email);
+        const userByEmail = await this.db.users.get.orNull.byEmail(this.db.client, meRes.email);
         if (userByEmail) return userByEmail;
 
-        return await this.repository.db.users.create.createUser(
-            prismaClient, meRes.global_name, meRes.username, meRes.email, null, true
+        return await this.db.users.create.createUser(
+            this.db.client, meRes.global_name, meRes.username, meRes.email, null, true
         );
     }
 }

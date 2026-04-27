@@ -12,7 +12,7 @@ export default class AuthMiddleware extends baseMiddleware {
             const Authorization = c.req.header('Authorization');
             const accessToken = Authorization?.replace('Bearer', '')
 
-            if (!accessToken) throw ApiError.Unauthorized();
+            if (!accessToken) throw this.errors.api.Unauthorized();
 
             const publicUser = await jwt.verify(accessToken, this.config.env.JWT_SECRET);
 

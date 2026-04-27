@@ -1,5 +1,5 @@
 import BaseLib from "#core/base/lib.base.js";
-import { Prisma } from "#core/prisma/prisma.js";
+import DB from "#root/core/db/db.js";
 import { randomBytes } from "node:crypto";
 
 export default class VerificationCode extends BaseLib {
@@ -13,7 +13,7 @@ export default class VerificationCode extends BaseLib {
         return { time, atTime }
     }
 
-    checkExpired(token: Prisma.VerificationCodeModel) {
+    checkExpired(token: DB.VerificationCodeModel) {
         if (new Date() > new Date(token.expiresAt)) {
                 return true
             }

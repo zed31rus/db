@@ -1,7 +1,6 @@
-import { PrismaClientKnownRequestError, PrismaClientValidationError } from "#core/prisma/prisma.js";
-import ApiError from "#root/errors/api.errors.js";
+import DB from "#root/core/db/db.js";
+import ApiErrors, { ApiError } from "#root/errors/api.errors.js";
 import ConfigError from "#root/errors/config.errors.js";
-import { PRISMA_ERRORS } from "#root/errors/prisma.errors.js";
 import baseHandler from "#web/base/handler.base.js";
 import { Context } from "hono";
 import { HTTPResponseError } from "hono/types";
@@ -35,15 +34,15 @@ export default class ErrorHandler extends baseHandler {
         process.exit(1)
       }
 
-      if (err instanceof PrismaClientKnownRequestError) {
-        const code = err.code as keyof typeof PRISMA_ERRORS;
+      if (err instanceof DB.prisma.PrismaClientKnownRequestError) {
+        const code = err.code as keyof typeof this.errors.prisma;
 
         return c.json({
-          error: PRISMA_ERRORS[code].message
-        }, PRISMA_ERRORS[code].status);
+          error: this.errors.prisma[code].message
+        }, this.errors.prisma[code].status as any);
       }
 
-      if (err instanceof PrismaClientValidationError) {
+      if (err instanceof DB.prisma.PrismaClientValidationError) {
         return c.json({
           description: 'Bad request'
         }, 400);

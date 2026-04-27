@@ -1,7 +1,7 @@
-import { Prisma } from "#core/prisma/prisma.js";
+import DB from "../../db.js";
 
 export default class DeleteRefreshToken {
-    async delete(client: Prisma.TransactionClient, refreshToken: Prisma.RefreshTokenModel) {
+    async delete(client: DB.TransactionClient, refreshToken: DB.RefreshTokenModel) {
         await client.refreshToken.delete({
             where: {
                 hashedToken: refreshToken.hashedToken

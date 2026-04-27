@@ -3,7 +3,6 @@ import baseMiddleware from "#web/base/middleware.base.js";
 import { AvatarEnv } from "#web/types/Env.js";
 import { z } from "@hono/zod-openapi";
 import path from "node:path";
-import configEnv from "#config/env.config.js"
 import { workDir } from "#root/start.js";
 import fs from 'fs';
 
@@ -24,8 +23,8 @@ export default class FileMiddleware extends baseMiddleware {
             const avatarArrayBuffer = await avatar.arrayBuffer();
 
             const fileName = `${uuid}${path.extname(avatar.name)}`;
-            const publicDirPath = configEnv.PUBLIC_DIR_PATH;
-            const avatarsPublicPathDir = configEnv.AVATARS_PUBLIC_DIR_PATH;
+            const publicDirPath = this.config.env.PUBLIC_DIR_PATH;
+            const avatarsPublicPathDir = this.config.env.AVATARS_PUBLIC_DIR_PATH;
             const avatarAbsolutePath = path.join(workDir, publicDirPath, avatarsPublicPathDir, fileName);
 
             await fs.promises.writeFile(avatarAbsolutePath, Buffer.from(avatarArrayBuffer));

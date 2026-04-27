@@ -1,12 +1,12 @@
-import { OauthAccount, Prisma, User } from "#core/prisma/prisma.js";
 import { OauthProviders } from "#core/types/oauth.js";
+import DB from "../../db.js";
 
 export default class CreateOauthAccount {
     async create(
-        client: Prisma.TransactionClient, 
-        user: User, 
-        account: { provider: OauthProviders, providerUserId: OauthAccount['providerUserId'] }, 
-        payload: Omit<Prisma.OauthAccountCreateWithoutUserInput, 'provider' | 'providerUserId'>
+        client: DB.TransactionClient, 
+        user: DB.User, 
+        account: { provider: OauthProviders, providerUserId: DB.OauthAccount['providerUserId'] }, 
+        payload: Omit<DB.OauthAccountCreateWithoutUserInput, 'provider' | 'providerUserId'>
     ) {
         return await client.oauthAccount.create({
             data: {

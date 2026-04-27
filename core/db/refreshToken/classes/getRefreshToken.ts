@@ -1,8 +1,8 @@
-import { Prisma } from "#core/prisma/prisma.js";
+import DB from "../../db.js";
 
 export default class GetRefreshToken {
     orThrow = {
-        async byHashedToken(client: Prisma.TransactionClient, hashedToken: string) {
+        async byHashedToken(client: DB.TransactionClient, hashedToken: string) {
             return await client.refreshToken.findUniqueOrThrow({
                 where: { hashedToken },
                 include: { user: true}
@@ -11,7 +11,7 @@ export default class GetRefreshToken {
     }
  
     orNull = {
-        async byHashedToken(client: Prisma.TransactionClient, hashedToken: string) {
+        async byHashedToken(client: DB.TransactionClient, hashedToken: string) {
             return await client.refreshToken.findUnique({
                 where: { hashedToken },
                 include: { user: true}

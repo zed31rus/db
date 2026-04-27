@@ -8,8 +8,6 @@ import UserSelector from "#core/lib/selector/user.selector.js";
 import VerificationCode from "#core/lib/verificationCode/verificationCode.lib.js";
 import InfraContainer from "#core/containers/infra.container.js";
 import DiscordOauthInfra from "#core/infra/discord/oauth.discord.infra.js";
-import RepositoryContainer from "#core/containers/repository.container.js";
-import DB from "#core/repository/db/db.js";
 import ManagerContainer from "#core/containers/manager.container.js";
 import OtpManager from "#root/core/managers/otp.manager.js";
 import SessionManager from "#root/core/managers/session.manager.js";
@@ -23,6 +21,7 @@ import RabbitMqInfra from "../infra/rabbitmq/rabbitmq.infra.js";
 import ApiError from "#root/errors/api.errors.js";
 import ConfigError from "#root/errors/config.errors.js";
 import PrismaError from "#root/errors/prisma.errors.js";
+import DB from "#core/db/db.js";
 
 const errors = {
     api: new ApiError(),
@@ -45,9 +44,7 @@ const libs = new LibContainer(
     new VerificationCode(config, errors),
 );
 
-const repositories = new RepositoryContainer(
-    new DB(config, errors)
-);
+const db = new DB(config, errors)
 
 const infra = new InfraContainer(
     RabbitMqInfra.getInstance(config, errors),
@@ -55,18 +52,18 @@ const infra = new InfraContainer(
 )
 
 const managers = new ManagerContainer(
-    new OtpManager(libs, repositories, infra, config, errors),
-    new SessionManager(libs, repositories, infra, config, errors)
+    new OtpManager(libs, db, infra, config, errors),
+    new SessionManager(libs, db, infra, config, errors)
 );
 
 const services = new ServiceContainer(
-    new AccountService(libs, managers, repositories, infra, config, errors),
-    new AuthService(libs, managers, repositories, infra, config, errors),
-    new MeService(libs, managers, repositories, infra, config, errors),
-    new UsersService(libs, managers, repositories, infra, config, errors),
+    new AccountService(libs, managers, db, infra, config, errors),
+    new AuthService(libs, managers, db, infra, config, errors),
+    new MeService(libs, managers, db, infra, config, errors),
+    new UsersService(libs, managers, db, infra, config, errors),
     {
-        discord: new DiscordOauthService(libs, managers, repositories, infra, config, errors)
+        discord: new DiscordOauthService(libs, managers, db, infra, config, errors)
     }
 );
 
-export default { services }
+export default { errors, config, libs, db, infra, managers, services }

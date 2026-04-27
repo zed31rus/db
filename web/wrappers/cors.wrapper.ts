@@ -1,7 +1,13 @@
+import { BaseArgs } from "#root/core/base/base.js";
 import BaseWrapper from "#web/base/wrapper.base.js";
 import { cors } from 'hono/cors'
 
 export default class CorsWrapper extends BaseWrapper {
+
+    constructor(...baseArgs: BaseArgs) {
+        super(...baseArgs)
+    }
+
     cors() {
         return cors({
             origin: ['zed31rus.ru',"http://localhost:3000", "http://127.0.0.1:3000"],

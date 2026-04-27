@@ -1,5 +1,4 @@
 import BaseService from "#core/base/service.base.js";
-import ApiError from "#errors/api.errors.js";
 
 export default class AuthService extends BaseService {
 
@@ -7,7 +6,7 @@ export default class AuthService extends BaseService {
 
         const hashedPassword = await this.lib.hash.bcrypt.create(password, 10);
         
-        const rawUser = await this.repository.db.users.create.createUser(prismaClient, nickname, login, email, hashedPassword, false);
+        const rawUser = await this.db.users.create.createUser(this.db.client, nickname, login, email, hashedPassword, false);
         const publicUser = this.lib.userSelector.toPublicJSON(rawUser);
 
         return { user: publicUser };
@@ -15,12 +14,12 @@ export default class AuthService extends BaseService {
 
     async login(email: string, password: string) {
 
-        const rawUser = await this.repository.db.users.get.orThrow.byEmail(prismaClient, email);
+        const rawUser = await this.db.users.get.orThrow.byEmail(this.db.client, email);
         const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
         const isPasswordCorrect = await this.lib.hash.bcrypt.compare(password, rawUser.passwordHash!);
-        if (!isPasswordCorrect) throw ApiError.Unauthorized("Invalid credentials");
+        if (!isPasswordCorrect) throw this.errors.api.Unauthorized("Invalid credentials");
 
-        const session = await this.manager.session.createSession(rawUser, prismaClient);
+        const session = await this.manager.session.createSession(rawUser, this.db.client);
 
         return { user: personalUser, ...session };
 
@@ -29,19 +28,19 @@ export default class AuthService extends BaseService {
     async refresh(incomingRefreshToken: string) {
 
         const hashedIncomingToken = await this.lib.hash.sha256.create(incomingRefreshToken);
-        const incomingRefreshTokenRecord = await this.repository.db.refreshToken.get.orThrow.byHashedToken(prismaClient, hashedIncomingToken);
+        const incomingRefreshTokenRecord = await this.db.refreshToken.get.orThrow.byHashedToken(this.db.client, hashedIncomingToken);
 
         const expired = this.lib.refreshToken.checkExpired(incomingRefreshTokenRecord);
         if (expired) {
-            await this.repository.db.refreshToken.delete.delete(prismaClient, incomingRefreshTokenRecord);
-            throw ApiError.Unauthorized();
+            await this.db.refreshToken.delete.delete(this.db.client, incomingRefreshTokenRecord);
+            throw this.errors.api.Unauthorized();
         }
 
         const rawUser = incomingRefreshTokenRecord.user;
         const personalUser = this.lib.userSelector.toPersonalJSON(rawUser);
         
-        const session = await prismaClient.$transaction(async (tx) => {
-            await this.repository.db.refreshToken.delete.delete(tx, incomingRefreshTokenRecord);
+        const session = await this.db.client.$transaction(async (tx) => {
+            await this.db.refreshToken.delete.delete(tx, incomingRefreshTokenRecord);
 
             const session = await this.manager.session.createSession(rawUser, tx);
             return session;
@@ -54,9 +53,9 @@ export default class AuthService extends BaseService {
     async logOut(incomingRefreshToken: string) {
 
         const hashedIncomingToken = await this.lib.hash.sha256.create(incomingRefreshToken);
-        const incomingRefreshTokenRecord = await this.repository.db.refreshToken.get.orNull.byHashedToken(prismaClient, hashedIncomingToken);
+        const incomingRefreshTokenRecord = await this.db.refreshToken.get.orNull.byHashedToken(this.db.client, hashedIncomingToken);
         if (incomingRefreshTokenRecord) {
-          await this.repository.db.refreshToken.delete.delete(prismaClient, incomingRefreshTokenRecord);
+          await this.db.refreshToken.delete.delete(this.db.client, incomingRefreshTokenRecord);
         }
         return {};
 

@@ -1,4 +1,4 @@
-class ApiError extends Error {
+export class ApiError extends Error {
     constructor(
         public status: number,
         public message: string,
@@ -12,27 +12,27 @@ class ApiError extends Error {
 
 export default class ApiErrors {
 
-    static Unauthorized(message = "not Authorized") {
+    Unauthorized(message = "not Authorized") {
         return new ApiError(401, message);
     }
 
-    static Forbidden(message = "Access denied") {
+    Forbidden(message = "Access denied") {
         return new ApiError(403, message);
     }
 
-    static BadRequest(message: string) {
+    BadRequest(message: string) {
         return new ApiError(400, message);
     }
 
-    static Internal(message = "Internal error") {
+    Internal(message = "Internal error") {
         return new ApiError(500, message);
     }
 
-    static NotFound(message = "Not found") {
+    NotFound(message = "Not found") {
         return new ApiError(404, message)
     }
 
-    static Expired(message= "Expired") {
+    Expired(message= "Expired") {
         return new ApiError(410, message)
     }
 }

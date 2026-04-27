@@ -1,7 +1,14 @@
+import { BaseArgs } from "#root/core/base/base.js";
 import { getConnInfo } from "@hono/node-server/conninfo";
 import { rateLimiter } from "hono-rate-limiter";
+import BaseWrapper from "../base/wrapper.base.js";
 
-export default class RateLimiterWrapper {
+export default class RateLimiterWrapper extends BaseWrapper {
+
+    constructor(...baseArgs: BaseArgs) {
+        super(...baseArgs)
+    }
+
     limit(windowMs: number, limit: number) {
         return rateLimiter({
             windowMs: windowMs,

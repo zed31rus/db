@@ -1,5 +1,5 @@
 import BaseLib from "#core/base/lib.base.js";
-import { Prisma } from "#core/prisma/prisma.js";
+import DB from "#core/db/db.js";
 import crypto from "node:crypto"
 
 export type RefreshExpires = {
@@ -22,7 +22,7 @@ export default class RefreshToken extends BaseLib {
         return expires
     }
 
-    checkExpired(token: Prisma.RefreshTokenModel) {
+    checkExpired(token: DB.RefreshTokenModel) {
         if (new Date() > new Date(token.expiresAt)) {
                 return true
             }

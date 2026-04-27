@@ -1,6 +1,6 @@
-import { Prisma } from "#core/prisma/prisma.js"
 import envConfig from "#root/config/env.config.js";
 import BaseInfra from "#root/core/base/infra.base.js";
+import DB from "#root/core/db/db.js";
 import ApiError from "#root/errors/api.errors.js";
 
 export interface DiscordOauthApiExchangeReply {
@@ -19,7 +19,7 @@ export interface DiscordOauthApiTokenReply {
   "scope": string
 }
 
-export interface DiscordOauthApiMeReply extends Prisma.JsonObject {
+export interface DiscordOauthApiMeReply extends DB.JsonObject {
     
   id: string,
   username: string,
@@ -73,7 +73,7 @@ export default class DiscordOauthInfra extends BaseInfra {
 
         if (!response.ok) {
         const errorText = await response.text();
-        throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
+        throw this.errors.api.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
         return await response.json() as DiscordOauthApiExchangeReply;
@@ -98,7 +98,7 @@ export default class DiscordOauthInfra extends BaseInfra {
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
+            throw this.errors.api.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
         return await response.json() as DiscordOauthApiTokenReply;
@@ -117,7 +117,7 @@ export default class DiscordOauthInfra extends BaseInfra {
 
         if (!response.ok) {
         const errorText = await response.text();
-        throw ApiError.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
+        throw this.errors.api.BadRequest(`Discord API Error: ${response.status} - ${errorText}`);
         }
 
         return await response.json() as DiscordOauthApiMeReply;
