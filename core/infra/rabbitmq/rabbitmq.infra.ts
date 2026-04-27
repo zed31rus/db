@@ -1,3 +1,4 @@
+import { BaseArgs } from "#root/core/base/base.js";
 import BaseInfra from "#root/core/base/infra.base.js";
 import { PublicUser } from "#root/core/lib/selector/user.selector.js";
 import amqp from 'amqplib';
@@ -9,30 +10,38 @@ export enum RabbitMqQueues {
 }
 
 export default class RabbitMqInfra extends BaseInfra {
-    private connection: amqp.ChannelModel | undefined;
-    private channel: amqp.Channel | undefined;
-    public ready: boolean = false;
+    private static instance: RabbitMqInfra | null = null;
+    private initPromise: Promise<void>;
 
-    constructor() {
-        super();
-        this.init();
+    private connection!: amqp.ChannelModel;
+    private oauthChannel!: amqp.Channel;
+
+    private constructor(...baseArgs: BaseArgs) {
+        super(...baseArgs);
+        this.initPromise = this.init();
     }
 
-    async init() {
-        this.connection = await amqp.connect('amqp://localhost');
+    static getInstance(...baseArgs: BaseArgs) {
+        if (!RabbitMqInfra.instance) {
+            RabbitMqInfra.instance = new RabbitMqInfra(...baseArgs);
+        }
+        return RabbitMqInfra.instance;
+    }
 
-        this.channel = await this.connection.createChannel();
-        this.channel.assertQueue(RabbitMqQueues.oauthRegisteredNewUser, {
+    private async init() {
+        this.connection = await amqp.connect('amqp://localhost');
+        this.oauthChannel = await this.connection.createChannel();
+        await this.oauthChannel.assertQueue(RabbitMqQueues.oauthRegisteredNewUser, {
             durable: true,
         });
-        this.ready = true;
     }
 
     async sendOauthRegistered(user: PublicUser) {
-        if (this.ready) {
-            this.channel?.sendToQueue(RabbitMqQueues.oauthRegisteredNewUser, Buffer.from(JSON.stringify(user)), {
-                persistent: true
-            })
-        }
+        await this.initPromise;
+        this.oauthChannel.sendToQueue(
+            RabbitMqQueues.oauthRegisteredNewUser,
+            Buffer.from(JSON.stringify(user)),
+            { persistent: true }
+        );
     }
 }

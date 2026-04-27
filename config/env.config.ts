@@ -27,7 +27,7 @@ export default class EnvConfig {
     AMQP_URL = this.getEnv('AMQP_URL')
     DISCORD_OAUTH_CLIENT_ID = this.getEnv('DISCORD_CLIENT_ID');
     DISCORD_OAUTH_CLIENT_SECRET = this.getEnv('DISCORD_CLIENT_SECRET');
-    DISCORD_REDIRECT_URL = this.getEnv('DISCORD_REDIRECT_URL');
+    DISCORD_OAUTH_REDIRECT_URL = this.getEnv('DISCORD_REDIRECT_URL');
     SMTP_PORT = this.getEnv('SMTP_PORT')
 
     constructor(        

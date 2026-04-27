@@ -48,9 +48,9 @@ export default class DiscordOauthInfra extends BaseInfra {
 
 
     API_ENDPOINT = 'https://discord.com/api/v10';
-    CLIENT_ID = envConfig.DISCORD_OAUTH_CLIENT_ID;
-    CLIENT_SECRET = envConfig.DISCORD_OAUTH_CLIENT_SECRET;
-    REDIRECT_URI = 'http://localhost:3100/oauth2/discord/callback';
+    CLIENT_ID = this.config.env.DISCORD_OAUTH_CLIENT_ID;
+    CLIENT_SECRET = this.config.env.DISCORD_OAUTH_CLIENT_SECRET;
+    REDIRECT_URI = this.config.env.DISCORD_OAUTH_REDIRECT_URL;
     
 
     async exchangeCode(code: string) {

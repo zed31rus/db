@@ -25,8 +25,12 @@ export default class AuthModule extends BaseModule<AuthEnv> {
 
             const { email, password } = c.req.valid('json');
             const { user, refresh, access } = await this.service.auth.login(email, password);
-            this.webManager.session.sendSession(c, refresh, access);
-            return c.json({user});
+            this.webManager.session.sendSession(c, refresh);
+            return c.json({
+                user: user,
+                accessToken: access.token,
+                expires: access.expires.atTime
+            })
         });
 
 
@@ -36,8 +40,12 @@ export default class AuthModule extends BaseModule<AuthEnv> {
             
             const { refreshToken } = c.req.valid('cookie');
             const { user, refresh, access } = await this.service.auth.refresh(refreshToken);
-            this.webManager.session.sendSession(c, refresh, access);
-            return c.json({ user });
+            this.webManager.session.sendSession(c, refresh);
+            return c.json({
+                user: user,
+                accessToken: access.token,
+                expires: access.expires.atTime
+            })
         });
 
 

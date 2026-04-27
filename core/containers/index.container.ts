@@ -50,7 +50,7 @@ const repositories = new RepositoryContainer(
 );
 
 const infra = new InfraContainer(
-    RabbitMqInfra.getInstance(),
+    RabbitMqInfra.getInstance(config, errors),
     { discord: new DiscordOauthInfra(config, errors) }
 )
 
