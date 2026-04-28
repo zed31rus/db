@@ -70,7 +70,9 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                 content: {
                     'application/json': { 
                         schema: z.object({
-                            user: PersonalUserSchema
+                            user: PersonalUserSchema,
+                            accessToken: z.string(),
+                            expires: z.date(),
                         })
                     }
                 }
@@ -97,7 +99,9 @@ export default class AuthOpenAPI extends BaseOpenAPI {
                 content: {
                     'application/json': { 
                         schema: z.object({
-                            user: PersonalUserSchema
+                            user: PersonalUserSchema,
+                            accessToken: z.string(),
+                            expires: z.date(),
                         })
                     }
                 }

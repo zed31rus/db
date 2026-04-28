@@ -28,7 +28,11 @@ export default class DiscordOauthOpenAPI extends BaseOpenAPI {
                 description: 'Successfully authenticated via Discord',
                 content: {
                     'application/json': {
-                        schema: PersonalUserSchema
+                        schema: z.object({
+                            user: PersonalUserSchema,
+                            accessToken: z.string(),
+                            expires: z.date(),
+                        })
                     }
                 }
              },
