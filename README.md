@@ -66,23 +66,7 @@ db
 │  │  └─ session.manager.ts
 │  ├─ prisma
 │  │  ├─ migrations
-│  │  │  ├─ 20260121195853_base
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260123151148_verification_codes
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260123224904_uuid
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260124020639_allow_user_find
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260127014001_creted
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260202131407_uuid
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260202211948_unique_provider_user_uuid
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20260202212725
-│  │  │  │  └─ migration.sql
-│  │  │  └─ migration_lock.toml
+│  │  │  └─ ...
 │  │  └─ schema.prisma
 │  ├─ services
 │  │  ├─ account.service.ts
@@ -100,21 +84,7 @@ db
 │  ├─ config.errors.ts
 │  └─ prisma.errors.ts
 ├─ generated
-│  └─ prisma
-│     ├─ browser.ts
-│     ├─ client.ts
-│     ├─ commonInputTypes.ts
-│     ├─ enums.ts
-│     ├─ internal
-│     │  ├─ class.ts
-│     │  ├─ prismaNamespace.ts
-│     │  └─ prismaNamespaceBrowser.ts
-│     ├─ models
-│     │  ├─ OauthAccount.ts
-│     │  ├─ RefreshToken.ts
-│     │  ├─ User.ts
-│     │  └─ VerificationCode.ts
-│     └─ models.ts
+│  └─ ...
 ├─ LICENSE
 ├─ package-lock.json
 ├─ package.json
