@@ -1,3 +1,14 @@
+# This Repository is Deprecated
+
+**This repository is no longer maintained.**
+
+Please visit the new repository:
+
+-> **[Monorepository](https://github.com/zed31rus/monorepo)**
+
+## What Happened?
+
+This repository has been moved to a monorepo. All future updates, improvements, and support will continue in the new monorepo.
 
 ```
 db
